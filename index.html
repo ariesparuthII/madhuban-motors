@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Madhuban Motors | Car Accessories & Installs | Delhi NCR</title>
+  <meta name="description" content="Family-run car accessories & installation studio serving Delhi NCR since 1989. Seat covers, audio, cameras, lighting, GPS. Honest advice. WhatsApp us." />
+  <meta property="og:title" content="Madhuban Motors | Delhi NCR | Since 1989" />
+  <meta property="og:description" content="Three generations. One standard. Car accessories & custom installs." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #0D0D0D; color: #E8D5A3; font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.55; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    /* TYPE SCALE */
+    .t-hero    { font-family: 'DM Serif Display', serif; font-size: clamp(52px, 9vw, 84px); line-height: 1.05; letter-spacing: -1.5px; }
+    .t-display { font-family: 'DM Serif Display', serif; font-size: clamp(40px, 6vw, 64px); line-height: 1.10; letter-spacing: -1px; }
+    .t-h1      { font-family: 'DM Serif Display', serif; font-size: clamp(34px, 5vw, 52px); line-height: 1.15; letter-spacing: -0.5px; }
+    .t-stat    { font-family: 'DM Serif Display', serif; font-size: clamp(36px, 4vw, 56px); line-height: 1.10; letter-spacing: -1px; }
+    .t-h2      { font-family: 'Inter', sans-serif; font-size: clamp(22px, 3vw, 36px); font-weight: 500; line-height: 1.20; }
+    .t-h3      { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 600; line-height: 1.30; }
+    .t-sub     { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 400; line-height: 1.60; color: #C4AF8D; }
+    .t-body    { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.70; color: #C4AF8D; }
+    .t-sm      { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 1.55; color: #9A8C72; }
+    .t-caption { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; line-height: 1.40; letter-spacing: 0.10em; text-transform: uppercase; color: #C9A84C; }
+
+    /* BRAND */
+    .mirror-b { display: inline-block; transform: scaleX(-1); color: #C9A84C; font-family: inherit; font-size: inherit; font-weight: inherit; line-height: inherit; vertical-align: baseline; }
+    .brand-name { white-space: nowrap; font-family: 'DM Serif Display', serif; color: #E8D5A3; }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.30; letter-spacing: 0.01em; text-decoration: none; border: none; cursor: pointer; transition: all 0.18s ease; white-space: nowrap; }
+    .btn-primary  { background: #C0392B; color: #fff; }
+    .btn-primary:hover  { background: #a52d20; }
+    .btn-secondary { background: transparent; color: #C9A84C; border: 1.5px solid rgba(201,168,76,0.5); }
+    .btn-secondary:hover { border-color: #C9A84C; background: rgba(201,168,76,0.06); }
+    .btn-wa  { background: #25D366; color: #fff; }
+    .btn-wa:hover  { background: #1db954; }
+    .btn-ghost { background: transparent; color: #E8D5A3; border: 1px solid rgba(232,213,163,0.25); }
+    .btn-ghost:hover { border-color: rgba(232,213,163,0.6); }
+    .btn-cream { background: #F9F3E3; color: #2C0A0A; }
+    .btn-cream:hover { background: #ede0c4; }
+    .btn-sm { padding: 9px 18px; font-size: 13px; }
+    .btn-lg { padding: 16px 36px; font-size: 15px; }
+
+    /* SHIMMER CTA */
+    .btn-shimmer {
+      background: linear-gradient(90deg, #C0392B 0%, #C0392B 40%, rgba(255,255,255,0.12) 50%, #C0392B 60%, #C0392B 100%);
+      background-size: 200% auto;
+      animation: btnShimmer 3s linear infinite;
+      color: #fff;
+    }
+
+    /* ANIMATIONS */
+    @keyframes letterIn   { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse-dot  { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(0.8); } }
+    @keyframes steerIdle  { 0%,100% { transform:rotate(0deg); } 50% { transform:rotate(12deg); } }
+    @keyframes goldGlow   { 0%,100% { box-shadow:0 0 8px rgba(201,168,76,0.15); } 50% { box-shadow:0 0 24px rgba(201,168,76,0.4); } }
+    @keyframes btnShimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
+
+    .letter-span { display: inline-block; opacity: 0; animation: letterIn 0.4s forwards; }
+    .animate-steer { animation: steerIdle 4s ease-in-out infinite; }
+    .animate-pulse { animation: pulse-dot 2s ease-in-out infinite; }
+    .animate-glow  { animation: goldGlow 3s ease-in-out infinite; }
+
+    .reveal       { opacity:0; transform:translateY(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-l     { opacity:0; transform:translateX(-28px); transition:opacity 0.65s ease, transform 0.65s ease; }
+    .reveal-l.visible { opacity:1; transform:translateX(0); }
+    .reveal-r     { opacity:0; transform:translateX(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
+    .reveal-r.visible { opacity:1; transform:translateX(0); }
+    .gold-rule    { height:1px; background:#C9A84C; width:0; transition:width 1s ease; }
+    .gold-rule.visible { width:100%; }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(13,13,13,0.97); backdrop-filter:blur(16px); border-bottom:1px solid rgba(201,168,76,0.12); transition:box-shadow 0.3s; }
+    nav.scrolled { box-shadow:0 1px 0 rgba(201,168,76,0.2); }
+
+    /* DIVIDERS */
+    .divider { height:1px; background:linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent); }
+
+    /* SECTION SPACING */
+    .section { padding: 96px 24px; }
+    .section-sm { padding: 64px 24px; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .container-sm { max-width: 720px; margin: 0 auto; }
+
+    /* SERVICE ROW */
+    .service-row { border-bottom:1px solid rgba(201,168,76,0.1); transition:all 0.2s ease; }
+    .service-row:hover { background:rgba(201,168,76,0.04); padding-left:12px; }
+    .service-row:hover .s-name { color:#C9A84C; }
+    .service-row:hover .s-num  { color:#C9A84C; opacity:1; }
+
+    /* REVIEW CARD */
+    .review-card { background:#111; border:1px solid rgba(201,168,76,0.12); padding:28px; }
+    .review-card:hover { border-color:rgba(201,168,76,0.3); }
+
+    /* GALLERY CELL */
+    .gallery-cell { aspect-ratio:4/3; background:#111; border:1px solid rgba(201,168,76,0.1); position:relative; overflow:hidden; cursor:pointer; transition:border-color 0.2s; }
+    .gallery-cell:hover { border-color:rgba(201,168,76,0.4); }
+
+    /* STORY */
+    #story { background:linear-gradient(140deg,#F9F3E3 0%,#EDE0C4 100%); }
+
+    /* IPHONE */
+    .iphone-frame { width:260px; height:520px; background:#1C1C1E; border-radius:44px; box-shadow:0 0 0 2px #3A3A3C, 0 30px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.08); position:relative; overflow:hidden; flex-shrink:0; }
+    .iphone-island { position:absolute; top:12px; left:50%; transform:translateX(-50%); width:88px; height:26px; background:#000; border-radius:20px; z-index:10; }
+    .iphone-screen { position:absolute; top:50px; left:8px; right:8px; bottom:8px; background:#161616; border-radius:36px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+
+    /* FORM */
+    .field-line { background:transparent; border:none; border-bottom:1px solid rgba(201,168,76,0.18); color:#E8D5A3; font-family:'Inter',sans-serif; font-size:15px; padding:12px 0; width:100%; outline:none; transition:border-color 0.2s; }
+    .field-line::placeholder { color:#333; }
+    .field-line:focus { border-bottom-color:#C9A84C; }
+    .field-label { font-family:'Inter',sans-serif; font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px; display:block; opacity:0.8; }
+
+    /* PILLS */
+    .pill { border:1px solid rgba(201,168,76,0.2); color:#C4AF8D; padding:7px 14px; font-size:13px; font-family:'Inter',sans-serif; font-weight:500; cursor:pointer; transition:all 0.15s; border-radius:3px; background:transparent; }
+    .pill.active { background:#C0392B; color:white; border-color:#C0392B; }
+    .pill:hover:not(.active) { border-color:#C9A84C; color:#C9A84C; }
+
+    /* FLOATER */
+    #floater { position:fixed; right:24px; top:50%; transform:translateY(-50%); z-index:200; transition:opacity 0.3s; }
+    #floater.hidden-floater { opacity:0; pointer-events:none; }
+
+    /* SLIDE PANEL */
+    #quickPanel { position:fixed; right:0; top:0; height:100%; width:340px; background:#120202; border-left:1px solid rgba(201,168,76,0.2); z-index:300; transform:translateX(100%); transition:transform 0.3s ease; }
+    #quickPanel.open { transform:translateX(0); }
+    @media (max-width:640px) { #quickPanel { width:100%; } }
+
+    /* COMING SOON */
+    #comingSoon { position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:500; display:none; align-items:center; justify-content:center; flex-direction:column; }
+    #comingSoon.open { display:flex; }
+
+    /* MOBILE */
+    @media (max-width:768px) {
+      .hide-mobile { display:none !important; }
+      .section { padding:64px 20px; }
+      .section-sm { padding:48px 20px; }
+      .reviews-grid { grid-template-columns:1fr !important; }
+      .gallery-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .trust-grid  { grid-template-columns:repeat(2,1fr) !important; }
+      .story-grid  { grid-template-columns:1fr !important; }
+      .visit-grid  { grid-template-columns:1fr !important; }
+      .hero-grid   { grid-template-columns:1fr !important; }
+      .t-hero { letter-spacing:-0.5px; }
+    }
+    @media (max-width:480px) {
+      .gallery-grid { grid-template-columns:1fr !important; }
+    }
+
+    /* STAT DIVIDER */
+    .stat-divider { position:absolute; right:0; top:20%; height:60%; width:1px; background:rgba(201,168,76,0.12); }
+  </style>
+</head>
+<body id="pageBody">
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="container" style="height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+    <div>
+      <div class="brand-name" style="font-size:19px;letter-spacing:-0.3px;">Madhu<span class="mirror-b">B</span>an Motors</div>
+      <div class="t-caption" style="font-size:10px;margin-top:2px;opacity:0.5;">EST. 1989 · DELHI NCR</div>
+    </div>
+    <button onclick="document.getElementById('comingSoon').classList.add('open')"
+      class="btn btn-secondary btn-sm hide-mobile"
+      style="gap:6px;">
+      <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s infinite;display:inline-block;flex-shrink:0;"></span>
+      Shop Online
+    </button>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <a href="https://wa.me/919718373751?text=Hi%2C%20I%20found%20you%20on%20Google%20and%20want%20to%20enquire%20about%20your%20services." target="_blank"
+        class="btn btn-primary btn-sm">WhatsApp</a>
+      <a href="tel:+919911443751" class="btn btn-secondary btn-sm">Call</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="min-height:100vh;padding-top:64px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#2C0A0A 0%,#0D0D0D 100%);display:flex;align-items:center;position:relative;overflow:hidden;">
+  <div class="container" style="padding:80px 24px;width:100%;">
+    <div class="hero-grid" style="display:grid;grid-template-columns:100px 1fr 100px;align-items:center;gap:24px;">
+      <!-- Left -->
+      <div class="hide-mobile" style="text-align:center;opacity:0.3;">
+        <div class="t-caption" style="margin-bottom:10px;">FOUNDED</div>
+        <div class="t-display" style="font-style:italic;color:#E8D5A3;line-height:1;">1989</div>
+        <div style="width:1px;height:48px;background:#C9A84C;margin:12px auto 0;opacity:0.3;"></div>
+      </div>
+      <!-- Center -->
+      <div style="text-align:center;">
+        <div class="t-caption reveal" style="margin-bottom:20px;opacity:0.4;">CAR ACCESSORIES &amp; CUSTOM INSTALLATIONS</div>
+        <div id="heroName" class="brand-name t-hero" style="margin-bottom:24px;"></div>
+        <div class="gold-rule reveal" style="margin:0 auto 28px;max-width:280px;"></div>
+        <p class="reveal" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,2.4vw,28px);color:#E8D5A3;line-height:1.45;margin-bottom:12px;opacity:0.85;" data-delay="80">Three Generations. One Standard.</p>
+        <p class="t-sub reveal" style="max-width:480px;margin:0 auto 36px;" data-delay="160">From a family shop on GT Road to a name Delhi NCR trusts — honest advice, genuine products, precision installation. Every time.</p>
+        <div class="reveal" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;" data-delay="240">
+          <a href="https://wa.me/919718373751?text=Hi%2C%20I%20found%20you%20on%20Google%20and%20want%20to%20enquire%20about%20your%20services." target="_blank"
+            class="btn btn-shimmer btn-lg">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp Us Now
+          </a>
+          <a href="tel:+919911443751" class="btn btn-ghost btn-lg">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            +91 99114 43751
+          </a>
+        </div>
+      </div>
+      <!-- Right -->
+      <div class="hide-mobile" style="text-align:center;opacity:0.3;">
+        <div class="t-caption" style="margin-bottom:10px;">SERVING</div>
+        <div class="t-h1" style="font-style:italic;color:#E8D5A3;">NCR</div>
+        <div style="width:1px;height:48px;background:#C9A84C;margin:12px auto 0;opacity:0.3;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Scroll hint -->
+  <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);text-align:center;">
+    <div class="t-caption" style="margin-bottom:10px;opacity:0.25;font-size:10px;">SCROLL</div>
+    <div style="width:1px;height:32px;background:linear-gradient(to bottom,#C9A84C,transparent);margin:0 auto;"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TRUST BAR -->
+<section class="section-sm" style="background:#0A0A0A;">
+  <div class="container">
+    <div class="trust-grid" id="statsBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
+      <div style="text-align:center;padding:24px 16px;position:relative;">
+        <div class="stat-num t-stat" data-type="year" style="color:#C9A84C;opacity:0;">Est. 1989</div>
+        <div class="t-caption" style="margin-top:8px;opacity:0.5;">Family Business</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div style="text-align:center;padding:24px 16px;position:relative;">
+        <div class="stat-num t-stat" data-type="gen" style="color:#C9A84C;opacity:0;">3</div>
+        <div class="t-caption" style="margin-top:8px;opacity:0.5;">Generations</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div style="text-align:center;padding:24px 16px;position:relative;">
+        <div class="stat-num t-stat" data-type="rating" style="color:#C9A84C;opacity:0;">4.6 ★</div>
+        <div class="t-caption" style="margin-top:8px;opacity:0.5;">Google Rating</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div style="text-align:center;padding:24px 16px;">
+        <div class="stat-num t-stat" data-type="lakh" style="color:#C9A84C;opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;">
+          3 Lakh+
+          <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:pulse-dot 2s infinite;flex-shrink:0;"></span>
+        </div>
+        <div class="t-caption" style="margin-top:8px;opacity:0.5;">Cars Served</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section class="section" style="background:#0D0D0D;">
+  <div class="container">
+    <div class="t-caption reveal" style="margin-bottom:16px;">WHAT WE DO</div>
+    <h2 class="t-display reveal" style="color:#E8D5A3;margin-bottom:10px;" data-delay="80">Accessories.<br>Installed Right.</h2>
+    <p class="t-sub reveal" style="margin-bottom:56px;max-width:440px;" data-delay="160">No guesswork. No shortcuts.</p>
+
+    <div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="0">
+        <div class="s-num t-stat" style="color:#C9A84C;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">01</div>
+        <div>
+          <div class="s-name t-h3" style="color:#E8D5A3;transition:color 0.2s;margin-bottom:4px;">Seat Covers</div>
+          <div class="t-sm">Tailored fit. Clean finish. Your interior, done right.</div>
+        </div>
+        <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE →</a>
+      </div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="60">
+        <div class="s-num t-stat" style="color:#C9A84C;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">02</div>
+        <div>
+          <div class="s-name t-h3" style="color:#E8D5A3;transition:color 0.2s;margin-bottom:4px;">Car Audio &amp; Infotainment</div>
+          <div class="t-sm">Wired right. No rattles. Tuned for your ears.</div>
+        </div>
+        <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE →</a>
+      </div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="120">
+        <div class="s-num t-stat" style="color:#C9A84C;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">03</div>
+        <div>
+          <div class="s-name t-h3" style="color:#E8D5A3;transition:color 0.2s;margin-bottom:4px;">Reverse Cameras &amp; Sensors</div>
+          <div class="t-sm">Safe reversing. Clean cable routing. No mess.</div>
+        </div>
+        <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE →</a>
+      </div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="180">
+        <div class="s-num t-stat" style="color:#C9A84C;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">04</div>
+        <div>
+          <div class="s-name t-h3" style="color:#E8D5A3;transition:color 0.2s;margin-bottom:4px;">Lighting — LED / HID / Ambient</div>
+          <div class="t-sm">Precision upgrades. Inside and out.</div>
+        </div>
+        <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE →</a>
+      </div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="240">
+        <div class="s-num t-stat" style="color:#C9A84C;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">05</div>
+        <div>
+          <div class="s-name t-h3" style="color:#E8D5A3;transition:color 0.2s;margin-bottom:4px;">Security Systems &amp; Gear Locks</div>
+          <div class="t-sm">Protect what matters. Discreet installation.</div>
+        </div>
+        <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE →</a>
+      </div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="300">
+        <div class="s-num t-stat" style="color:#C9A84C;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">06</div>
+        <div>
+          <div class="s-name t-h3" style="color:#E8D5A3;transition:color 0.2s;margin-bottom:4px;">GPS Trackers &amp; Solar Films</div>
+          <div class="t-sm">Reliable. Discreet. Heat control with a clean look.</div>
+        </div>
+        <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE →</a>
+      </div>
+    </div>
+
+    <div style="margin-top:56px;text-align:center;">
+      <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-shimmer btn-lg">Send Your Car Details on WhatsApp →</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- IPHONE VIDEO -->
+<section class="section" style="background:radial-gradient(ellipse 70% 80% at 50% 50%,#3d0808 0%,#0d0d0d 100%);text-align:center;">
+  <div class="container">
+    <div class="t-caption reveal" style="margin-bottom:16px;">REAL WORK · REAL INSTALLS</div>
+    <h2 class="t-h1 reveal" style="color:#E8D5A3;margin-bottom:10px;" data-delay="80">See Our Work</h2>
+    <p class="t-sub reveal" style="margin-bottom:56px;" data-delay="160">Shot on-site. No staging.</p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:28px;">
+      <!-- Left card -->
+      <div class="iphone-side-cards hide-mobile reveal" style="width:180px;background:#111;border:1px solid rgba(201,168,76,0.12);padding:16px;transform:perspective(800px) rotateY(8deg);opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" data-delay="0">
+        <div style="width:100%;aspect-ratio:4/3;background:#1a1a1a;margin-bottom:10px;display:flex;align-items:center;justify-content:center;">
+          <span class="t-caption" style="opacity:0.3;">BEFORE INSTALL</span>
+        </div>
+        <div class="t-sm">Replace with before photo</div>
+      </div>
+      <!-- iPhone -->
+      <div style="position:relative;">
+        <div class="iphone-frame reveal" data-delay="120">
+          <div class="iphone-island"></div>
+          <div class="iphone-screen">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1C1C1E,#2a2a2a);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;">
+              <div class="t-caption" style="margin-bottom:10px;">YOUR VIDEO HERE</div>
+              <div class="t-sm" style="color:#555;line-height:1.6;">Drop <strong style="color:#777;">mm-work-video-01.mp4</strong><br>into this folder to replace</div>
+            </div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 12px;background:linear-gradient(transparent,rgba(0,0,0,0.85));">
+              <div class="t-h3" style="font-size:12px;color:white;">Work Installation</div>
+              <div class="t-caption" style="font-size:9px;margin-top:2px;">Madhuban Motors · Delhi NCR</div>
+            </div>
+          </div>
+        </div>
+        <button style="position:absolute;left:-44px;top:50%;transform:translateY(-50%);background:none;border:none;color:#C9A84C;opacity:0.35;font-size:28px;cursor:pointer;transition:opacity 0.2s;line-height:1;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">‹</button>
+        <button style="position:absolute;right:-44px;top:50%;transform:translateY(-50%);background:none;border:none;color:#C9A84C;opacity:0.35;font-size:28px;cursor:pointer;transition:opacity 0.2s;line-height:1;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">›</button>
+      </div>
+      <!-- Right card -->
+      <div class="iphone-side-cards hide-mobile reveal" style="width:180px;background:#111;border:1px solid rgba(201,168,76,0.12);padding:16px;transform:perspective(800px) rotateY(-8deg);opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" data-delay="240">
+        <div style="width:100%;aspect-ratio:4/3;background:#1a2010;margin-bottom:10px;display:flex;align-items:center;justify-content:center;">
+          <span class="t-caption" style="opacity:0.3;">AFTER INSTALL</span>
+        </div>
+        <div class="t-sm">Replace with after photo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ENQUIRY FORM -->
+<section id="enquiry" class="section" style="background:linear-gradient(140deg,#2C0A0A 0%,#180505 50%,#0D0D0D 100%);">
+  <div class="container-sm">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="t-caption reveal" style="margin-bottom:16px;">GET A QUOTE</div>
+      <h2 class="t-h1 reveal" style="color:#E8D5A3;margin-bottom:12px;" data-delay="80">Tell Us About Your Car</h2>
+      <p class="t-sub reveal" data-delay="160">We'll reply on WhatsApp with honest pricing. No pressure.</p>
+    </div>
+    <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(201,168,76,0.15);padding:40px 36px;backdrop-filter:blur(8px);">
+      <div id="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:28px 36px;">
+        <div>
+          <label class="field-label">Car Brand</label>
+          <input class="field-line" id="fBrand" type="text" placeholder="Maruti, Hyundai, Honda..." />
+        </div>
+        <div>
+          <label class="field-label">Car Model</label>
+          <input class="field-line" id="fModel" type="text" placeholder="Swift, Creta, City..." />
+        </div>
+        <div>
+          <label class="field-label">Year</label>
+          <input class="field-line" id="fYear" type="text" placeholder="e.g. 2022" />
+        </div>
+        <div>
+          <label class="field-label">Phone Number <span style="color:#C0392B;">*</span></label>
+          <input class="field-line" id="fPhone" type="tel" placeholder="+91 98765 43210" />
+          <div id="phoneErr" class="t-sm" style="color:#C0392B;margin-top:6px;display:none;">Phone number required</div>
+        </div>
+      </div>
+      <div style="margin-top:28px;">
+        <label class="field-label">Service Needed</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;" id="pillGroup">
+          <button class="pill" onclick="togglePill(this)">Seat Covers</button>
+          <button class="pill" onclick="togglePill(this)">Car Audio</button>
+          <button class="pill" onclick="togglePill(this)">Reverse Camera</button>
+          <button class="pill" onclick="togglePill(this)">Ambient Lighting</button>
+          <button class="pill" onclick="togglePill(this)">GPS Tracker</button>
+          <button class="pill" onclick="togglePill(this)">Security System</button>
+          <button class="pill" onclick="togglePill(this)">Full Accessories</button>
+          <button class="pill" onclick="togglePill(this)">Not Sure Yet</button>
+        </div>
+      </div>
+      <div style="margin-top:28px;">
+        <label class="field-label">Additional Details <span style="opacity:0.4;">(optional)</span></label>
+        <textarea class="field-line" id="fDetails" rows="3" placeholder="Budget range, preferred brands, specific requirements..." style="resize:none;padding-top:12px;"></textarea>
+      </div>
+      <button onclick="submitForm()" class="btn btn-wa" style="width:100%;margin-top:28px;font-size:15px;font-weight:600;padding:16px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send to WhatsApp &amp; Get Pricing
+      </button>
+      <div class="t-caption" style="text-align:center;margin-top:14px;opacity:0.3;font-size:10px;">YOUR NUMBER IS ONLY USED TO REPLY. WE NEVER SPAM.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="story" class="section">
+  <div class="container">
+    <div class="story-grid" style="display:grid;grid-template-columns:1fr 360px;gap:80px;align-items:start;position:relative;">
+      <!-- Watermark -->
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden;">
+        <div style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(60px,11vw,160px);color:#2C0A0A;opacity:0.07;white-space:nowrap;user-select:none;">THREE GENERATIONS.</div>
+      </div>
+      <div style="position:relative;z-index:1;">
+        <div class="t-caption reveal" style="color:#6B1E1E;margin-bottom:14px;opacity:0.8;">SINCE 1989 · GT ROAD · GHAZIABAD</div>
+        <h2 class="t-display reveal" style="color:#1A0A0A;margin-bottom:20px;" data-delay="80">GT Road. Ghaziabad.<br>Before the Car Market Existed.</h2>
+        <div class="gold-rule reveal" style="margin:0 0 32px;max-width:72px;" data-delay="120"></div>
+        <p class="reveal" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(18px,2.2vw,24px);color:#3A1A1A;line-height:1.60;margin-bottom:28px;" data-delay="160">"Madhuban was already a name this city knew — long before the car accessories market on GT Road became what it is today. We were here first. We watched it all grow around us."</p>
+        <p style="font-family:'Inter',sans-serif;font-size:16px;color:#3A2A1A;line-height:1.80;margin-bottom:16px;" class="reveal" data-delay="200">Vivek Paruthi — Bitoo Bhaiya to everyone in the market — has run this shop on one principle since day one: source it right, install it right, stand behind your work. No shortcuts. No inflated prices. The reputation didn't come from advertising. It came from 35 years of getting it right.</p>
+        <p style="font-family:'Inter',sans-serif;font-size:16px;color:#3A2A1A;line-height:1.80;margin-bottom:40px;" class="reveal" data-delay="240">Today Madhuban Motors serves customers from across Delhi NCR — Ghaziabad, Noida, Delhi, Bulandshahr, and beyond. But the shop is still exactly where it always was. Same GT Road. Same standard.</p>
+        <div class="reveal" style="display:flex;gap:0;align-items:center;" data-delay="280">
+          <div style="text-align:center;padding:0 28px 0 0;border-right:1px solid #C9A84C;">
+            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#2C0A0A;font-weight:400;">1989</div>
+            <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#8B5A0A;margin-top:4px;opacity:0.8;">Established</div>
+          </div>
+          <div style="text-align:center;padding:0 28px;border-right:1px solid #C9A84C;">
+            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#2C0A0A;">35+</div>
+            <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#8B5A0A;margin-top:4px;opacity:0.8;">Years in Market</div>
+          </div>
+          <div style="text-align:center;padding:0 0 0 28px;">
+            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#2C0A0A;">Delhi NCR</div>
+            <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#8B5A0A;margin-top:4px;opacity:0.8;">Area Served</div>
+          </div>
+        </div>
+      </div>
+      <!-- Photo -->
+      <div class="reveal" style="position:relative;z-index:1;" data-delay="80">
+        <div style="background:linear-gradient(160deg,#DDD0B0,#C8B890);aspect-ratio:3/4;border:1px solid rgba(139,90,10,0.2);position:relative;overflow:hidden;">
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(44,10,10,0.65));">
+            <div style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:white;">Vivek Paruthi · Madhuban Motors</div>
+            <div style="font-family:'Inter',sans-serif;font-size:11px;color:#C9A84C;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;">GT Road · Est. 1989</div>
+          </div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);text-align:center;">
+            <div class="t-caption" style="color:rgba(139,90,10,0.4);">REPLACE WITH</div>
+            <div class="t-caption" style="color:rgba(139,90,10,0.4);margin-top:4px;">SHOP / OWNER PHOTO</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- REVIEWS -->
+<section class="section" style="background:#0D0D0D;">
+  <div class="container">
+    <div class="t-caption reveal" style="margin-bottom:16px;">CUSTOMER REVIEWS</div>
+    <h2 class="t-h1 reveal" style="color:#E8D5A3;margin-bottom:10px;" data-delay="80">What Customers Say</h2>
+    <div class="reveal" style="display:flex;align-items:center;gap:10px;margin-bottom:48px;" data-delay="140">
+      <span style="font-family:'DM Serif Display',serif;font-size:20px;color:#C9A84C;">4.6 ★</span>
+      <span class="t-sm" style="color:#555;">·</span>
+      <span class="t-body"><span id="reviewCount">0</span>+ reviews on Google</span>
+      <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s infinite;display:inline-block;flex-shrink:0;"></span>
+    </div>
+    <div class="reviews-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+      <div class="review-card reveal-l">
+        <div style="color:#C9A84C;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+        <p class="t-body" style="font-style:italic;margin-bottom:20px;line-height:1.75;">"Excellent quality accessories with great accountability and a humble, customer-friendly approach. Special mention to the owner for his honest guidance."</p>
+        <div class="t-h3" style="font-size:14px;color:#E8D5A3;">Garv Rohilla</div>
+        <div class="t-caption" style="margin-top:4px;opacity:0.35;font-size:10px;">GOOGLE REVIEW · VERIFIED</div>
+      </div>
+      <div class="review-card reveal" data-delay="80">
+        <div style="color:#C9A84C;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+        <p class="t-body" style="font-style:italic;margin-bottom:20px;line-height:1.75;">"Music system setting done by professionals. The output is fantastic. Highly recommend Madhuban Motors to everyone."</p>
+        <div class="t-h3" style="font-size:14px;color:#E8D5A3;">Google Review</div>
+        <div class="t-caption" style="margin-top:4px;opacity:0.35;font-size:10px;">GOOGLE REVIEW · VERIFIED</div>
+      </div>
+      <div class="review-card reveal-r">
+        <div style="color:#C9A84C;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+        <p class="t-body" style="font-style:italic;margin-bottom:20px;line-height:1.75;">"Loved this showroom for my Wagon R. Genuine products and staff who really know their stuff. Will always come back."</p>
+        <div class="t-h3" style="font-size:14px;color:#E8D5A3;">Google Review</div>
+        <div class="t-caption" style="margin-top:4px;opacity:0.35;font-size:10px;">GOOGLE REVIEW · VERIFIED</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="https://maps.google.com/?cid=madhubanmotors" target="_blank" class="btn btn-secondary">Read All Reviews on Google →</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- GALLERY -->
+<section class="section" style="background:#0A0A0A;">
+  <div class="container">
+    <div class="t-caption reveal" style="margin-bottom:16px;">OUR WORK</div>
+    <h2 class="t-h1 reveal" style="color:#E8D5A3;margin-bottom:10px;" data-delay="80">Real Cars. Real Installs.</h2>
+    <p class="t-sub reveal" style="margin-bottom:48px;" data-delay="160">No stock photos. Every job from our shop.</p>
+    <div class="gallery-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      <div class="gallery-cell reveal" data-delay="0">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+          <div class="t-caption" style="opacity:0.25;font-size:10px;">PHOTO SLOT 1</div>
+          <div class="t-sm" style="color:#2a2a2a;font-size:11px;">mm-work-seat-covers-close-01.webp</div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
+          <div class="t-sm" style="color:#D4C5A9;font-size:12px;font-weight:500;">Seat Covers</div>
+        </div>
+      </div>
+      <div class="gallery-cell reveal" data-delay="60">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+          <div class="t-caption" style="opacity:0.25;font-size:10px;">PHOTO SLOT 2</div>
+          <div class="t-sm" style="color:#2a2a2a;font-size:11px;">mm-work-infotainment-install-01.webp</div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
+          <div class="t-sm" style="color:#D4C5A9;font-size:12px;font-weight:500;">Car Audio</div>
+        </div>
+      </div>
+      <div class="gallery-cell reveal" data-delay="120">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+          <div class="t-caption" style="opacity:0.25;font-size:10px;">PHOTO SLOT 3</div>
+          <div class="t-sm" style="color:#2a2a2a;font-size:11px;">mm-work-reverse-camera-01.webp</div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
+          <div class="t-sm" style="color:#D4C5A9;font-size:12px;font-weight:500;">Reverse Camera</div>
+        </div>
+      </div>
+      <div class="gallery-cell reveal" data-delay="180">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+          <div class="t-caption" style="opacity:0.25;font-size:10px;">PHOTO SLOT 4</div>
+          <div class="t-sm" style="color:#2a2a2a;font-size:11px;">mm-work-ambient-lighting-01.webp</div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
+          <div class="t-sm" style="color:#D4C5A9;font-size:12px;font-weight:500;">Ambient Lighting</div>
+        </div>
+      </div>
+      <div class="gallery-cell reveal" data-delay="240">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+          <div class="t-caption" style="opacity:0.25;font-size:10px;">PHOTO SLOT 5</div>
+          <div class="t-sm" style="color:#2a2a2a;font-size:11px;">mm-work-audio-wiring-01.webp</div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
+          <div class="t-sm" style="color:#D4C5A9;font-size:12px;font-weight:500;">Audio Wiring</div>
+        </div>
+      </div>
+      <div class="gallery-cell reveal" data-delay="300">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+          <div class="t-caption" style="opacity:0.25;font-size:10px;">PHOTO SLOT 6</div>
+          <div class="t-sm" style="color:#2a2a2a;font-size:11px;">mm-work-before-after-01.webp</div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
+          <div class="t-sm" style="color:#D4C5A9;font-size:12px;font-weight:500;">Before / After</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA BLOCK -->
+<section class="section" style="background:linear-gradient(140deg,#5A1010 0%,#2C0A0A 100%);text-align:center;">
+  <div class="container-sm">
+    <h2 class="t-display reveal" style="font-style:italic;color:#E8D5A3;margin-bottom:14px;">Ready to upgrade your car?</h2>
+    <p class="t-sub reveal" style="margin-bottom:40px;" data-delay="80">WhatsApp us your car model. Honest advice — no pressure.</p>
+    <div class="reveal" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;" data-delay="160">
+      <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-cream btn-lg">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp Us Now
+      </a>
+      <a href="tel:+919911443751" class="btn btn-ghost btn-lg">Call +91 99114 43751</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- VISIT US -->
+<section class="section" style="background:#0D0D0D;">
+  <div class="container">
+    <div class="visit-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;">
+      <div>
+        <div class="t-caption reveal" style="margin-bottom:16px;">FIND US</div>
+        <h2 class="t-h1 reveal" style="color:#E8D5A3;margin-bottom:32px;" data-delay="80">Come Visit the Shop</h2>
+        <p class="t-body reveal" style="line-height:2.2;margin-bottom:28px;" data-delay="120">
+          Shop No. 8 &amp; 8A, Bhatia Building<br>
+          Model Town, GT Road<br>
+          Near Opulent Mall<br>
+          Ghaziabad, Uttar Pradesh
+        </p>
+        <div class="t-caption reveal" style="margin-bottom:6px;opacity:0.5;" data-delay="150">SERVING DELHI · NOIDA · GHAZIABAD · BULANDSHAHR · NCR</div>
+        <div class="reveal" style="margin-top:24px;margin-bottom:8px;" data-delay="180">
+          <div class="t-caption" style="margin-bottom:8px;">HOURS</div>
+          <div class="t-body" style="line-height:2;">Mon, Wed–Sun: 10:00 AM – 8:00 PM<br><span style="color:#C0392B;font-weight:500;">Tuesday: Closed</span></div>
+        </div>
+        <div class="reveal" style="font-family:'DM Serif Display',serif;font-size:28px;color:#E8D5A3;margin:24px 0;" data-delay="200">+91 99114 43751</div>
+        <div class="reveal" style="display:flex;flex-direction:column;gap:10px;max-width:260px;" data-delay="240">
+          <a href="https://wa.me/919718373751?text=Hi%2C%20I%20want%20to%20enquire%20about%20your%20services." target="_blank" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp Us
+          </a>
+          <a href="tel:+919911443751" class="btn btn-secondary">Call Now</a>
+          <a href="https://maps.google.com/?q=Shop+8+Bhatia+Building+GT+Road+Model+Town+Ghaziabad" target="_blank" class="btn btn-ghost">Get Directions</a>
+        </div>
+      </div>
+      <div class="reveal" data-delay="120">
+        <div style="width:100%;height:340px;background:#111;border:1px solid rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+          <div class="t-caption" style="opacity:0.2;">GOOGLE MAP EMBED</div>
+          <div class="t-sm" style="color:#222;text-align:center;padding:0 24px;">Replace this div with your Google Maps embed iframe</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#080808;border-top:1px solid rgba(201,168,76,0.1);padding:56px 24px 96px;">
+  <div class="container" style="text-align:center;">
+    <div class="brand-name" style="font-size:32px;color:#C9A84C;margin-bottom:10px;">Madhu<span class="mirror-b">B</span>an Motors</div>
+    <div class="t-sm" style="margin-bottom:6px;">Est. 1989 · Ghaziabad, Uttar Pradesh</div>
+    <div class="t-caption" style="opacity:0.2;margin-bottom:32px;font-size:10px;">PRECISION · CRAFTSMANSHIP · TRUST</div>
+    <div style="display:flex;justify-content:center;gap:36px;margin-bottom:32px;">
+      <a href="https://wa.me/919718373751" target="_blank" class="t-sm" style="color:#333;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#333'">WhatsApp</a>
+      <a href="tel:+919911443751" class="t-sm" style="color:#333;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#333'">Call</a>
+      <a href="https://maps.google.com/?q=Madhuban+Motors+GT+Road+Ghaziabad" target="_blank" class="t-sm" style="color:#333;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#333'">Directions</a>
+      <a href="https://maps.google.com/?cid=madhubanmotors" target="_blank" class="t-sm" style="color:#333;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#333'">Reviews</a>
+    </div>
+    <div class="t-sm" style="color:#1e1e1e;">© 2025 Madhuban Motors. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY BAR -->
+<div id="mobileBar" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;display:none;">
+  <a href="https://wa.me/919718373751?text=Hi%2C%20I%20want%20to%20enquire%20about%20your%20services." target="_blank"
+    style="flex:1;background:#25D366;color:white;padding:16px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;border-right:1px solid rgba(255,255,255,0.15);">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+  <a href="tel:+919911443751"
+    style="flex:1;background:#C0392B;color:white;padding:16px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+    Call Now
+  </a>
+</div>
+
+<!-- STEERING WHEEL FLOATER -->
+<div id="floater">
+  <div style="position:relative;">
+    <div id="floaterTooltip" style="position:absolute;right:68px;top:50%;transform:translateY(-50%);background:#2C0A0A;border:1px solid rgba(201,168,76,0.4);color:#C9A84C;padding:5px 12px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity 0.2s;pointer-events:none;">QUICK QUOTE</div>
+    <button id="floaterBtn" onclick="openPanel()"
+      style="width:56px;height:56px;border-radius:50%;background:#2C0A0A;border:1.5px solid rgba(201,168,76,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;animation:goldGlow 3s ease-in-out infinite;transition:transform 0.2s;"
+      onmouseover="document.getElementById('floaterTooltip').style.opacity='1';this.style.transform='scale(1.1)'"
+      onmouseout="document.getElementById('floaterTooltip').style.opacity='0';this.style.transform='scale(1)'">
+      <svg class="animate-steer" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+        <line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- QUICK PANEL -->
+<div id="quickPanel">
+  <div style="padding:32px 28px;height:100%;overflow-y:auto;display:flex;flex-direction:column;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;">
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:24px;color:#E8D5A3;">Quick Quote</div>
+        <div class="t-sm" style="margin-top:6px;">We'll reply in minutes</div>
+      </div>
+      <button onclick="closePanel()" style="background:none;border:none;color:#C9A84C;font-size:24px;cursor:pointer;padding:0;line-height:1;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">×</button>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:24px;">
+      <div>
+        <label class="field-label">YOUR NUMBER <span style="color:#C0392B;">*</span></label>
+        <input class="field-line" id="qPhone" type="tel" placeholder="+91 98765 43210" />
+        <div id="qPhoneErr" class="t-sm" style="color:#C0392B;margin-top:6px;display:none;">Required</div>
+      </div>
+      <div>
+        <label class="field-label">Service</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;" id="qPillGroup">
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Seat Covers</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Car Audio</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Camera</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Lighting</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">GPS</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Other</button>
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Car Model <span style="opacity:0.4;">(optional)</span></label>
+        <input class="field-line" id="qCar" type="text" placeholder="Swift, Creta, City..." />
+      </div>
+    </div>
+    <button onclick="submitQuick()" class="btn btn-wa" style="width:100%;margin-top:28px;font-size:14px;font-weight:600;padding:15px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Send on WhatsApp
+    </button>
+    <div id="qSuccess" style="display:none;text-align:center;padding:24px;">
+      <div style="font-size:36px;margin-bottom:10px;color:#22c55e;">✓</div>
+      <div class="t-h3" style="color:#22c55e;font-size:15px;">Opening WhatsApp...</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMING SOON OVERLAY -->
+<div id="comingSoon">
+  <button onclick="document.getElementById('comingSoon').classList.remove('open')" style="position:absolute;top:24px;right:28px;background:none;border:none;color:#C9A84C;font-size:28px;cursor:pointer;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">×</button>
+  <div class="brand-name" style="font-size:clamp(28px,6vw,52px);color:#C9A84C;margin-bottom:16px;text-align:center;">Madhu<span class="mirror-b">B</span>an Shop</div>
+  <div style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,3vw,32px);color:#E8D5A3;margin-bottom:14px;text-align:center;">Coming Soon</div>
+  <p class="t-body" style="text-align:center;max-width:360px;margin-bottom:12px;">Shop accessories online. Browse genuine products. We're building it.</p>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:36px;">
+    <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s infinite;display:inline-block;"></span>
+    <span class="t-sm" style="color:#22c55e;font-weight:500;">Live soon</span>
+  </div>
+  <a href="https://wa.me/919718373751?text=Notify%20me%20when%20the%20Madhuban%20Motors%20online%20shop%20is%20live%21" target="_blank" class="btn btn-wa btn-lg">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Notify Me on WhatsApp
+  </a>
+</div>
+
+<script>
+// HERO NAME LETTER ANIMATION
+const heroName = document.getElementById('heroName');
+const nameParts = ['M','a','d','h','u','B','a','n',' ','M','o','t','o','r','s'];
+nameParts.forEach((ch, i) => {
+  const span = document.createElement('span');
+  span.className = 'letter-span';
+  span.style.animationDelay = (i * 45) + 'ms';
+  if (ch === 'B') {
+    span.classList.add('mirror-b');
+    span.style.animationDelay = (5 * 45) + 'ms';
+  } else if (ch === ' ') {
+    span.innerHTML = '&nbsp;';
+  } else {
+    span.textContent = ch;
+  }
+  heroName.appendChild(span);
+});
+
+// SCROLL REVEAL
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const delay = parseInt(e.target.dataset.delay || 0);
+      setTimeout(() => e.target.classList.add('visible'), delay);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .reveal-l, .reveal-r, .gold-rule').forEach(el => revealObs.observe(el));
+
+// STATS ANIMATION
+const statsObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) { animateStats(); statsObs.unobserve(entries[0].target); }
+}, { threshold: 0.3 });
+statsObs.observe(document.getElementById('statsBar'));
+
+function animateStats() {
+  document.querySelectorAll('.stat-num').forEach((el, i) => {
+    const type = el.dataset.type;
+    setTimeout(() => {
+      el.style.opacity = '1';
+      if (type === 'lakh') {
+        let c = 0; const t = setInterval(() => {
+          c = Math.min(c + 5000, 300000);
+          const l = Math.floor(c / 100000);
+          el.innerHTML = l + ' Lakh+ <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:pulse-dot 2s infinite;vertical-align:middle;flex-shrink:0;"></span>';
+          if (c >= 300000) clearInterval(t);
+        }, 33);
+      }
+    }, i * 180);
+  });
+}
+
+// NAV SCROLL
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// REVIEW COUNTER
+const reviewObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    let c = 0; const t = setInterval(() => {
+      c = Math.min(c + 7, 389);
+      document.getElementById('reviewCount').textContent = c;
+      if (c >= 389) clearInterval(t);
+    }, 20);
+    reviewObs.unobserve(entries[0].target);
+  }
+}, { threshold: 0.3 });
+reviewObs.observe(document.getElementById('reviewCount'));
+
+// FLOATER HIDE NEAR FORM
+const enquiryObs = new IntersectionObserver((entries) => {
+  document.getElementById('floater').classList.toggle('hidden-floater', entries[0].isIntersecting);
+}, { threshold: 0.2 });
+enquiryObs.observe(document.getElementById('enquiry'));
+
+// PANEL
+function openPanel()  { document.getElementById('quickPanel').classList.add('open'); }
+function closePanel() { document.getElementById('quickPanel').classList.remove('open'); }
+
+// PILLS
+function togglePill(btn)  { btn.classList.toggle('active'); }
+function toggleQPill(btn) {
+  document.querySelectorAll('#qPillGroup .pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// FORM SUBMIT
+function submitForm() {
+  const phone = document.getElementById('fPhone').value.trim();
+  const err = document.getElementById('phoneErr');
+  if (!phone || phone.replace(/\D/g,'').length < 10) { err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  const brand    = document.getElementById('fBrand').value.trim();
+  const model    = document.getElementById('fModel').value.trim();
+  const year     = document.getElementById('fYear').value.trim();
+  const details  = document.getElementById('fDetails').value.trim();
+  const services = [...document.querySelectorAll('#pillGroup .pill.active')].map(p => p.textContent).join(', ') || 'Not specified';
+  const msg = `🚗 *New Enquiry — Madhuban Motors*\n\n*Car:* ${brand} ${model} ${year ? '('+year+')' : ''}\n*Phone:* ${phone}\n*Services:* ${services}\n*Details:* ${details || 'None'}\n\n_Sent from website_`.trim();
+  saveLead({ phone, brand, model, year, services });
+  window.open('https://wa.me/919718373751?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function submitQuick() {
+  const phone = document.getElementById('qPhone').value.trim();
+  const err   = document.getElementById('qPhoneErr');
+  if (!phone || phone.replace(/\D/g,'').length < 10) { err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  const service = document.querySelector('#qPillGroup .pill.active')?.textContent || 'Not specified';
+  const car     = document.getElementById('qCar').value.trim();
+  const msg = `Quick Quote — Madhuban Motors\n\nPhone: ${phone}\nService: ${service}\nCar: ${car || 'Not mentioned'}\n\nSent from website`.trim();
+  saveLead({ phone, service, car });
+  document.querySelector('#quickPanel button[onclick="submitQuick()"]').style.display = 'none';
+  document.getElementById('qSuccess').style.display = 'block';
+  window.open('https://wa.me/919718373751?text=' + encodeURIComponent(msg), '_blank');
+  setTimeout(() => {
+    closePanel();
+    document.querySelector('#quickPanel button[onclick="submitQuick()"]').style.display = 'flex';
+    document.getElementById('qSuccess').style.display = 'none';
+  }, 3000);
+}
+
+function saveLead(data) {
+  try {
+    const leads = JSON.parse(localStorage.getItem('mm_leads') || '[]');
+    leads.push({ ...data, timestamp: new Date().toISOString() });
+    localStorage.setItem('mm_leads', JSON.stringify(leads));
+  } catch(e) {}
+}
+
+function scrollToEnquiry(e) {
+  e.preventDefault();
+  document.getElementById('enquiry').scrollIntoView({ behavior: 'smooth' });
+}
+
+// MOBILE BAR
+function checkMobile() {
+  document.getElementById('mobileBar').style.display = window.innerWidth < 768 ? 'flex' : 'none';
+}
+checkMobile();
+window.addEventListener('resize', checkMobile);
+
+// FORM GRID RESPONSIVE
+function checkFormGrid() {
+  const g = document.getElementById('formGrid');
+  if (g) g.style.gridTemplateColumns = window.innerWidth < 600 ? '1fr' : '1fr 1fr';
+}
+checkFormGrid();
+window.addEventListener('resize', checkFormGrid);
+</script>
+</body>
+</html>
