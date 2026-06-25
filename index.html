@@ -221,12 +221,12 @@
       display:flex;
       align-items:center;
       gap:8px;
-      padding:8px 12px;
+      padding:10px 15px;
       background:rgba(7,24,39,.92);
       border:1px solid rgba(255,183,3,.24);
       border-radius:999px;
       color:#FFB703;
-      font-size:10px;
+      font-size:12px;
       font-weight:800;
       letter-spacing:.12em;
       text-transform:uppercase;
@@ -250,10 +250,10 @@
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding:0 30px;
-      color:#DDECF6;
-      font-size:14px;
-      font-weight:700;
+      padding:0 34px;
+      color:#E5EEF5;
+      font-size:17px;
+      font-weight:750;
       letter-spacing:.04em;
       white-space:nowrap;
       transition:color .2s ease,transform .2s ease;
@@ -266,14 +266,35 @@
       background:#FFB703;
       opacity:.75;
     }
-    .ticker-row:first-child .ticker-item:nth-child(3n+2) { color:#FFB703; }
     .ticker-row:last-child .ticker-item {
-      font-family:'DM Serif Display',serif;
-      font-size:21px;
-      font-weight:400;
-      color:#AFC7D8;
+      font-size:24px;
+      font-weight:800;
+      color:#DCE8F0;
       letter-spacing:.01em;
     }
+    .brand-pioneer { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:-.07em !important; font-style:italic; }
+    .brand-sony { font-family:Arial,Helvetica,sans-serif; font-weight:800 !important; letter-spacing:-.055em !important; }
+    .brand-jbl { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:-.08em !important; }
+    .brand-alpine { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.08em !important; font-style:italic; }
+    .brand-philips { font-family:Arial,'Manrope',sans-serif; font-weight:800 !important; letter-spacing:.035em !important; }
+    .brand-3m { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:-.16em !important; }
+    .brand-blaupunkt { font-family:Arial,'Manrope',sans-serif; font-weight:800 !important; letter-spacing:.08em !important; }
+    .brand-nakamichi { font-family:'Manrope',sans-serif; font-weight:700 !important; letter-spacing:.08em !important; }
+    .brand-kenwood { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:-.025em !important; font-style:italic; }
+    .brand-infinity { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:.05em !important; }
+    .brand-focal { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.08em !important; }
+    .brand-morel { font-family:'DM Serif Display',serif; font-weight:400 !important; letter-spacing:.02em !important; }
+    .brand-rockford { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:-.035em !important; font-style:italic; }
+    .brand-maxlink { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:.04em !important; }
+    .brand-osram { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.025em !important; }
+    .brand-hella { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.06em !important; font-style:italic; }
+    .brand-hertz { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.05em !important; font-style:italic; }
+    .brand-audison { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:.08em !important; }
+    .brand-jvc { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:-.04em !important; }
+    .brand-minda { font-family:'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.04em !important; font-style:italic; }
+    .brand-autocop { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:-.035em !important; }
+    .brand-roots { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.06em !important; }
+    .brand-mytvs { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:-.025em !important; font-style:italic; }
     .ticker-item:hover { color:#fff !important; transform:scale(1.06); }
     .ticker-note {
       position:absolute;
@@ -487,9 +508,9 @@
       #quickPanel .quick-submit { position:relative; margin-top:26px !important; margin-bottom:8px; }
       #mobileBar { min-height:58px; }
       .ticker-row { min-height:56px; }
-      .ticker-label { left:10px; padding:6px 9px; font-size:8px; }
-      .ticker-item { padding:0 20px; font-size:12px; }
-      .ticker-row:last-child .ticker-item { font-size:18px; }
+      .ticker-label { left:10px; padding:7px 10px; font-size:9px; }
+      .ticker-item { padding:0 22px; font-size:14px; }
+      .ticker-row:last-child .ticker-item { font-size:20px; }
       .ticker-note { display:none; }
       .ticker-track.forward { animation-duration:22s; }
       .ticker-track.reverse { animation-duration:29s; }
@@ -587,6 +608,7 @@
     <div class="ticker-track forward">
       <div class="ticker-set">
         <span class="ticker-item">Android Systems</span>
+        <span class="ticker-item">High-End Car Audio</span>
         <span class="ticker-item">Seat Covers</span>
         <span class="ticker-item">Dash Cameras</span>
         <span class="ticker-item">Car Audio</span>
@@ -599,6 +621,7 @@
       </div>
       <div class="ticker-set" aria-hidden="true">
         <span class="ticker-item">Android Systems</span>
+        <span class="ticker-item">High-End Car Audio</span>
         <span class="ticker-item">Seat Covers</span>
         <span class="ticker-item">Dash Cameras</span>
         <span class="ticker-item">Car Audio</span>
@@ -615,26 +638,54 @@
     <div class="ticker-label">Popular names</div>
     <div class="ticker-track reverse">
       <div class="ticker-set">
-        <span class="ticker-item">Pioneer</span>
-        <span class="ticker-item">Sony</span>
-        <span class="ticker-item">JBL</span>
-        <span class="ticker-item">Blaupunkt</span>
-        <span class="ticker-item">Nakamichi</span>
-        <span class="ticker-item">Osram</span>
-        <span class="ticker-item">Hella</span>
-        <span class="ticker-item">3M</span>
-        <span class="ticker-item">myTVS</span>
+        <span class="ticker-item brand-pioneer">Pioneer</span>
+        <span class="ticker-item brand-sony">SONY</span>
+        <span class="ticker-item brand-jbl">JBL</span>
+        <span class="ticker-item brand-alpine">ALPINE</span>
+        <span class="ticker-item brand-philips">PHILIPS</span>
+        <span class="ticker-item brand-kenwood">KENWOOD</span>
+        <span class="ticker-item brand-blaupunkt">BLAUPUNKT</span>
+        <span class="ticker-item brand-nakamichi">NAKAMICHI</span>
+        <span class="ticker-item brand-infinity">INFINITY</span>
+        <span class="ticker-item brand-focal">FOCAL</span>
+        <span class="ticker-item brand-morel">morel</span>
+        <span class="ticker-item brand-rockford">ROCKFORD FOSGATE</span>
+        <span class="ticker-item brand-hertz">HERTZ</span>
+        <span class="ticker-item brand-audison">AUDISON</span>
+        <span class="ticker-item brand-jvc">JVC</span>
+        <span class="ticker-item brand-maxlink">MAXLINK</span>
+        <span class="ticker-item brand-minda">UNO MINDA</span>
+        <span class="ticker-item brand-autocop">AUTOCOP</span>
+        <span class="ticker-item brand-roots">ROOTS</span>
+        <span class="ticker-item brand-osram">OSRAM</span>
+        <span class="ticker-item brand-hella">HELLA</span>
+        <span class="ticker-item brand-3m">3M</span>
+        <span class="ticker-item brand-mytvs">myTVS</span>
       </div>
       <div class="ticker-set" aria-hidden="true">
-        <span class="ticker-item">Pioneer</span>
-        <span class="ticker-item">Sony</span>
-        <span class="ticker-item">JBL</span>
-        <span class="ticker-item">Blaupunkt</span>
-        <span class="ticker-item">Nakamichi</span>
-        <span class="ticker-item">Osram</span>
-        <span class="ticker-item">Hella</span>
-        <span class="ticker-item">3M</span>
-        <span class="ticker-item">myTVS</span>
+        <span class="ticker-item brand-pioneer">Pioneer</span>
+        <span class="ticker-item brand-sony">SONY</span>
+        <span class="ticker-item brand-jbl">JBL</span>
+        <span class="ticker-item brand-alpine">ALPINE</span>
+        <span class="ticker-item brand-philips">PHILIPS</span>
+        <span class="ticker-item brand-kenwood">KENWOOD</span>
+        <span class="ticker-item brand-blaupunkt">BLAUPUNKT</span>
+        <span class="ticker-item brand-nakamichi">NAKAMICHI</span>
+        <span class="ticker-item brand-infinity">INFINITY</span>
+        <span class="ticker-item brand-focal">FOCAL</span>
+        <span class="ticker-item brand-morel">morel</span>
+        <span class="ticker-item brand-rockford">ROCKFORD FOSGATE</span>
+        <span class="ticker-item brand-hertz">HERTZ</span>
+        <span class="ticker-item brand-audison">AUDISON</span>
+        <span class="ticker-item brand-jvc">JVC</span>
+        <span class="ticker-item brand-maxlink">MAXLINK</span>
+        <span class="ticker-item brand-minda">UNO MINDA</span>
+        <span class="ticker-item brand-autocop">AUTOCOP</span>
+        <span class="ticker-item brand-roots">ROOTS</span>
+        <span class="ticker-item brand-osram">OSRAM</span>
+        <span class="ticker-item brand-hella">HELLA</span>
+        <span class="ticker-item brand-3m">3M</span>
+        <span class="ticker-item brand-mytvs">myTVS</span>
       </div>
     </div>
   </div>
