@@ -93,6 +93,67 @@
     @keyframes heroGlyph { to { opacity:1; transform:translateY(0) scale(1); } }
     @keyframes heroGlyphMirror { to { opacity:1; transform:scaleX(-1) translateY(0) scale(1); } }
 
+    /* IMMERSIVE HERO */
+    .hero-shell {
+      isolation:isolate;
+      background-image:
+        linear-gradient(90deg,rgba(4,18,30,.98) 0%,rgba(4,18,30,.90) 38%,rgba(4,18,30,.40) 72%,rgba(4,18,30,.72) 100%),
+        linear-gradient(180deg,rgba(7,24,39,.12),rgba(7,24,39,.80)),
+        url('assets/web/steering-cover-dashboard.jpg') !important;
+      background-size:cover !important;
+      background-position:center 44% !important;
+    }
+    .hero-shell::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:
+        radial-gradient(circle at 78% 42%,rgba(249,115,22,.18),transparent 26%),
+        linear-gradient(115deg,rgba(11,93,142,.18),transparent 46%);
+      pointer-events:none;
+    }
+    .hero-shell::after {
+      content:'';
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:150px;
+      z-index:-1;
+      background:linear-gradient(transparent,#061421);
+      pointer-events:none;
+    }
+    .hero-proof {
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:0 auto 26px;
+    }
+    .hero-proof span {
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:7px 11px;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:999px;
+      background:rgba(3,14,24,.46);
+      color:#E4EFF7;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.03em;
+      backdrop-filter:blur(10px);
+    }
+    .hero-proof span::before {
+      content:'';
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:#FFB703;
+      box-shadow:0 0 10px rgba(255,183,3,.55);
+    }
+
     /* BUTTONS */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.30; letter-spacing: 0.01em; text-decoration: none; border: none; cursor: pointer; transition: all 0.18s ease; white-space: nowrap; }
     .btn-primary  { background: #F97316; color: #fff; }
@@ -122,11 +183,163 @@
     @keyframes steerIdle  { 0%,100% { transform:rotate(0deg); } 50% { transform:rotate(12deg); } }
     @keyframes goldGlow   { 0%,100% { box-shadow:0 0 8px rgba(255,183,3,0.15); } 50% { box-shadow:0 0 24px rgba(255,183,3,0.4); } }
     @keyframes btnShimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
+    @keyframes marqueeLeft { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    @keyframes marqueeRight { from { transform:translateX(-50%); } to { transform:translateX(0); } }
+    @keyframes tickerPulse { 0%,100% { opacity:.55; } 50% { opacity:1; } }
 
     .letter-span { display: inline-block; opacity: 0; animation: letterIn 0.4s forwards; }
     .animate-steer { animation: steerIdle 4s ease-in-out infinite; }
     .animate-pulse { animation: pulse-dot 2s ease-in-out infinite; }
     .animate-glow  { animation: goldGlow 3s ease-in-out infinite; }
+
+    /* CONTINUOUS DISCOVERY RIBBONS */
+    .discovery-ribbons {
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(180deg,#061421 0%,#071827 100%);
+      border-top:1px solid rgba(255,183,3,.14);
+      border-bottom:1px solid rgba(99,210,255,.12);
+    }
+    .discovery-ribbons::before,
+    .discovery-ribbons::after {
+      content:'';
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:min(12vw,150px);
+      z-index:4;
+      pointer-events:none;
+    }
+    .discovery-ribbons::before { left:0; background:linear-gradient(90deg,#061421,transparent); }
+    .discovery-ribbons::after { right:0; background:linear-gradient(-90deg,#061421,transparent); }
+    .ticker-row { display:flex; align-items:center; min-height:64px; overflow:hidden; }
+    .ticker-row + .ticker-row { border-top:1px solid rgba(255,255,255,.055); }
+    .ticker-label {
+      position:absolute;
+      left:24px;
+      z-index:6;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      background:rgba(7,24,39,.92);
+      border:1px solid rgba(255,183,3,.24);
+      border-radius:999px;
+      color:#FFB703;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      backdrop-filter:blur(10px);
+    }
+    .ticker-label::before {
+      content:'';
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:#F97316;
+      box-shadow:0 0 12px rgba(249,115,22,.65);
+      animation:tickerPulse 1.8s ease-in-out infinite;
+    }
+    .ticker-track { display:flex; align-items:center; width:max-content; will-change:transform; }
+    .ticker-track.forward { animation:marqueeLeft 28s linear infinite; }
+    .ticker-track.reverse { animation:marqueeRight 36s linear infinite; }
+    .ticker-row:hover .ticker-track { animation-play-state:paused; }
+    .ticker-set { display:flex; align-items:center; flex-shrink:0; }
+    .ticker-item {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:0 30px;
+      color:#DDECF6;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.04em;
+      white-space:nowrap;
+      transition:color .2s ease,transform .2s ease;
+    }
+    .ticker-item::before {
+      content:'';
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:#FFB703;
+      opacity:.75;
+    }
+    .ticker-row:first-child .ticker-item:nth-child(3n+2) { color:#FFB703; }
+    .ticker-row:last-child .ticker-item {
+      font-family:'DM Serif Display',serif;
+      font-size:21px;
+      font-weight:400;
+      color:#AFC7D8;
+      letter-spacing:.01em;
+    }
+    .ticker-item:hover { color:#fff !important; transform:scale(1.06); }
+    .ticker-note {
+      position:absolute;
+      right:22px;
+      bottom:5px;
+      z-index:6;
+      color:#6E8AA0;
+      font-size:8px;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    /* FAST SERVICE SELECTOR */
+    .upgrade-selector {
+      background:linear-gradient(180deg,#EAF6FB 0%,#D8ECF7 100%);
+      color:#071827;
+      padding:42px 24px 46px;
+      overflow:hidden;
+    }
+    .upgrade-head {
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:28px;
+      margin-bottom:24px;
+    }
+    .upgrade-grid {
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:10px;
+    }
+    .upgrade-card {
+      position:relative;
+      min-height:154px;
+      overflow:hidden;
+      border:0;
+      border-radius:14px;
+      background:#0B1F32;
+      color:#fff;
+      text-align:left;
+      cursor:pointer;
+      isolation:isolate;
+      transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease;
+    }
+    .upgrade-card::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      z-index:-2;
+      background:var(--upgrade-image) center/cover no-repeat;
+      transform:scale(1.04);
+      transition:transform .45s cubic-bezier(.2,.8,.2,1);
+    }
+    .upgrade-card::after {
+      content:'';
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:linear-gradient(180deg,rgba(3,12,20,.05) 18%,rgba(3,12,20,.90) 100%);
+    }
+    .upgrade-card:hover { transform:translateY(-6px); box-shadow:0 18px 38px rgba(7,24,39,.22); }
+    .upgrade-card:hover::before { transform:scale(1.12); }
+    .upgrade-card-content { position:absolute; left:14px; right:14px; bottom:13px; }
+    .upgrade-card-title { display:block; font-size:13px; font-weight:800; line-height:1.25; }
+    .upgrade-card-action { display:block; margin-top:4px; color:#FFB703; font-size:9px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
 
     .reveal       { opacity:0; transform:translateY(30px) scale(.985); transition:opacity 0.75s cubic-bezier(.2,.8,.2,1), transform 0.75s cubic-bezier(.2,.8,.2,1); will-change: opacity, transform; }
     .reveal.visible { opacity:1; transform:translateY(0) scale(1); }
@@ -242,6 +455,24 @@
       .hero-copy { max-width:330px !important; font-size:15px !important; line-height:1.8 !important; padding:0 6px; }
       .hero-ctas { flex-direction:column; align-items:stretch; padding:0 18px; }
       .hero-ctas .btn { width:100%; }
+      .hero-shell {
+        background-image:
+          linear-gradient(180deg,rgba(4,18,30,.88) 0%,rgba(4,18,30,.73) 43%,rgba(4,18,30,.96) 100%),
+          url('assets/web/steering-cover-dashboard.jpg') !important;
+        background-position:56% center !important;
+      }
+      .hero-proof { max-width:340px; gap:6px; padding:0 8px; }
+      .hero-proof span { font-size:9px; padding:6px 8px; }
+      .upgrade-selector { padding:34px 16px 38px; }
+      .upgrade-head { display:block; margin-bottom:20px; }
+      .upgrade-head .t-body { margin-top:8px; }
+      .upgrade-grid { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:10px; padding:0 0 12px; scrollbar-width:none; }
+      .upgrade-grid::-webkit-scrollbar { display:none; }
+      .upgrade-card { flex:0 0 42vw; min-width:150px; min-height:170px; scroll-snap-align:start; }
+      .service-row { grid-template-columns:42px 1fr !important; gap:12px !important; padding:18px 0 !important; }
+      .service-row .s-num { font-size:30px !important; }
+      .service-row .btn { grid-column:2; justify-self:start; margin-top:4px; }
+      #enquiry { padding-bottom:118px !important; }
       #floater { top:auto; bottom:78px; right:14px; transform:none; }
       #floaterBtn { width:48px !important; height:48px !important; }
       #quickPanel { height:100dvh; }
@@ -255,6 +486,13 @@
       #quickPanel .quick-fields { flex:none !important; gap:20px !important; }
       #quickPanel .quick-submit { position:relative; margin-top:26px !important; margin-bottom:8px; }
       #mobileBar { min-height:58px; }
+      .ticker-row { min-height:56px; }
+      .ticker-label { left:10px; padding:6px 9px; font-size:8px; }
+      .ticker-item { padding:0 20px; font-size:12px; }
+      .ticker-row:last-child .ticker-item { font-size:18px; }
+      .ticker-note { display:none; }
+      .ticker-track.forward { animation-duration:22s; }
+      .ticker-track.reverse { animation-duration:29s; }
     }
     @media (max-width:480px) {
       .gallery-grid { grid-template-columns:1fr !important; }
@@ -310,6 +548,11 @@
         <div class="gold-rule reveal" style="margin:0 auto 28px;max-width:280px;"></div>
         <p class="reveal hero-tagline" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,2.4vw,28px);color:#F8F3E7;line-height:1.45;margin-bottom:14px;opacity:0.92;" data-delay="80">Three Generations. One Standard.</p>
         <p class="t-sub reveal hero-copy" style="max-width:520px;margin:0 auto 36px;" data-delay="160">Known on GT Road, Ghaziabad since 1989.<br>Genuine accessories. Clear advice. Clean installation.</p>
+        <div class="hero-proof reveal" data-delay="200" aria-label="Madhuban Motors trust indicators">
+          <span>4.6 Google rating</span>
+          <span>402 reviews</span>
+          <span>Serving Delhi NCR</span>
+        </div>
         <div class="reveal hero-ctas" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;" data-delay="240">
           <a href="https://wa.me/919911443751?text=Hi%2C%20I%20found%20you%20on%20Google%20and%20want%20to%20enquire%20about%20your%20services." target="_blank"
             class="btn btn-shimmer btn-lg">
@@ -337,7 +580,99 @@
   </div>
 </section>
 
-<div class="divider"></div>
+<!-- CONTINUOUS SERVICES AND BRAND DISCOVERY -->
+<section class="discovery-ribbons" aria-label="Popular services and automotive brands">
+  <div class="ticker-row">
+    <div class="ticker-label">We install</div>
+    <div class="ticker-track forward">
+      <div class="ticker-set">
+        <span class="ticker-item">Android Systems</span>
+        <span class="ticker-item">Seat Covers</span>
+        <span class="ticker-item">Dash Cameras</span>
+        <span class="ticker-item">Car Audio</span>
+        <span class="ticker-item">Ambient Lighting</span>
+        <span class="ticker-item">Reverse Cameras</span>
+        <span class="ticker-item">GPS Trackers</span>
+        <span class="ticker-item">Security Systems</span>
+        <span class="ticker-item">Steering Covers</span>
+        <span class="ticker-item">Interior Styling</span>
+      </div>
+      <div class="ticker-set" aria-hidden="true">
+        <span class="ticker-item">Android Systems</span>
+        <span class="ticker-item">Seat Covers</span>
+        <span class="ticker-item">Dash Cameras</span>
+        <span class="ticker-item">Car Audio</span>
+        <span class="ticker-item">Ambient Lighting</span>
+        <span class="ticker-item">Reverse Cameras</span>
+        <span class="ticker-item">GPS Trackers</span>
+        <span class="ticker-item">Security Systems</span>
+        <span class="ticker-item">Steering Covers</span>
+        <span class="ticker-item">Interior Styling</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker-row">
+    <div class="ticker-label">Popular names</div>
+    <div class="ticker-track reverse">
+      <div class="ticker-set">
+        <span class="ticker-item">Pioneer</span>
+        <span class="ticker-item">Sony</span>
+        <span class="ticker-item">JBL</span>
+        <span class="ticker-item">Blaupunkt</span>
+        <span class="ticker-item">Nakamichi</span>
+        <span class="ticker-item">Osram</span>
+        <span class="ticker-item">Hella</span>
+        <span class="ticker-item">3M</span>
+        <span class="ticker-item">myTVS</span>
+      </div>
+      <div class="ticker-set" aria-hidden="true">
+        <span class="ticker-item">Pioneer</span>
+        <span class="ticker-item">Sony</span>
+        <span class="ticker-item">JBL</span>
+        <span class="ticker-item">Blaupunkt</span>
+        <span class="ticker-item">Nakamichi</span>
+        <span class="ticker-item">Osram</span>
+        <span class="ticker-item">Hella</span>
+        <span class="ticker-item">3M</span>
+        <span class="ticker-item">myTVS</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker-note">Brand availability varies by car and requirement</div>
+</section>
+
+<!-- CHOOSE YOUR UPGRADE -->
+<section class="upgrade-selector">
+  <div class="container">
+    <div class="upgrade-head">
+      <div>
+        <div class="t-caption reveal" style="color:#0B5D8E;margin-bottom:8px;">START WITH WHAT YOUR CAR NEEDS</div>
+        <h2 class="t-h1 reveal" style="color:#071827;" data-delay="70">Choose your upgrade</h2>
+      </div>
+      <p class="t-body reveal" style="max-width:430px;color:#31556F;" data-delay="120">Pick a category and send us your car model. We will recommend the right fit before you visit.</p>
+    </div>
+    <div class="upgrade-grid">
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/steering-cover-dashboard.jpg')" onclick="selectUpgrade('Car Audio')" data-delay="0">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Android and Audio</span><span class="upgrade-card-action">Ask for options</span></span>
+      </button>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/seat-cover-black-red.jpg')" onclick="selectUpgrade('Seat Covers')" data-delay="55">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Seat Covers</span><span class="upgrade-card-action">Choose a finish</span></span>
+      </button>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/door-panel-modification.jpg')" onclick="selectUpgrade('Full Accessories')" data-delay="110">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Interior Styling</span><span class="upgrade-card-action">Plan an upgrade</span></span>
+      </button>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/seat-cover-cream-blue.jpg')" onclick="selectUpgrade('Full Accessories')" data-delay="165">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Complete Interiors</span><span class="upgrade-card-action">Get guidance</span></span>
+      </button>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/steering-cover-dashboard.jpg')" onclick="selectUpgrade('Reverse Camera')" data-delay="220">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Camera and Safety</span><span class="upgrade-card-action">Check compatibility</span></span>
+      </button>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/door-panel-modification.jpg')" onclick="selectUpgrade('Security System')" data-delay="275">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Security and GPS</span><span class="upgrade-card-action">Protect your car</span></span>
+      </button>
+    </div>
+  </div>
+</section>
 
 <!-- TRUST BAR -->
 <section class="section-sm" style="background:#061421;">
@@ -987,6 +1322,13 @@ function saveLead(data) {
 
 function scrollToEnquiry(e) {
   e.preventDefault();
+  document.getElementById('enquiry').scrollIntoView({ behavior: 'smooth' });
+}
+
+function selectUpgrade(serviceName) {
+  const matchingPill = [...document.querySelectorAll('#pillGroup .pill')]
+    .find(pill => pill.textContent.trim() === serviceName);
+  if (matchingPill) matchingPill.classList.add('active');
   document.getElementById('enquiry').scrollIntoView({ behavior: 'smooth' });
 }
 
