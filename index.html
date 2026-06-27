@@ -126,22 +126,59 @@
       pointer-events:none;
     }
     .hero-lights {
+      --lamp-level:0;
+      --beam-level:0;
       position:absolute;
-      left:50%;
-      bottom:13%;
-      width:min(680px,76vw);
-      height:210px;
-      transform:translateX(-50%);
-      opacity:0;
+      inset:0;
       z-index:0;
       pointer-events:none;
       mix-blend-mode:screen;
-      transition:opacity .18s linear;
+      opacity:1;
+      transition:filter .22s ease;
       background:
-        radial-gradient(ellipse 18% 12% at 31% 45%,rgba(255,242,0,.86),rgba(255,242,0,.20) 38%,transparent 68%),
-        radial-gradient(ellipse 18% 12% at 69% 45%,rgba(255,242,0,.86),rgba(255,242,0,.20) 38%,transparent 68%),
-        radial-gradient(ellipse 55% 22% at 50% 62%,rgba(218,41,28,.22),transparent 70%);
-      filter:blur(7px);
+        radial-gradient(ellipse 21% 7% at 25% 57%,rgba(255,242,0,calc(var(--beam-level) * .32)),rgba(255,150,0,calc(var(--beam-level) * .12)) 36%,transparent 72%),
+        radial-gradient(ellipse 21% 7% at 75% 57%,rgba(255,242,0,calc(var(--beam-level) * .32)),rgba(255,150,0,calc(var(--beam-level) * .12)) 36%,transparent 72%),
+        radial-gradient(ellipse 58% 18% at 50% 63%,rgba(255,242,0,calc(var(--beam-level) * .13)),transparent 74%);
+    }
+    .hero-lights::before,
+    .hero-lights::after {
+      content:'';
+      position:absolute;
+      top:54%;
+      width:clamp(96px,10.5vw,156px);
+      height:clamp(34px,3.6vw,54px);
+      border-radius:60% 60% 48% 48%;
+      opacity:calc(var(--lamp-level) * .96);
+      background:
+        radial-gradient(ellipse at 54% 50%,rgba(255,255,245,.98) 0 9%,rgba(255,242,0,.92) 20%,rgba(255,183,3,.55) 43%,rgba(255,130,0,.18) 62%,transparent 74%);
+      filter:blur(2.4px) brightness(1.18);
+      box-shadow:
+        0 0 calc(var(--beam-level) * 24px) rgba(255,242,0,.72),
+        0 0 calc(var(--beam-level) * 58px) rgba(255,183,3,.42),
+        0 0 calc(var(--beam-level) * 120px) rgba(255,242,0,.24);
+      transform-origin:center;
+    }
+    .hero-lights::before {
+      left:20.5%;
+      transform:rotate(-6deg) skewX(-8deg);
+    }
+    .hero-lights::after {
+      right:20.5%;
+      transform:rotate(6deg) skewX(8deg);
+    }
+    .hero-lights.lights-on::before,
+    .hero-lights.lights-on::after {
+      animation:lampIgnition 900ms steps(4,end) 1, lampIdle 2.8s ease-in-out 900ms infinite;
+    }
+    @keyframes lampIgnition {
+      0%,18% { filter:blur(3px) brightness(.45); opacity:calc(var(--lamp-level) * .32); }
+      36% { filter:blur(2px) brightness(1.95); opacity:calc(var(--lamp-level) * 1); }
+      55% { filter:blur(3px) brightness(.72); opacity:calc(var(--lamp-level) * .62); }
+      78%,100% { filter:blur(2.4px) brightness(1.22); opacity:calc(var(--lamp-level) * .96); }
+    }
+    @keyframes lampIdle {
+      0%,100% { filter:blur(2.4px) brightness(1.12); }
+      50% { filter:blur(2px) brightness(1.34); }
     }
     .hero-content { max-width:860px; margin:0 auto; }
     .hero-ctas .btn { padding:12px 22px; font-size:14px; min-width:190px; }
@@ -589,6 +626,20 @@
         background-position:center bottom !important;
         background-size:auto,auto 100% !important;
       }
+      .hero-lights {
+        background:
+          radial-gradient(ellipse 26% 8% at 18% 40%,rgba(255,242,0,calc(var(--beam-level) * .36)),rgba(255,150,0,calc(var(--beam-level) * .14)) 36%,transparent 72%),
+          radial-gradient(ellipse 26% 8% at 82% 40%,rgba(255,242,0,calc(var(--beam-level) * .36)),rgba(255,150,0,calc(var(--beam-level) * .14)) 36%,transparent 72%),
+          radial-gradient(ellipse 70% 20% at 50% 50%,rgba(255,242,0,calc(var(--beam-level) * .10)),transparent 74%);
+      }
+      .hero-lights::before,
+      .hero-lights::after {
+        top:39%;
+        width:clamp(104px,24vw,142px);
+        height:clamp(36px,8vw,52px);
+      }
+      .hero-lights::before { left:2.5%; transform:rotate(-8deg) skewX(-10deg); }
+      .hero-lights::after { right:2.5%; transform:rotate(8deg) skewX(10deg); }
       .hero-map-link { left:16px; top:auto; bottom:156px; transform:none; gap:8px; }
       .hero-map-icon { width:48px; height:48px; }
       .hero-map-copy { max-width:90px; opacity:1; font-size:10px; background:rgba(24,24,24,.72); border:1px solid rgba(255,183,3,.22); padding:5px 8px; border-radius:999px; }
@@ -1531,8 +1582,11 @@ window.addEventListener('scroll', () => {
   if (progress) progress.style.width = pct + '%';
   const heroLights = document.getElementById('heroLights');
   if (heroLights) {
-    const lightLevel = Math.max(0, Math.min(1, window.scrollY / Math.max(360, innerHeight * 0.72)));
-    heroLights.style.opacity = String(lightLevel);
+    const lampLevel = Math.max(0, Math.min(1, (window.scrollY - 30) / Math.max(260, innerHeight * 0.42)));
+    const beamLevel = Math.max(0, Math.min(1, (lampLevel - 0.18) / 0.82));
+    heroLights.style.setProperty('--lamp-level', lampLevel.toFixed(3));
+    heroLights.style.setProperty('--beam-level', beamLevel.toFixed(3));
+    heroLights.classList.toggle('lights-on', lampLevel > 0.08);
   }
   const stops = [
     'linear-gradient(180deg,#181818 0%,#0B0B0B 45%,#B01E0A 100%)',
