@@ -465,18 +465,23 @@
     #story { background:linear-gradient(140deg,#EAF6FB 0%,#D8ECF7 100%); }
 
     /* WORK PHONE GALLERY */
-    .work-phone-section { background:radial-gradient(ellipse 70% 80% at 50% 50%,#0E4B73 0%,#071827 100%); overflow:hidden; }
+    .work-phone-section {
+      background:
+        radial-gradient(ellipse 70% 80% at 68% 45%,rgba(14,110,156,.18),transparent 58%),
+        linear-gradient(135deg,#EAF6FB 0%,#D8ECF7 52%,#F8F3E7 100%);
+      overflow:hidden;
+    }
     .work-showcase-wrap { display:grid; grid-template-columns:minmax(260px,380px) auto; align-items:center; justify-content:center; gap:42px; }
-    .phone-gallery-copy { text-align:left; max-width:380px; }
+    .phone-gallery-copy { text-align:left; max-width:390px; }
     .phone-gallery-copy .work-points { display:grid; gap:10px; margin-top:22px; }
-    .work-point { display:flex; align-items:flex-start; gap:10px; color:#BED3E6; font-size:14px; line-height:1.55; }
-    .work-point svg { width:18px; height:18px; color:#FFB703; flex:0 0 auto; margin-top:2px; }
+    .work-point { display:flex; align-items:flex-start; gap:10px; color:#173A52; font-size:15px; line-height:1.65; font-weight:600; }
+    .work-point svg { width:18px; height:18px; color:#F97316; flex:0 0 auto; margin-top:3px; }
     .phone-stage { position:relative; display:grid; place-items:center; padding:14px; }
     .phone-stage::before {
       content:'';
       position:absolute;
       inset:9% -18%;
-      background:radial-gradient(ellipse at center,rgba(255,183,3,.2),transparent 58%),radial-gradient(ellipse at center,rgba(99,210,255,.14),transparent 62%);
+      background:radial-gradient(ellipse at center,rgba(249,115,22,.22),transparent 58%),radial-gradient(ellipse at center,rgba(11,93,142,.16),transparent 62%);
       filter:blur(10px);
       pointer-events:none;
     }
@@ -950,17 +955,17 @@
 <!-- WORK PHONE GALLERY -->
 <section class="section work-phone-section" style="text-align:center;">
   <div class="container">
-    <div class="t-caption reveal" style="margin-bottom:16px;">REAL SHOP WORK</div>
-    <h2 class="t-h1 reveal" style="color:#F8F3E7;margin-bottom:10px;" data-delay="80">See Our Work</h2>
-    <p class="t-sub reveal" style="margin-bottom:34px;" data-delay="160">A compact phone gallery for real installs. It can grow to 50-100 photos without making the page heavy or oversized.</p>
+    <div class="t-caption reveal" style="margin-bottom:16px;color:#F97316;">REAL SHOP WORK</div>
+    <h2 class="t-h1 reveal" style="color:#071827;margin-bottom:10px;" data-delay="80">See the Finish Before You Visit</h2>
+    <p class="t-body reveal" style="margin:0 auto 34px;max-width:680px;color:#315872;" data-delay="160">Recent seat covers, steering covers, mats and panel work finished at Madhuban Motors. Tap any photo to see the detailing clearly.</p>
     <div class="work-showcase-wrap">
       <div class="phone-gallery-copy reveal" data-delay="40">
-        <h3 class="t-h2" style="color:#F8F3E7;margin-bottom:12px;">Scroll the work. Tap to enlarge.</h3>
-        <p class="t-sm">The phone keeps photos moving without taking over the whole page. Customers can tap any install to inspect the finish.</p>
+        <h3 class="t-h2" style="color:#071827;margin-bottom:12px;font-weight:700;">Work That Looks Personal to Your Car</h3>
+        <p class="t-sm" style="color:#315872;">Every car gets a different recommendation. We match the accessory, fitment and finish to the way you use your car.</p>
         <div class="work-points">
-          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 5-3.2 8.7-7 10-3.8-1.3-7-5-7-10V6l7-3z"/><path d="M8.5 12.2l2.2 2.2 4.8-5"/></svg><span>Only real shop work belongs here.</span></div>
-          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 18h6"/></svg><span>Built for vertical phone photos and videos.</span></div>
-          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Add more images later by extending one gallery list.</span></div>
+          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 5-3.2 8.7-7 10-3.8-1.3-7-5-7-10V6l7-3z"/><path d="M8.5 12.2l2.2 2.2 4.8-5"/></svg><span>Clean fitting with no loose finish.</span></div>
+          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 18h6"/></svg><span>Seat covers, mats, steering and door-panel detailing.</span></div>
+          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Photos from daily work, updated as more cars come in.</span></div>
         </div>
       </div>
       <div class="phone-stage reveal" data-delay="120">
@@ -968,7 +973,7 @@
           <div class="iphone-island"></div>
           <div class="iphone-screen">
             <div class="phone-showcase" aria-label="Madhuban Motors work showcase">
-              <button class="phone-click-hint" onclick="openWorkModal()" type="button">Tap to enlarge</button>
+              <button class="phone-click-hint" onclick="openWorkModal()" type="button">View larger</button>
               <div id="phoneSlide" class="phone-slide active" onclick="openWorkModal()" role="button" tabindex="0" aria-label="Open current work photo"></div>
               <div id="phoneDots" class="phone-dots" aria-hidden="true"></div>
               <div class="phone-caption">
