@@ -97,8 +97,8 @@
     .hero-shell {
       isolation:isolate;
       background-image:
-        linear-gradient(180deg,rgba(10,10,10,.95) 0%,rgba(10,10,10,.72) 48%,rgba(10,10,10,.18) 70%,rgba(10,10,10,.78) 100%),
-        radial-gradient(ellipse 68% 48% at 50% 24%,rgba(218,41,28,.18),rgba(10,10,10,.08) 58%,rgba(10,10,10,.62) 100%),
+        linear-gradient(180deg,rgba(10,10,10,.86) 0%,rgba(10,10,10,.48) 42%,rgba(10,10,10,.12) 66%,rgba(10,10,10,.62) 100%),
+        radial-gradient(ellipse 68% 48% at 50% 24%,rgba(218,41,28,.10),rgba(10,10,10,.04) 58%,rgba(10,10,10,.40) 100%),
         url('assets/web/hero-accessory-wall.jpg') !important;
       background-size:cover !important;
       background-position:center bottom !important;
@@ -110,8 +110,8 @@
       inset:0;
       z-index:-1;
       background:
-        radial-gradient(circle at 50% 42%,rgba(255,242,0,.10),transparent 31%),
-        linear-gradient(115deg,rgba(218,41,28,.18),transparent 46%);
+        radial-gradient(circle at 50% 42%,rgba(255,242,0,.06),transparent 31%),
+        linear-gradient(115deg,rgba(218,41,28,.10),transparent 46%);
       pointer-events:none;
     }
     .hero-shell::after {
@@ -125,40 +125,24 @@
       background:linear-gradient(transparent,#0B0B0B);
       pointer-events:none;
     }
-    .hero-proof {
-      display:none;
-      grid-template-columns:repeat(3,auto);
-      justify-content:center;
-      width:max-content;
-      max-width:100%;
-      margin:0 auto 28px;
-      border-top:1px solid rgba(255,255,255,.18);
-      border-bottom:1px solid rgba(255,255,255,.18);
+    .hero-lights {
+      position:absolute;
+      left:50%;
+      bottom:13%;
+      width:min(680px,76vw);
+      height:210px;
+      transform:translateX(-50%);
+      opacity:0;
+      z-index:0;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      transition:opacity .18s linear;
+      background:
+        radial-gradient(ellipse 18% 12% at 31% 45%,rgba(255,242,0,.86),rgba(255,242,0,.20) 38%,transparent 68%),
+        radial-gradient(ellipse 18% 12% at 69% 45%,rgba(255,242,0,.86),rgba(255,242,0,.20) 38%,transparent 68%),
+        radial-gradient(ellipse 55% 22% at 50% 62%,rgba(218,41,28,.22),transparent 70%);
+      filter:blur(7px);
     }
-    .hero-proof span {
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:10px 18px;
-      color:#E4EFF7;
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.03em;
-    }
-    .hero-proof span + span { border-left:1px solid rgba(255,255,255,.18); }
-    .proof-icon {
-      width:22px;
-      height:22px;
-      border-radius:999px;
-      display:inline-grid;
-      place-items:center;
-      color:#FFF200;
-      background:rgba(255,183,3,.08);
-      border:1px solid rgba(255,183,3,.28);
-      flex:0 0 auto;
-    }
-    .proof-icon svg { width:13px; height:13px; display:block; }
     .hero-content { max-width:860px; margin:0 auto; }
     .hero-ctas .btn { padding:12px 22px; font-size:14px; min-width:190px; }
     .hero-map-link {
@@ -267,11 +251,11 @@
       z-index:4;
       pointer-events:none;
     }
-    .discovery-ribbons::before { left:0; background:linear-gradient(90deg,rgba(24,24,24,.98),transparent); }
-    .discovery-ribbons::after { right:0; background:linear-gradient(-90deg,rgba(24,24,24,.98),transparent); }
+    .discovery-ribbons::before { left:0; background:linear-gradient(90deg,rgba(24,24,24,.86),transparent); }
+    .discovery-ribbons::after { right:0; background:linear-gradient(-90deg,rgba(24,24,24,.86),transparent); }
     .ticker-row { display:flex; align-items:center; min-height:84px; overflow:hidden; }
     .ticker-row:first-child { background:linear-gradient(90deg,#DA291C,#B01E0A); }
-    .ticker-row:last-of-type { background:linear-gradient(90deg,#F7F7F7,#FFFFFF); border-top:1px solid rgba(24,24,24,.10); }
+    .ticker-row.brand-row { background:linear-gradient(90deg,#FFF200,#F6E500); border-top:1px solid rgba(24,24,24,.10); }
     .ticker-label {
       position:absolute;
       left:24px;
@@ -281,7 +265,7 @@
       gap:8px;
       padding:10px 15px;
       background:#181818;
-      border:1px solid rgba(200,162,74,.55);
+      border:1px solid rgba(255,242,0,.65);
       border-radius:3px;
       color:#fff;
       font-size:12px;
@@ -324,7 +308,7 @@
       background:#FFF200;
       opacity:.75;
     }
-    .ticker-row:nth-of-type(2) .ticker-item {
+    .ticker-row.brand-row .ticker-item {
       font-size:34px;
       font-weight:850;
       color:#181818;
@@ -355,7 +339,8 @@
     .brand-mytvs { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:-.025em !important; font-style:italic; }
     .ticker-item:hover { transform:scale(1.06); }
     .ticker-row:first-child .ticker-item:hover { color:#FFF200 !important; }
-    .ticker-row:nth-of-type(2) .ticker-item:hover { color:#DA291C !important; }
+    .ticker-row.brand-row .ticker-item::before { background:#DA291C; }
+    .ticker-row.brand-row .ticker-item:hover { color:#B01E0A !important; }
     .ticker-note {
       position:absolute;
       right:22px;
@@ -370,7 +355,7 @@
 
     /* FAST SERVICE SELECTOR */
     .upgrade-selector {
-      background:linear-gradient(180deg,#FFFFFF 0%,#F7F7F7 100%);
+      background:linear-gradient(180deg,#F7F7F7 0%,#EDEDED 100%);
       color:#181818;
       padding:42px 24px 46px;
       overflow:hidden;
@@ -445,24 +430,41 @@
     .container-sm { max-width: 720px; margin: 0 auto; }
 
     /* SERVICE ROW */
-    .service-row { border-bottom:1px solid rgba(255,183,3,0.12); border-radius:18px; transition:all 0.22s ease; }
-    .service-row:hover { background:linear-gradient(90deg, rgba(218,41,28,.08), rgba(255,242,0,.06)); padding-left:12px; transform:scale(1.012); box-shadow: 0 18px 44px rgba(0,0,0,.12), inset 0 0 0 1px rgba(218,41,28,.20); }
+    .service-row { position:relative; border-bottom:1px solid rgba(255,183,3,0.12); border-radius:18px; transition:all 0.22s ease; }
+    .service-row::after {
+      content:'SELECT';
+      position:absolute;
+      right:14px;
+      top:14px;
+      color:#181818;
+      background:#FFF200;
+      padding:4px 8px;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.10em;
+      opacity:0;
+      transform:translateY(-6px);
+      transition:opacity .2s ease,transform .2s ease;
+      pointer-events:none;
+    }
+    .service-row:hover { background:linear-gradient(90deg, rgba(218,41,28,.10), rgba(255,242,0,.08)); padding-left:12px; transform:scale(1.012); box-shadow: 0 18px 44px rgba(0,0,0,.18), inset 4px 0 0 #DA291C, inset 0 0 0 1px rgba(255,242,0,.22); }
+    .service-row:hover::after { opacity:1; transform:translateY(0); }
     .service-row:hover .s-name { color:#FFF200; }
     .service-row .s-name { font-size:23px; line-height:1.25; }
     .service-visual { width:148px; height:104px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,183,3,.16); box-shadow:0 12px 28px rgba(0,0,0,.2); transition:transform .35s ease,border-color .25s ease; }
     .service-row:hover .service-visual { transform:scale(1.035); border-color:rgba(255,183,3,.48); }
     .services-section {
-      background:linear-gradient(180deg,#FFFFFF 0%,#F7F7F7 100%) !important;
-      color:#181818;
+      background:linear-gradient(180deg,#181818 0%,#242424 58%,#181818 100%) !important;
+      color:#FFFFFF;
     }
-    .services-section .t-caption { color:#DA291C !important; }
-    .services-section .t-display { color:#181818 !important; }
+    .services-section .t-caption { color:#FFF200 !important; }
+    .services-section .t-display { color:#FFFFFF !important; }
     .services-section .t-sub,
-    .services-section .t-sm { color:#444444 !important; }
-    .services-section .service-row { border-bottom-color:rgba(16,37,31,.13); }
-    .services-section .service-row:hover { background:linear-gradient(90deg,rgba(255,255,255,.92),rgba(218,41,28,.08)); box-shadow:0 18px 44px rgba(24,24,24,.10), inset 0 0 0 1px rgba(218,41,28,.18); }
-    .services-section .s-name { color:#181818 !important; }
-    .services-section .service-row:hover .s-name { color:#DA291C !important; }
+    .services-section .t-sm { color:#D9D9D9 !important; }
+    .services-section .service-row { border-bottom-color:rgba(255,242,0,.16); }
+    .services-section .service-row:hover { background:linear-gradient(90deg,rgba(218,41,28,.22),rgba(255,242,0,.07)); box-shadow:0 18px 44px rgba(0,0,0,.24), inset 4px 0 0 #DA291C, inset 0 0 0 1px rgba(255,242,0,.20); }
+    .services-section .s-name { color:#FFFFFF !important; }
+    .services-section .service-row:hover .s-name { color:#FFF200 !important; }
     .stats-section .stat-num { color:#DA291C !important; }
     .stats-section .t-caption { color:#303030 !important; opacity:.72 !important; }
     .stats-section .stat-divider { background:rgba(168,76,42,.24); }
@@ -582,7 +584,7 @@
       .hero-ctas .btn { width:100%; }
       .hero-shell {
         background-image:
-          linear-gradient(180deg,rgba(10,10,10,.96),rgba(10,10,10,.78) 50%,rgba(10,10,10,.18) 73%,rgba(10,10,10,.86)),
+          linear-gradient(180deg,rgba(10,10,10,.88),rgba(10,10,10,.58) 50%,rgba(10,10,10,.18) 73%,rgba(10,10,10,.74)),
           url('assets/web/hero-accessory-wall.jpg') !important;
         background-position:center bottom !important;
         background-size:auto,auto 100% !important;
@@ -632,7 +634,7 @@
       .ticker-row { min-height:66px; }
       .ticker-label { left:10px; padding:7px 10px; font-size:9px; }
       .ticker-item { padding:0 24px; font-size:18px; }
-      .ticker-row:nth-of-type(2) .ticker-item { font-size:25px; }
+      .ticker-row.brand-row .ticker-item { font-size:25px; }
       .ticker-note { display:none; }
       .ticker-track.forward { animation-duration:22s; }
       .ticker-track.reverse { animation-duration:29s; }
@@ -679,6 +681,7 @@
 
 <!-- HERO -->
 <section class="hero-shell" style="min-height:100vh;padding-top:64px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#303030 0%,#181818 100%);display:flex;align-items:flex-start;position:relative;overflow:hidden;">
+  <div id="heroLights" class="hero-lights" aria-hidden="true"></div>
   <a class="hero-map-link" href="https://www.google.com/maps?cid=13467297807459514373" target="_blank" rel="noopener" aria-label="Open Madhuban Motors in Google Maps">
     <span class="hero-map-icon">
       <svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s6-5.34 6-11a6 6 0 10-12 0c0 5.66 6 11 6 11z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
@@ -756,7 +759,7 @@
       </div>
     </div>
   </div>
-  <div class="ticker-row">
+  <div class="ticker-row brand-row">
     <div class="ticker-label">Brands we deal in</div>
     <div class="ticker-track reverse">
       <div class="ticker-set">
@@ -1265,7 +1268,7 @@
 </section>
 
 <!-- FOOTER -->
-<footer style="background:#06101A;border-top:1px solid rgba(255,183,3,0.1);padding:56px 24px 96px;">
+<footer style="background:#0B0B0B;border-top:1px solid rgba(255,242,0,0.18);padding:56px 24px 96px;">
   <div class="container" style="text-align:center;">
     <div class="brand-name" style="font-size:32px;color:#FFF200;margin-bottom:10px;">Madhu<span class="mirror-b">B</span>an Motors</div>
     <div class="t-sm" style="margin-bottom:6px;">Est. 1989, Ghaziabad, Uttar Pradesh</div>
@@ -1277,7 +1280,7 @@
       <a href="https://maps.google.com/?cid=madhubanmotors" target="_blank" class="t-sm" style="color:#777777;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFF200'" onmouseout="this.style.color='#777777'">Reviews</a>
     </div>
     <div style="font-family:'DM Serif Display',serif;font-size:18px;letter-spacing:.18em;color:#FFF200;margin:4px 0 16px;">A.S.S.N.</div>
-    <div class="t-sm" style="color:#5B7488;">© 2026 Madhuban Motors. All rights reserved.</div>
+    <div class="t-sm" style="color:#777777;">© 2026 Madhuban Motors. All rights reserved.</div>
   </div>
 </footer>
 
@@ -1526,6 +1529,11 @@ window.addEventListener('scroll', () => {
   const h = document.documentElement.scrollHeight - innerHeight;
   const pct = h > 0 ? (scrollY / h) * 100 : 0;
   if (progress) progress.style.width = pct + '%';
+  const heroLights = document.getElementById('heroLights');
+  if (heroLights) {
+    const lightLevel = Math.max(0, Math.min(1, window.scrollY / Math.max(360, innerHeight * 0.72)));
+    heroLights.style.opacity = String(lightLevel);
+  }
   const stops = [
     'linear-gradient(180deg,#181818 0%,#0B0B0B 45%,#B01E0A 100%)',
     'linear-gradient(180deg,#0B0B0B 0%,#303030 55%,#181818 100%)',
