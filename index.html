@@ -139,6 +139,7 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      gap:8px;
       padding:10px 18px;
       color:#E4EFF7;
       font-size:12px;
@@ -146,6 +147,18 @@
       letter-spacing:.03em;
     }
     .hero-proof span + span { border-left:1px solid rgba(255,255,255,.18); }
+    .proof-icon {
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      display:inline-grid;
+      place-items:center;
+      color:#FFB703;
+      background:rgba(255,183,3,.08);
+      border:1px solid rgba(255,183,3,.28);
+      flex:0 0 auto;
+    }
+    .proof-icon svg { width:13px; height:13px; display:block; }
     .hero-content { max-width:860px; margin:0 auto; }
     .hero-ctas .btn { padding:12px 22px; font-size:14px; min-width:190px; }
     .hero-map-link {
@@ -451,28 +464,50 @@
     /* STORY */
     #story { background:linear-gradient(140deg,#EAF6FB 0%,#D8ECF7 100%); }
 
-    /* IPHONE */
-    .iphone-frame { width:260px; height:520px; background:#0D2438; border-radius:44px; box-shadow:0 0 0 2px #315872, 0 30px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.08); position:relative; overflow:hidden; flex-shrink:0; }
+    /* WORK PHONE GALLERY */
+    .work-phone-section { background:radial-gradient(ellipse 70% 80% at 50% 50%,#0E4B73 0%,#071827 100%); overflow:hidden; }
+    .work-showcase-wrap { display:grid; grid-template-columns:minmax(260px,380px) auto; align-items:center; justify-content:center; gap:42px; }
+    .phone-gallery-copy { text-align:left; max-width:380px; }
+    .phone-gallery-copy .work-points { display:grid; gap:10px; margin-top:22px; }
+    .work-point { display:flex; align-items:flex-start; gap:10px; color:#BED3E6; font-size:14px; line-height:1.55; }
+    .work-point svg { width:18px; height:18px; color:#FFB703; flex:0 0 auto; margin-top:2px; }
+    .phone-stage { position:relative; display:grid; place-items:center; padding:14px; }
+    .phone-stage::before {
+      content:'';
+      position:absolute;
+      inset:9% -18%;
+      background:radial-gradient(ellipse at center,rgba(255,183,3,.2),transparent 58%),radial-gradient(ellipse at center,rgba(99,210,255,.14),transparent 62%);
+      filter:blur(10px);
+      pointer-events:none;
+    }
+    .iphone-frame { width:300px; height:600px; background:#0D2438; border-radius:46px; box-shadow:0 0 0 2px #315872, 0 30px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.08); position:relative; overflow:hidden; flex-shrink:0; z-index:2; }
     .iphone-island { position:absolute; top:12px; left:50%; transform:translateX(-50%); width:88px; height:26px; background:#020A12; border-radius:20px; z-index:10; }
     .iphone-screen { position:absolute; top:50px; left:8px; right:8px; bottom:8px; background:#0B1F32; border-radius:36px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
     .phone-showcase { position:absolute; inset:0; overflow:hidden; background:#071827; }
-    .phone-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transform:scale(1.08); animation:phoneShowcase 16s infinite; }
-    .phone-slide:nth-child(1) { animation-delay:0s; }
-    .phone-slide:nth-child(2) { animation-delay:4s; }
-    .phone-slide:nth-child(3) { animation-delay:8s; }
-    .phone-slide:nth-child(4) { animation-delay:12s; }
+    .phone-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transform:scale(1.04); transition:opacity .55s ease,transform 4.5s ease; cursor:zoom-in; }
+    .phone-slide.active { opacity:1; transform:scale(1); }
     .phone-slide::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(7,24,39,.04) 0%,rgba(7,24,39,.18) 48%,rgba(3,10,18,.86) 100%); }
-    @keyframes phoneShowcase { 0% { opacity:0; transform:scale(1.1); } 6% { opacity:1; transform:scale(1.04); } 24% { opacity:1; transform:scale(1); } 31% { opacity:0; transform:scale(1); } 100% { opacity:0; transform:scale(1.1); } }
     .phone-caption { position:absolute; left:0; right:0; bottom:0; z-index:4; padding:18px 16px 20px; text-align:left; background:linear-gradient(transparent,rgba(0,0,0,.78)); }
     .phone-caption-title { font-family:'DM Serif Display',serif; font-size:20px; line-height:1.1; color:#fff; margin-bottom:5px; }
     .phone-caption-text { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#FFB703; font-weight:700; }
     .phone-dots { position:absolute; z-index:5; right:14px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:7px; }
-    .phone-dots span { width:6px; height:18px; border-radius:999px; background:rgba(255,255,255,.22); animation:phoneDot 16s infinite; }
-    .phone-dots span:nth-child(1) { animation-delay:0s; }
-    .phone-dots span:nth-child(2) { animation-delay:4s; }
-    .phone-dots span:nth-child(3) { animation-delay:8s; }
-    .phone-dots span:nth-child(4) { animation-delay:12s; }
-    @keyframes phoneDot { 0%,31%,100% { background:rgba(255,255,255,.22); } 6%,24% { background:#FFB703; box-shadow:0 0 14px rgba(255,183,3,.45); } }
+    .phone-dots span { width:6px; height:18px; border-radius:999px; background:rgba(255,255,255,.22); transition:background .25s ease,box-shadow .25s ease; }
+    .phone-dots span.active { background:#FFB703; box-shadow:0 0 14px rgba(255,183,3,.45); }
+    .phone-click-hint { position:absolute; left:16px; top:16px; z-index:6; color:#fff; background:rgba(7,24,39,.56); border:1px solid rgba(255,255,255,.14); backdrop-filter:blur(8px); border-radius:999px; padding:7px 10px; font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+    .phone-nav { position:absolute; top:50%; z-index:5; transform:translateY(-50%); width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,183,3,.35); background:rgba(7,24,39,.68); color:#FFB703; cursor:pointer; font-size:24px; line-height:1; display:grid; place-items:center; transition:transform .2s ease,background .2s ease,border-color .2s ease; }
+    .phone-nav:hover { transform:translateY(-50%) scale(1.08); background:rgba(11,58,91,.92); border-color:#FFB703; }
+    .phone-nav.prev { left:-18px; }
+    .phone-nav.next { right:-18px; }
+    .phone-thumb-rail { margin:18px auto 0; display:flex; gap:8px; justify-content:center; max-width:360px; overflow-x:auto; padding:4px 4px 10px; scrollbar-width:none; }
+    .phone-thumb-rail::-webkit-scrollbar { display:none; }
+    .phone-thumb { width:54px; height:68px; border-radius:11px; border:1px solid rgba(255,183,3,.18); background-size:cover; background-position:center; opacity:.6; cursor:pointer; flex:0 0 auto; transition:opacity .2s ease,transform .2s ease,border-color .2s ease; }
+    .phone-thumb.active { opacity:1; transform:translateY(-2px); border-color:#FFB703; box-shadow:0 10px 24px rgba(0,0,0,.24); }
+    #workLightbox { position:fixed; inset:0; background:rgba(3,10,18,.92); z-index:650; display:none; align-items:center; justify-content:center; padding:28px; }
+    #workLightbox.open { display:flex; }
+    .lightbox-card { width:min(960px,100%); background:#071827; border:1px solid rgba(255,183,3,.22); box-shadow:0 30px 100px rgba(0,0,0,.55); border-radius:24px; overflow:hidden; position:relative; }
+    .lightbox-card img { width:100%; max-height:76vh; object-fit:contain; background:#020A12; display:block; }
+    .lightbox-meta { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 18px; background:linear-gradient(90deg,#071827,#0B1F32); }
+    .lightbox-close { position:absolute; top:12px; right:12px; width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,183,3,.35); background:rgba(7,24,39,.82); color:#FFB703; font-size:24px; cursor:pointer; z-index:2; }
 
     /* FORM */
     .field-line { background:transparent; border:none; border-bottom:1px solid rgba(255,183,3,0.18); color:#F8F3E7; font-family:'Manrope',sans-serif; font-size:15px; padding:12px 0; width:100%; outline:none; transition:border-color 0.2s; }
@@ -536,7 +571,8 @@
       .hero-map-icon { width:48px; height:48px; }
       .hero-map-copy { max-width:90px; opacity:1; font-size:10px; background:rgba(7,24,39,.72); border:1px solid rgba(255,183,3,.22); padding:5px 8px; border-radius:999px; }
       .hero-proof { width:100%; grid-template-columns:repeat(3,1fr); }
-      .hero-proof span { font-size:9px; padding:8px 5px; line-height:1.35; text-align:center; }
+      .hero-proof span { font-size:9px; padding:8px 5px; line-height:1.35; text-align:center; gap:5px; flex-direction:column; }
+      .proof-icon { width:20px; height:20px; }
       .upgrade-selector { padding:34px 16px 38px; }
       .upgrade-head { display:block; margin-bottom:20px; }
       .upgrade-head .t-body { margin-top:8px; }
@@ -547,6 +583,17 @@
       .service-visual { width:104px; height:96px; border-radius:10px; }
       .service-row .s-name { font-size:19px; }
       .service-row .btn { grid-column:2; justify-self:start; margin-top:4px; }
+      .work-phone-section .t-sub { margin-bottom:28px !important; }
+      .work-showcase-wrap { grid-template-columns:1fr; gap:24px; }
+      .phone-gallery-copy { text-align:center; max-width:360px; margin:0 auto; }
+      .phone-gallery-copy .work-points { display:none; }
+      .phone-stage { padding:0; }
+      .iphone-frame { width:min(280px,78vw); height:min(560px,156vw); border-radius:42px; }
+      .iphone-screen { top:48px; border-radius:34px; }
+      .phone-nav.prev { left:-10px; }
+      .phone-nav.next { right:-10px; }
+      .phone-thumb-rail { max-width:320px; justify-content:flex-start; }
+      .phone-click-hint { font-size:9px; padding:6px 9px; }
       #enquiry { padding-bottom:118px !important; }
       #floater { top:auto; bottom:78px; right:14px; transform:none; }
       #floaterBtn { width:48px !important; height:48px !important; }
@@ -630,9 +677,18 @@
         <p class="reveal hero-tagline" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,2.4vw,28px);color:#F8F3E7;line-height:1.45;margin-bottom:14px;opacity:0.92;" data-delay="80">Three Generations. One Standard.</p>
         <p class="t-sub reveal hero-copy" style="max-width:520px;margin:0 auto 36px;" data-delay="160">Known on GT Road, Ghaziabad since 1989.<br>Genuine accessories. Clear advice. Clean installation.</p>
         <div class="hero-proof reveal" data-delay="200" aria-label="Madhuban Motors trust indicators">
-          <span>37 years of trust</span>
-          <span>4.6 on Google</span>
-          <span>Serving Delhi NCR</span>
+          <span>
+            <span class="proof-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 5-3.2 8.7-7 10-3.8-1.3-7-5-7-10V6l7-3z"/><path d="M8.5 12.2l2.2 2.2 4.8-5"/></svg></span>
+            Trusted since 1989
+          </span>
+          <span>
+            <span class="proof-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.5l-5.8 3 1.1-6.5-4.7-4.6 6.5-.9L12 2.6z"/></svg></span>
+            4.6 Google rating
+          </span>
+          <span>
+            <span class="proof-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.2 7-11a7 7 0 10-14 0c0 5.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+            Delhi NCR service
+          </span>
         </div>
         <div class="reveal hero-ctas" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;" data-delay="240">
           <a href="https://wa.me/919911443751?text=Hi%2C%20I%20found%20you%20on%20Google%20and%20want%20to%20enquire%20about%20your%20services." target="_blank"
@@ -891,43 +947,40 @@
 
 <div class="divider"></div>
 
-<!-- IPHONE VIDEO -->
-<section class="section" style="background:radial-gradient(ellipse 70% 80% at 50% 50%,#0E4B73 0%,#071827 100%);text-align:center;">
+<!-- WORK PHONE GALLERY -->
+<section class="section work-phone-section" style="text-align:center;">
   <div class="container">
     <div class="t-caption reveal" style="margin-bottom:16px;">REAL SHOP WORK</div>
     <h2 class="t-h1 reveal" style="color:#F8F3E7;margin-bottom:10px;" data-delay="80">See Our Work</h2>
-    <p class="t-sub reveal" style="margin-bottom:56px;" data-delay="160">Recent seat covers, steering cover and door panel work from the shop.</p>
-    <div style="display:flex;align-items:center;justify-content:center;gap:28px;">
-      <!-- Left card -->
-      <div class="iphone-side-cards hide-mobile reveal" style="width:180px;background:#0A1A2B;border:1px solid rgba(255,183,3,0.12);padding:16px;transform:perspective(800px) rotateY(8deg);opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" data-delay="0">
-        <div style="width:100%;aspect-ratio:4/3;background-image:linear-gradient(180deg,rgba(7,24,39,.08),rgba(7,24,39,.58)),url('assets/web/seat-cover-cream-blue.jpg');background-size:cover;background-position:center;margin-bottom:10px;"></div>
-        <div class="t-sm">Cream seat covers</div>
+    <p class="t-sub reveal" style="margin-bottom:34px;" data-delay="160">A compact phone gallery for real installs. It can grow to 50-100 photos without making the page heavy or oversized.</p>
+    <div class="work-showcase-wrap">
+      <div class="phone-gallery-copy reveal" data-delay="40">
+        <h3 class="t-h2" style="color:#F8F3E7;margin-bottom:12px;">Scroll the work. Tap to enlarge.</h3>
+        <p class="t-sm">The phone keeps photos moving without taking over the whole page. Customers can tap any install to inspect the finish.</p>
+        <div class="work-points">
+          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 5-3.2 8.7-7 10-3.8-1.3-7-5-7-10V6l7-3z"/><path d="M8.5 12.2l2.2 2.2 4.8-5"/></svg><span>Only real shop work belongs here.</span></div>
+          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 18h6"/></svg><span>Built for vertical phone photos and videos.</span></div>
+          <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Add more images later by extending one gallery list.</span></div>
+        </div>
       </div>
-      <!-- iPhone -->
-      <div style="position:relative;">
-        <div class="iphone-frame reveal" data-delay="120">
+      <div class="phone-stage reveal" data-delay="120">
+        <div class="iphone-frame">
           <div class="iphone-island"></div>
           <div class="iphone-screen">
             <div class="phone-showcase" aria-label="Madhuban Motors work showcase">
-              <div class="phone-slide" style="background-image:url('assets/web/seat-cover-black-red.jpg');"></div>
-              <div class="phone-slide" style="background-image:url('assets/web/seat-cover-cream-blue.jpg');"></div>
-              <div class="phone-slide" style="background-image:url('assets/web/steering-cover-dashboard.jpg');"></div>
-              <div class="phone-slide" style="background-image:url('assets/web/door-panel-modification.jpg');"></div>
-              <div class="phone-dots" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+              <button class="phone-click-hint" onclick="openWorkModal()" type="button">Tap to enlarge</button>
+              <div id="phoneSlide" class="phone-slide active" onclick="openWorkModal()" role="button" tabindex="0" aria-label="Open current work photo"></div>
+              <div id="phoneDots" class="phone-dots" aria-hidden="true"></div>
               <div class="phone-caption">
-                <div class="phone-caption-title">Interior Work</div>
-                <div class="phone-caption-text">Seat covers, steering cover, door panels</div>
+                <div id="phoneCaptionTitle" class="phone-caption-title">Interior Work</div>
+                <div id="phoneCaptionText" class="phone-caption-text">Seat covers, steering cover, door panels</div>
               </div>
             </div>
           </div>
         </div>
-        <button style="position:absolute;left:-44px;top:50%;transform:translateY(-50%);background:none;border:none;color:#FFB703;opacity:0.35;font-size:28px;cursor:pointer;transition:opacity 0.2s;line-height:1;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">‹</button>
-        <button style="position:absolute;right:-44px;top:50%;transform:translateY(-50%);background:none;border:none;color:#FFB703;opacity:0.35;font-size:28px;cursor:pointer;transition:opacity 0.2s;line-height:1;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.35'">›</button>
-      </div>
-      <!-- Right card -->
-      <div class="iphone-side-cards hide-mobile reveal" style="width:180px;background:#0A1A2B;border:1px solid rgba(255,183,3,0.12);padding:16px;transform:perspective(800px) rotateY(-8deg);opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" data-delay="240">
-        <div style="width:100%;aspect-ratio:4/3;background-image:linear-gradient(180deg,rgba(7,24,39,.08),rgba(7,24,39,.58)),url('assets/web/seat-cover-black-red.jpg');background-size:cover;background-position:center;margin-bottom:10px;"></div>
-        <div class="t-sm">Black and red seat covers</div>
+        <button class="phone-nav prev" onclick="prevWorkPhoto()" type="button" aria-label="Previous work photo">‹</button>
+        <button class="phone-nav next" onclick="nextWorkPhoto()" type="button" aria-label="Next work photo">›</button>
+        <div id="phoneThumbs" class="phone-thumb-rail" aria-label="Work photo thumbnails"></div>
       </div>
     </div>
   </div>
@@ -1262,6 +1315,21 @@
   </div>
 </div>
 
+<!-- WORK PHOTO LIGHTBOX -->
+<div id="workLightbox" onclick="closeWorkModal(event)">
+  <div class="lightbox-card" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeWorkModal()" type="button" aria-label="Close enlarged work photo">×</button>
+    <img id="workLightboxImg" src="" alt="Madhuban Motors installation work">
+    <div class="lightbox-meta">
+      <div>
+        <div id="workLightboxTitle" class="t-h3" style="color:#F8F3E7;">Interior Work</div>
+        <div id="workLightboxText" class="t-sm" style="margin-top:2px;">Seat covers, steering cover, door panels</div>
+      </div>
+      <a href="#enquiry" onclick="closeWorkModal();scrollToEnquiry(event)" class="btn btn-secondary btn-sm">Ask for Similar Work</a>
+    </div>
+  </div>
+</div>
+
 <!-- QUICK PANEL -->
 <div id="quickPanel">
   <div class="quick-panel-inner" style="padding:32px 28px;height:100%;overflow-y:auto;display:flex;flex-direction:column;">
@@ -1329,6 +1397,85 @@
 
 <script>
 // HERO NAME IS STATIC HTML NOW SO THE MIRRORED B NEVER DISAPPEARS
+
+// PHONE WORK GALLERY
+const workGallery = [
+  {
+    src: 'assets/web/seat-cover-black-red.jpg',
+    title: 'Black and Red Seat Covers',
+    text: 'Bucket-fit seat covers with contrast piping'
+  },
+  {
+    src: 'assets/web/seat-cover-cream-blue.jpg',
+    title: 'Cream and Blue Seat Covers',
+    text: 'Clean interior finish with premium fitment'
+  },
+  {
+    src: 'assets/web/steering-cover-dashboard.jpg',
+    title: 'Steering Cover and Interior',
+    text: 'Steering grip, seat work and dashboard finish'
+  },
+  {
+    src: 'assets/web/door-panel-modification.jpg',
+    title: 'Door Panel Modification',
+    text: 'Custom door panel insert with stitched detailing'
+  }
+];
+let currentWorkIndex = 0;
+let workGalleryTimer = null;
+
+function renderPhoneGallery() {
+  const current = workGallery[currentWorkIndex];
+  const slide = document.getElementById('phoneSlide');
+  const title = document.getElementById('phoneCaptionTitle');
+  const text = document.getElementById('phoneCaptionText');
+  const dots = document.getElementById('phoneDots');
+  const thumbs = document.getElementById('phoneThumbs');
+  if (!slide || !current) return;
+
+  slide.style.backgroundImage = `url('${current.src}')`;
+  title.textContent = current.title;
+  text.textContent = current.text;
+  dots.innerHTML = workGallery.map((_, i) => `<span class="${i === currentWorkIndex ? 'active' : ''}"></span>`).join('');
+  thumbs.innerHTML = workGallery.map((item, i) => (
+    `<button type="button" class="phone-thumb ${i === currentWorkIndex ? 'active' : ''}" style="background-image:url('${item.src}')" onclick="setWorkPhoto(${i})" aria-label="Show ${item.title}"></button>`
+  )).join('');
+}
+
+function setWorkPhoto(index) {
+  currentWorkIndex = (index + workGallery.length) % workGallery.length;
+  renderPhoneGallery();
+  restartWorkGalleryTimer();
+}
+
+function nextWorkPhoto() { setWorkPhoto(currentWorkIndex + 1); }
+function prevWorkPhoto() { setWorkPhoto(currentWorkIndex - 1); }
+
+function restartWorkGalleryTimer() {
+  if (workGalleryTimer) clearInterval(workGalleryTimer);
+  workGalleryTimer = setInterval(() => {
+    currentWorkIndex = (currentWorkIndex + 1) % workGallery.length;
+    renderPhoneGallery();
+  }, 3600);
+}
+
+function openWorkModal(index = currentWorkIndex) {
+  currentWorkIndex = (index + workGallery.length) % workGallery.length;
+  const current = workGallery[currentWorkIndex];
+  document.getElementById('workLightboxImg').src = current.src;
+  document.getElementById('workLightboxImg').alt = current.title;
+  document.getElementById('workLightboxTitle').textContent = current.title;
+  document.getElementById('workLightboxText').textContent = current.text;
+  document.getElementById('workLightbox').classList.add('open');
+}
+
+function closeWorkModal(event) {
+  if (event && event.target.id !== 'workLightbox') return;
+  document.getElementById('workLightbox').classList.remove('open');
+}
+
+renderPhoneGallery();
+restartWorkGalleryTimer();
 
 // SCROLL REVEAL
 const revealObs = new IntersectionObserver((entries) => {
