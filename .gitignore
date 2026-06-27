@@ -1,3 +1,5 @@
 index.before-*.html
 assets/*.png
 .DS_Store
+assets/service-*.png
+assets/hero-*.png

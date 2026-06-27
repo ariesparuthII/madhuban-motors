@@ -78,9 +78,9 @@
     .t-stat    { font-family: 'Fraunces', 'DM Serif Display', serif; font-variation-settings: 'SOFT' 40; font-size: clamp(36px, 4vw, 56px); line-height: 1.10; letter-spacing: -1px; }
     .t-h2      { font-family: 'Manrope', sans-serif; font-size: clamp(22px, 3vw, 36px); font-weight: 500; line-height: 1.20; }
     .t-h3      { font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 600; line-height: 1.30; }
-    .t-sub     { font-family: 'Manrope', sans-serif; font-size: 18px; font-weight: 400; line-height: 1.60; color: #BED3E6; }
-    .t-body    { font-family: 'Manrope', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.70; color: #BED3E6; }
-    .t-sm      { font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 400; line-height: 1.55; color: #8DA7BF; }
+    .t-sub     { font-family: 'Manrope', sans-serif; font-size: 19px; font-weight: 400; line-height: 1.65; color: #BED3E6; }
+    .t-body    { font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 400; line-height: 1.75; color: #BED3E6; }
+    .t-sm      { font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 400; line-height: 1.65; color: #9CB3C7; }
     .t-caption { font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600; line-height: 1.40; letter-spacing: 0.10em; text-transform: uppercase; color: #FFB703; }
 
     /* BRAND */
@@ -97,11 +97,12 @@
     .hero-shell {
       isolation:isolate;
       background-image:
-        linear-gradient(90deg,rgba(4,18,30,.98) 0%,rgba(4,18,30,.90) 38%,rgba(4,18,30,.40) 72%,rgba(4,18,30,.72) 100%),
-        linear-gradient(180deg,rgba(7,24,39,.12),rgba(7,24,39,.80)),
-        url('assets/web/steering-cover-dashboard.jpg') !important;
+        linear-gradient(180deg,rgba(4,18,30,.95) 0%,rgba(4,18,30,.76) 48%,rgba(4,18,30,.18) 70%,rgba(4,18,30,.76) 100%),
+        radial-gradient(ellipse 68% 48% at 50% 24%,rgba(7,24,39,.42),rgba(7,24,39,.08) 58%,rgba(7,24,39,.58) 100%),
+        url('assets/web/hero-workshop-centered.jpg') !important;
       background-size:cover !important;
-      background-position:center 44% !important;
+      background-position:center bottom !important;
+      animation:heroBackgroundDrift 18s ease-in-out infinite alternate;
     }
     .hero-shell::before {
       content:'';
@@ -109,7 +110,7 @@
       inset:0;
       z-index:-1;
       background:
-        radial-gradient(circle at 78% 42%,rgba(249,115,22,.18),transparent 26%),
+        radial-gradient(circle at 50% 42%,rgba(249,115,22,.12),transparent 31%),
         linear-gradient(115deg,rgba(11,93,142,.18),transparent 46%);
       pointer-events:none;
     }
@@ -125,34 +126,76 @@
       pointer-events:none;
     }
     .hero-proof {
-      display:flex;
+      display:grid;
+      grid-template-columns:repeat(3,auto);
       justify-content:center;
-      flex-wrap:wrap;
-      gap:8px;
-      margin:0 auto 26px;
+      width:max-content;
+      max-width:100%;
+      margin:0 auto 28px;
+      border-top:1px solid rgba(255,255,255,.18);
+      border-bottom:1px solid rgba(255,255,255,.18);
     }
     .hero-proof span {
       display:inline-flex;
       align-items:center;
-      gap:7px;
-      padding:7px 11px;
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:999px;
-      background:rgba(3,14,24,.46);
+      justify-content:center;
+      padding:10px 18px;
       color:#E4EFF7;
-      font-size:11px;
+      font-size:12px;
       font-weight:700;
       letter-spacing:.03em;
-      backdrop-filter:blur(10px);
     }
-    .hero-proof span::before {
-      content:'';
-      width:6px;
-      height:6px;
+    .hero-proof span + span { border-left:1px solid rgba(255,255,255,.18); }
+    .hero-content { max-width:860px; margin:0 auto; }
+    .hero-ctas .btn { padding:12px 22px; font-size:14px; min-width:190px; }
+    .hero-map-link {
+      position:absolute;
+      left:28px;
+      top:50%;
+      z-index:5;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#F8F3E7;
+      text-decoration:none;
+      transform:translateY(-50%);
+    }
+    .hero-map-icon {
+      width:54px;
+      height:54px;
       border-radius:50%;
-      background:#FFB703;
-      box-shadow:0 0 10px rgba(255,183,3,.55);
+      display:grid;
+      place-items:center;
+      color:#FFB703;
+      background:rgba(7,24,39,.72);
+      border:1px solid rgba(255,183,3,.48);
+      box-shadow:0 12px 36px rgba(0,0,0,.28),0 0 0 7px rgba(255,183,3,.06);
+      backdrop-filter:blur(10px);
+      transition:transform .25s ease,background .25s ease,border-color .25s ease;
     }
+    .hero-map-copy {
+      max-width:0;
+      overflow:hidden;
+      white-space:nowrap;
+      opacity:0;
+      color:#F8F3E7;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.04em;
+      transition:max-width .35s ease,opacity .25s ease;
+    }
+    .hero-map-link:hover .hero-map-icon { transform:translateY(-2px) scale(1.06); background:rgba(11,58,91,.92); border-color:#FFB703; }
+    .hero-map-link:hover .hero-map-copy { max-width:180px; opacity:1; }
+    .consent-row {
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      margin-top:20px;
+      color:#9CB3C7;
+      font-size:12px;
+      line-height:1.55;
+    }
+    .consent-row input { width:16px; height:16px; margin-top:2px; accent-color:#F97316; flex:0 0 auto; }
 
     /* BUTTONS */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.30; letter-spacing: 0.01em; text-decoration: none; border: none; cursor: pointer; transition: all 0.18s ease; white-space: nowrap; }
@@ -183,6 +226,7 @@
     @keyframes steerIdle  { 0%,100% { transform:rotate(0deg); } 50% { transform:rotate(12deg); } }
     @keyframes goldGlow   { 0%,100% { box-shadow:0 0 8px rgba(255,183,3,0.15); } 50% { box-shadow:0 0 24px rgba(255,183,3,0.4); } }
     @keyframes btnShimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
+    @keyframes heroBackgroundDrift { from { background-size:auto,auto,100% auto; } to { background-size:auto,auto,104% auto; } }
     @keyframes marqueeLeft { from { transform:translateX(0); } to { transform:translateX(-50%); } }
     @keyframes marqueeRight { from { transform:translateX(-50%); } to { transform:translateX(0); } }
     @keyframes tickerPulse { 0%,100% { opacity:.55; } 50% { opacity:1; } }
@@ -196,9 +240,9 @@
     .discovery-ribbons {
       position:relative;
       overflow:hidden;
-      background:linear-gradient(180deg,#061421 0%,#071827 100%);
-      border-top:1px solid rgba(255,183,3,.14);
-      border-bottom:1px solid rgba(99,210,255,.12);
+      background:#F8F3E7;
+      border-bottom:1px solid rgba(7,24,39,.12);
+      box-shadow:0 18px 50px rgba(0,0,0,.20);
     }
     .discovery-ribbons::before,
     .discovery-ribbons::after {
@@ -210,10 +254,11 @@
       z-index:4;
       pointer-events:none;
     }
-    .discovery-ribbons::before { left:0; background:linear-gradient(90deg,#061421,transparent); }
-    .discovery-ribbons::after { right:0; background:linear-gradient(-90deg,#061421,transparent); }
-    .ticker-row { display:flex; align-items:center; min-height:64px; overflow:hidden; }
-    .ticker-row + .ticker-row { border-top:1px solid rgba(255,255,255,.055); }
+    .discovery-ribbons::before { left:0; background:linear-gradient(90deg,rgba(249,115,22,.96),transparent); }
+    .discovery-ribbons::after { right:0; background:linear-gradient(-90deg,rgba(248,243,231,.96),transparent); }
+    .ticker-row { display:flex; align-items:center; min-height:76px; overflow:hidden; }
+    .ticker-row:first-child { background:linear-gradient(90deg,#EA580C,#F97316); }
+    .ticker-row:last-of-type { background:linear-gradient(90deg,#EAF6FB,#F8F3E7); border-top:1px solid rgba(7,24,39,.10); }
     .ticker-label {
       position:absolute;
       left:24px;
@@ -222,10 +267,10 @@
       align-items:center;
       gap:8px;
       padding:10px 15px;
-      background:rgba(7,24,39,.92);
-      border:1px solid rgba(255,183,3,.24);
+      background:#071827;
+      border:1px solid rgba(255,183,3,.45);
       border-radius:999px;
-      color:#FFB703;
+      color:#fff;
       font-size:12px;
       font-weight:800;
       letter-spacing:.12em;
@@ -251,7 +296,7 @@
       align-items:center;
       gap:10px;
       padding:0 34px;
-      color:#E5EEF5;
+      color:#fff;
       font-size:17px;
       font-weight:750;
       letter-spacing:.04em;
@@ -266,10 +311,10 @@
       background:#FFB703;
       opacity:.75;
     }
-    .ticker-row:last-child .ticker-item {
+    .ticker-row:nth-of-type(2) .ticker-item {
       font-size:24px;
       font-weight:800;
-      color:#DCE8F0;
+      color:#173A52;
       letter-spacing:.01em;
     }
     .brand-pioneer { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:-.07em !important; font-style:italic; }
@@ -295,13 +340,15 @@
     .brand-autocop { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:-.035em !important; }
     .brand-roots { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.06em !important; }
     .brand-mytvs { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:-.025em !important; font-style:italic; }
-    .ticker-item:hover { color:#fff !important; transform:scale(1.06); }
+    .ticker-item:hover { transform:scale(1.06); }
+    .ticker-row:first-child .ticker-item:hover { color:#071827 !important; }
+    .ticker-row:nth-of-type(2) .ticker-item:hover { color:#F97316 !important; }
     .ticker-note {
       position:absolute;
       right:22px;
       bottom:5px;
       z-index:6;
-      color:#6E8AA0;
+      color:#3E6077;
       font-size:8px;
       font-weight:700;
       letter-spacing:.08em;
@@ -388,7 +435,9 @@
     .service-row { border-bottom:1px solid rgba(255,183,3,0.12); border-radius:18px; transition:all 0.22s ease; }
     .service-row:hover { background:linear-gradient(90deg, rgba(14,75,115,.72), rgba(249,115,22,.08)); padding-left:12px; transform:scale(1.012); box-shadow: 0 18px 44px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,183,3,.12); }
     .service-row:hover .s-name { color:#FFB703; }
-    .service-row:hover .s-num  { color:#FFB703; opacity:1; }
+    .service-row .s-name { font-size:23px; line-height:1.25; }
+    .service-visual { width:148px; height:104px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,183,3,.16); box-shadow:0 12px 28px rgba(0,0,0,.2); transition:transform .35s ease,border-color .25s ease; }
+    .service-row:hover .service-visual { transform:scale(1.035); border-color:rgba(255,183,3,.48); }
 
     /* REVIEW CARD */
     .review-card { background:linear-gradient(180deg,rgba(11,31,50,.96),rgba(7,24,39,.96)); border:1px solid rgba(255,183,3,0.14); padding:28px; border-radius:22px; box-shadow:0 20px 60px rgba(0,0,0,.18); }
@@ -468,8 +517,8 @@
       .nav-brand .t-caption { font-size:8px !important; letter-spacing:.08em; }
       .nav-actions { gap:6px !important; flex-shrink:0; }
       .nav-actions .btn { min-width:44px; padding:9px 10px; font-size:11px; }
-      .hero-shell { min-height:auto !important; padding-top:68px !important; overflow:hidden; }
-      .hero-shell > .container { padding:76px 14px 92px !important; }
+      .hero-shell { min-height:820px !important; padding-top:68px !important; overflow:hidden; animation:none; }
+      .hero-shell > .container { padding:68px 14px 230px !important; }
       .hero-wordmark { font-size:clamp(28px,8.5vw,40px) !important; letter-spacing:-.7px !important; width:100%; }
       .hero-eyebrow { max-width:300px; margin-left:auto !important; margin-right:auto !important; font-size:9px !important; line-height:1.6; }
       .hero-tagline { font-size:21px !important; line-height:1.3 !important; padding:0 12px; }
@@ -478,20 +527,25 @@
       .hero-ctas .btn { width:100%; }
       .hero-shell {
         background-image:
-          linear-gradient(180deg,rgba(4,18,30,.88) 0%,rgba(4,18,30,.73) 43%,rgba(4,18,30,.96) 100%),
-          url('assets/web/steering-cover-dashboard.jpg') !important;
-        background-position:56% center !important;
+          linear-gradient(180deg,rgba(4,18,30,.96),rgba(4,18,30,.78) 50%,rgba(4,18,30,.18) 73%,rgba(4,18,30,.86)),
+          url('assets/web/hero-workshop-centered.jpg') !important;
+        background-position:center bottom !important;
+        background-size:auto,auto 100% !important;
       }
-      .hero-proof { max-width:340px; gap:6px; padding:0 8px; }
-      .hero-proof span { font-size:9px; padding:6px 8px; }
+      .hero-map-link { left:16px; top:auto; bottom:156px; transform:none; gap:8px; }
+      .hero-map-icon { width:48px; height:48px; }
+      .hero-map-copy { max-width:90px; opacity:1; font-size:10px; background:rgba(7,24,39,.72); border:1px solid rgba(255,183,3,.22); padding:5px 8px; border-radius:999px; }
+      .hero-proof { width:100%; grid-template-columns:repeat(3,1fr); }
+      .hero-proof span { font-size:9px; padding:8px 5px; line-height:1.35; text-align:center; }
       .upgrade-selector { padding:34px 16px 38px; }
       .upgrade-head { display:block; margin-bottom:20px; }
       .upgrade-head .t-body { margin-top:8px; }
       .upgrade-grid { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:10px; padding:0 0 12px; scrollbar-width:none; }
       .upgrade-grid::-webkit-scrollbar { display:none; }
       .upgrade-card { flex:0 0 42vw; min-width:150px; min-height:170px; scroll-snap-align:start; }
-      .service-row { grid-template-columns:42px 1fr !important; gap:12px !important; padding:18px 0 !important; }
-      .service-row .s-num { font-size:30px !important; }
+      .service-row { grid-template-columns:104px 1fr !important; gap:14px !important; padding:18px 0 !important; align-items:start !important; }
+      .service-visual { width:104px; height:96px; border-radius:10px; }
+      .service-row .s-name { font-size:19px; }
       .service-row .btn { grid-column:2; justify-self:start; margin-top:4px; }
       #enquiry { padding-bottom:118px !important; }
       #floater { top:auto; bottom:78px; right:14px; transform:none; }
@@ -506,14 +560,20 @@
       }
       #quickPanel .quick-fields { flex:none !important; gap:20px !important; }
       #quickPanel .quick-submit { position:relative; margin-top:26px !important; margin-bottom:8px; }
+      .consent-row { font-size:11px; }
       #mobileBar { min-height:58px; }
-      .ticker-row { min-height:56px; }
+      .ticker-row { min-height:66px; }
       .ticker-label { left:10px; padding:7px 10px; font-size:9px; }
       .ticker-item { padding:0 22px; font-size:14px; }
-      .ticker-row:last-child .ticker-item { font-size:20px; }
+      .ticker-row:nth-of-type(2) .ticker-item { font-size:20px; }
       .ticker-note { display:none; }
       .ticker-track.forward { animation-duration:22s; }
       .ticker-track.reverse { animation-duration:29s; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .hero-shell { animation:none !important; }
+      .hero-letter { animation:none !important; opacity:1 !important; transform:none !important; }
+      .hero-wordmark .mirror-b.hero-b { animation:none !important; opacity:1 !important; transform:scaleX(-1) !important; }
     }
     @media (max-width:480px) {
       .gallery-grid { grid-template-columns:1fr !important; }
@@ -551,17 +611,17 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero-shell" style="min-height:100vh;padding-top:64px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#0B3A5B 0%,#071827 100%);display:flex;align-items:center;position:relative;overflow:hidden;">
+<section class="hero-shell" style="min-height:100vh;padding-top:64px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#0B3A5B 0%,#071827 100%);display:flex;align-items:flex-start;position:relative;overflow:hidden;">
+  <a class="hero-map-link" href="https://www.google.com/maps?cid=13467297807459514373" target="_blank" rel="noopener" aria-label="Open Madhuban Motors in Google Maps">
+    <span class="hero-map-icon">
+      <svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s6-5.34 6-11a6 6 0 10-12 0c0 5.66 6 11 6 11z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
+    </span>
+    <span class="hero-map-copy">DIRECTIONS</span>
+  </a>
   <div class="container" style="padding:80px 24px;width:100%;">
-    <div class="hero-grid" style="display:grid;grid-template-columns:100px 1fr 100px;align-items:center;gap:24px;">
-      <!-- Left -->
-      <div class="hide-mobile" style="text-align:center;opacity:0.3;">
-        <div class="t-caption" style="margin-bottom:10px;">FOUNDED</div>
-        <div class="t-display" style="font-style:italic;color:#F8F3E7;line-height:1;">1989</div>
-        <div style="width:1px;height:48px;background:#FFB703;margin:12px auto 0;opacity:0.3;"></div>
-      </div>
+    <div class="hero-grid" style="display:grid;grid-template-columns:1fr;align-items:center;">
       <!-- Center -->
-      <div style="text-align:center;">
+      <div class="hero-content" style="text-align:center;">
         <div class="t-caption reveal hero-eyebrow" style="margin-bottom:20px;opacity:0.68;">CAR ACCESSORIES &amp; CUSTOM INSTALLATIONS</div>
         <div id="heroName" class="brand-name t-hero hero-wordmark" aria-label="Madhuban Motors" style="margin-bottom:24px;">
           <span class="hero-letter" style="animation-delay:0ms">M</span><span class="hero-letter" style="animation-delay:45ms">a</span><span class="hero-letter" style="animation-delay:90ms">d</span><span class="hero-letter" style="animation-delay:135ms">h</span><span class="hero-letter" style="animation-delay:180ms">u</span><span class="hero-letter mirror-b hero-b" style="animation-delay:225ms">B</span><span class="hero-letter" style="animation-delay:270ms">a</span><span class="hero-letter" style="animation-delay:315ms">n</span><span class="hero-letter" style="animation-delay:360ms">&nbsp;</span><span class="hero-letter" style="animation-delay:405ms">M</span><span class="hero-letter" style="animation-delay:450ms">o</span><span class="hero-letter" style="animation-delay:495ms">t</span><span class="hero-letter" style="animation-delay:540ms">o</span><span class="hero-letter" style="animation-delay:585ms">r</span><span class="hero-letter" style="animation-delay:630ms">s</span>
@@ -570,27 +630,21 @@
         <p class="reveal hero-tagline" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,2.4vw,28px);color:#F8F3E7;line-height:1.45;margin-bottom:14px;opacity:0.92;" data-delay="80">Three Generations. One Standard.</p>
         <p class="t-sub reveal hero-copy" style="max-width:520px;margin:0 auto 36px;" data-delay="160">Known on GT Road, Ghaziabad since 1989.<br>Genuine accessories. Clear advice. Clean installation.</p>
         <div class="hero-proof reveal" data-delay="200" aria-label="Madhuban Motors trust indicators">
-          <span>4.6 Google rating</span>
-          <span>402 reviews</span>
+          <span>37 years of trust</span>
+          <span>4.6 on Google</span>
           <span>Serving Delhi NCR</span>
         </div>
         <div class="reveal hero-ctas" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;" data-delay="240">
           <a href="https://wa.me/919911443751?text=Hi%2C%20I%20found%20you%20on%20Google%20and%20want%20to%20enquire%20about%20your%20services." target="_blank"
-            class="btn btn-shimmer btn-lg">
+            class="btn btn-shimmer">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             WhatsApp Us Now
           </a>
-          <a href="tel:+919911443751" class="btn btn-ghost btn-lg">
+          <a href="tel:+919911443751" class="btn btn-ghost">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
             +91 99114 43751
           </a>
         </div>
-      </div>
-      <!-- Right -->
-      <div class="hide-mobile" style="text-align:center;opacity:0.3;">
-        <div class="t-caption" style="margin-bottom:10px;">SERVING</div>
-        <div class="t-h1" style="font-style:italic;color:#F8F3E7;">NCR</div>
-        <div style="width:1px;height:48px;background:#FFB703;margin:12px auto 0;opacity:0.3;"></div>
       </div>
     </div>
   </div>
@@ -604,12 +658,13 @@
 <!-- CONTINUOUS SERVICES AND BRAND DISCOVERY -->
 <section class="discovery-ribbons" aria-label="Popular services and automotive brands">
   <div class="ticker-row">
-    <div class="ticker-label">We install</div>
+    <div class="ticker-label">What we customise</div>
     <div class="ticker-track forward">
       <div class="ticker-set">
         <span class="ticker-item">Android Systems</span>
         <span class="ticker-item">High-End Car Audio</span>
         <span class="ticker-item">Seat Covers</span>
+        <span class="ticker-item">Custom-fit Mats</span>
         <span class="ticker-item">Dash Cameras</span>
         <span class="ticker-item">Car Audio</span>
         <span class="ticker-item">Ambient Lighting</span>
@@ -618,11 +673,14 @@
         <span class="ticker-item">Security Systems</span>
         <span class="ticker-item">Steering Covers</span>
         <span class="ticker-item">Interior Styling</span>
+        <span class="ticker-item">Solar Films</span>
+        <span class="ticker-item">LED Headlights</span>
       </div>
       <div class="ticker-set" aria-hidden="true">
         <span class="ticker-item">Android Systems</span>
         <span class="ticker-item">High-End Car Audio</span>
         <span class="ticker-item">Seat Covers</span>
+        <span class="ticker-item">Custom-fit Mats</span>
         <span class="ticker-item">Dash Cameras</span>
         <span class="ticker-item">Car Audio</span>
         <span class="ticker-item">Ambient Lighting</span>
@@ -631,11 +689,13 @@
         <span class="ticker-item">Security Systems</span>
         <span class="ticker-item">Steering Covers</span>
         <span class="ticker-item">Interior Styling</span>
+        <span class="ticker-item">Solar Films</span>
+        <span class="ticker-item">LED Headlights</span>
       </div>
     </div>
   </div>
   <div class="ticker-row">
-    <div class="ticker-label">Popular names</div>
+    <div class="ticker-label">Brands we deal in</div>
     <div class="ticker-track reverse">
       <div class="ticker-set">
         <span class="ticker-item brand-pioneer">Pioneer</span>
@@ -689,7 +749,7 @@
       </div>
     </div>
   </div>
-  <div class="ticker-note">Brand availability varies by car and requirement</div>
+  <div class="ticker-note">Brand and model availability varies by requirement</div>
 </section>
 
 <!-- CHOOSE YOUR UPGRADE -->
@@ -703,23 +763,23 @@
       <p class="t-body reveal" style="max-width:430px;color:#31556F;" data-delay="120">Pick a category and send us your car model. We will recommend the right fit before you visit.</p>
     </div>
     <div class="upgrade-grid">
-      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/steering-cover-dashboard.jpg')" onclick="selectUpgrade('Car Audio')" data-delay="0">
-        <span class="upgrade-card-content"><span class="upgrade-card-title">Android and Audio</span><span class="upgrade-card-action">Ask for options</span></span>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/service-safety.jpg')" onclick="selectUpgrade('Safety and Security')" data-delay="0">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Dashcams and Safety</span><span class="upgrade-card-action">Protect every drive</span></span>
       </button>
-      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/seat-cover-black-red.jpg')" onclick="selectUpgrade('Seat Covers')" data-delay="55">
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/seat-cover-black-red.jpg')" onclick="selectUpgrade('Seat Covers and Interiors')" data-delay="55">
         <span class="upgrade-card-content"><span class="upgrade-card-title">Seat Covers</span><span class="upgrade-card-action">Choose a finish</span></span>
       </button>
-      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/door-panel-modification.jpg')" onclick="selectUpgrade('Full Accessories')" data-delay="110">
-        <span class="upgrade-card-content"><span class="upgrade-card-title">Interior Styling</span><span class="upgrade-card-action">Plan an upgrade</span></span>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/service-mats.jpg')" onclick="selectUpgrade('Custom-fit Mats')" data-delay="110">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Custom-fit Mats</span><span class="upgrade-card-action">Protect the floor</span></span>
       </button>
-      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/seat-cover-cream-blue.jpg')" onclick="selectUpgrade('Full Accessories')" data-delay="165">
-        <span class="upgrade-card-content"><span class="upgrade-card-title">Complete Interiors</span><span class="upgrade-card-action">Get guidance</span></span>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/service-infotainment.jpg')" onclick="selectUpgrade('Android and Infotainment')" data-delay="165">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Android Systems</span><span class="upgrade-card-action">Check compatibility</span></span>
       </button>
-      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/steering-cover-dashboard.jpg')" onclick="selectUpgrade('Reverse Camera')" data-delay="220">
-        <span class="upgrade-card-content"><span class="upgrade-card-title">Camera and Safety</span><span class="upgrade-card-action">Check compatibility</span></span>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/service-audio.jpg')" onclick="selectUpgrade('Sound System and Tuning')" data-delay="220">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">High-End Audio</span><span class="upgrade-card-action">Build your sound</span></span>
       </button>
-      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/door-panel-modification.jpg')" onclick="selectUpgrade('Security System')" data-delay="275">
-        <span class="upgrade-card-content"><span class="upgrade-card-title">Security and GPS</span><span class="upgrade-card-action">Protect your car</span></span>
+      <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/service-solar-film.jpg')" onclick="selectUpgrade('Heat Protection Film')" data-delay="275">
+        <span class="upgrade-card-content"><span class="upgrade-card-title">Solar Films</span><span class="upgrade-card-action">Reduce cabin heat</span></span>
       </button>
     </div>
   </div>
@@ -730,8 +790,8 @@
   <div class="container">
     <div class="trust-grid" id="statsBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
       <div style="text-align:center;padding:24px 16px;position:relative;">
-        <div class="stat-num t-stat" data-type="year" style="color:#FFB703;opacity:0;">Est. 1989</div>
-        <div class="t-caption" style="margin-top:8px;opacity:0.5;">Since 1989</div>
+        <div class="stat-num t-stat" data-type="year" style="color:#FFB703;opacity:0;">37 Years</div>
+        <div class="t-caption" style="margin-top:8px;opacity:0.5;">On GT Road</div>
         <div class="stat-divider"></div>
       </div>
       <div style="text-align:center;padding:24px 16px;position:relative;">
@@ -741,15 +801,15 @@
       </div>
       <div style="text-align:center;padding:24px 16px;position:relative;">
         <div class="stat-num t-stat" data-type="rating" style="color:#FFB703;opacity:0;">4.6 ★</div>
-        <div class="t-caption" style="margin-top:8px;opacity:0.5;">Google Rating</div>
+        <div class="t-caption" style="margin-top:8px;opacity:0.5;">402 Google Reviews</div>
         <div class="stat-divider"></div>
       </div>
       <div style="text-align:center;padding:24px 16px;">
-        <div class="stat-num t-stat" data-type="lakh" style="color:#FFB703;opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;">
-          3 Lakh+
+        <div class="stat-num t-stat" data-type="customers" style="color:#FFB703;opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;">
+          1 Lakh+
           <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:pulse-dot 2s infinite;flex-shrink:0;"></span>
         </div>
-        <div class="t-caption" style="margin-top:8px;opacity:0.5;">Cars Served Since 1989</div>
+        <div class="t-caption" style="margin-top:8px;opacity:0.5;">Customers Served</div>
       </div>
     </div>
   </div>
@@ -760,56 +820,64 @@
 <!-- SERVICES -->
 <section class="section" style="background:#071827;">
   <div class="container">
-    <div class="t-caption reveal" style="margin-bottom:16px;color:#FFB703;opacity:.82;">WHAT WE DO</div>
-    <h2 class="t-display reveal" style="color:#F8F3E7;margin-bottom:10px;" data-delay="80">Accessories.<br>Installed Right.</h2>
-    <p class="t-sub reveal" style="margin-bottom:56px;max-width:440px;" data-delay="160">Choose the upgrade. We will tell you what fits and what to avoid.</p>
+    <div class="t-caption reveal" style="margin-bottom:16px;color:#FFB703;opacity:.82;">PERSONALISED FOR YOU</div>
+    <h2 class="t-display reveal" style="color:#F8F3E7;margin-bottom:14px;" data-delay="80">Your car. Your comfort.<br>Fitted around you.</h2>
+    <p class="t-sub reveal" style="margin-bottom:56px;max-width:680px;" data-delay="160">We do not push the same accessory into every car. Tell us how you drive, who travels with you and what experience you want. We will help you choose what genuinely fits.</p>
 
     <div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="0">
-        <div class="s-num t-stat" style="color:#FFB703;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">01</div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="0">
+        <img class="service-visual" src="assets/web/service-safety.jpg" alt="Dash camera, reverse camera and parking sensor installation" loading="lazy">
         <div>
-          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:4px;">Seat Covers</div>
-          <div class="t-sm">Tailored fit. Clean finish. Your interior, done right.</div>
+          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:6px;">Safety and Security for Every Drive</div>
+          <div class="t-sm">Everyday protection for your family and your car, with dash cameras, reverse cameras, parking sensors, security systems and GPS tracking installed cleanly.</div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="60">
-        <div class="s-num t-stat" style="color:#FFB703;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">02</div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="60">
+        <img class="service-visual" src="assets/web/service-interior.jpg" alt="Complete custom-fit premium car interior" loading="lazy">
         <div>
-          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:4px;">Car Audio &amp; Infotainment</div>
-          <div class="t-sm">Wired right. No rattles. Tuned for your ears.</div>
+          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:6px;">An Interior That Feels Made for You</div>
+          <div class="t-sm">Premium and bucket-fit seat covers, steering wraps and interior detailing shaped around your car for a snug fit, a refined finish and an unmistakably personal feel.</div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="120">
-        <div class="s-num t-stat" style="color:#FFB703;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">03</div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="105">
+        <img class="service-visual" src="assets/web/service-mats.jpg" alt="Custom-fit premium car floor mats" loading="lazy">
         <div>
-          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:4px;">Reverse Cameras &amp; Sensors</div>
-          <div class="t-sm">Safe reversing. Clean cable routing. No mess.</div>
+          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:6px;">Mats That Fit the Floor, Not Just Cover It</div>
+          <div class="t-sm">Custom-fit premium mats follow your car's floor shape, protect the original carpet and make everyday cleaning easier without interfering with pedals or seat movement.</div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="180">
-        <div class="s-num t-stat" style="color:#FFB703;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">04</div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="150">
+        <img class="service-visual" src="assets/web/service-audio.jpg" alt="High-end car audio with DSP amplifiers and subwoofer" loading="lazy">
         <div>
-          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:4px;">Lighting, LED, HID, Ambient</div>
-          <div class="t-sm">Precision upgrades. Inside and out.</div>
+          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:6px;">Sound Tuned to the Way You Listen</div>
+          <div class="t-sm">From a clean daily upgrade to ambitious ₹1–2 lakh custom builds with double, triple or four-woofer layouts, amplifiers, equalizers and DSP processing, we design and tune for the punch, clarity and musical character you actually want.</div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="240">
-        <div class="s-num t-stat" style="color:#FFB703;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">05</div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="210">
+        <img class="service-visual" src="assets/web/service-infotainment.jpg" alt="Android infotainment touchscreen integrated into a car dashboard" loading="lazy">
         <div>
-          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:4px;">Security Systems &amp; Gear Locks</div>
-          <div class="t-sm">Protect what matters. Discreet installation.</div>
+          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:6px;">Smarter Entertainment and Navigation</div>
+          <div class="t-sm">Android and LED touchscreen systems with navigation, calling, music, cameras and connected features integrated neatly into your dashboard.</div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="300">
-        <div class="s-num t-stat" style="color:#FFB703;opacity:0.22;font-style:italic;transition:color 0.2s,opacity 0.2s;">06</div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="270">
+        <img class="service-visual" src="assets/web/service-lighting.jpg" alt="Controlled LED headlight and fog-light beam upgrade" loading="lazy">
         <div>
-          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:4px;">GPS Trackers &amp; Solar Films</div>
-          <div class="t-sm">Reliable. Discreet. Heat control with a clean look.</div>
+          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:6px;">Lighting That Helps You See with Confidence</div>
+          <div class="t-sm">When factory lighting feels weak, we recommend properly matched LED, HID and fog-light upgrades for stronger road visibility without careless glare or messy wiring.</div>
+        </div>
+        <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
+      </div>
+      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="330">
+        <img class="service-visual" src="assets/web/service-solar-film.jpg" alt="High-clarity heat-control solar film being applied to a car window" loading="lazy">
+        <div>
+          <div class="s-name t-h3" style="color:#F8F3E7;transition:color 0.2s;margin-bottom:6px;">A Cooler Cabin in the Harsh Summer</div>
+          <div class="t-sm">High-clarity solar-film options help reduce cabin heat and protect seats and interiors while keeping visibility the priority. We guide you toward options appropriate for current vehicle-glass rules.</div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
@@ -878,6 +946,10 @@
     <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,183,3,0.15);padding:40px 36px;backdrop-filter:blur(8px);">
       <div id="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:28px 36px;">
         <div>
+          <label class="field-label">Your Name <span style="opacity:0.4;">(optional)</span></label>
+          <input class="field-line" id="fName" type="text" autocomplete="name" placeholder="Your name" />
+        </div>
+        <div>
           <label class="field-label">Car Brand</label>
           <input class="field-line" id="fBrand" type="text" placeholder="Maruti, Hyundai, Honda..." />
         </div>
@@ -898,13 +970,13 @@
       <div style="margin-top:28px;">
         <label class="field-label">Service Needed</label>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;" id="pillGroup">
-          <button class="pill" onclick="togglePill(this)">Seat Covers</button>
-          <button class="pill" onclick="togglePill(this)">Car Audio</button>
-          <button class="pill" onclick="togglePill(this)">Reverse Camera</button>
-          <button class="pill" onclick="togglePill(this)">Cream Seat Covers</button>
-          <button class="pill" onclick="togglePill(this)">GPS Tracker</button>
-          <button class="pill" onclick="togglePill(this)">Security System</button>
-          <button class="pill" onclick="togglePill(this)">Full Accessories</button>
+          <button class="pill" onclick="togglePill(this)">Safety and Security</button>
+          <button class="pill" onclick="togglePill(this)">Seat Covers and Interiors</button>
+          <button class="pill" onclick="togglePill(this)">Custom-fit Mats</button>
+          <button class="pill" onclick="togglePill(this)">Sound System and Tuning</button>
+          <button class="pill" onclick="togglePill(this)">Android and Infotainment</button>
+          <button class="pill" onclick="togglePill(this)">Lighting Upgrade</button>
+          <button class="pill" onclick="togglePill(this)">Heat Protection Film</button>
           <button class="pill" onclick="togglePill(this)">Not Sure Yet</button>
         </div>
       </div>
@@ -912,6 +984,10 @@
         <label class="field-label">Additional Details <span style="opacity:0.4;">(optional)</span></label>
         <textarea class="field-line" id="fDetails" rows="3" placeholder="Car issue, budget, brand preference, or anything you want to ask" style="resize:none;padding-top:12px;"></textarea>
       </div>
+      <label class="consent-row">
+        <input id="fMarketingConsent" type="checkbox" />
+        <span>I agree to receive service updates and occasional offers from Madhuban Motors by WhatsApp or SMS. I can opt out anytime.</span>
+      </label>
       <button onclick="submitForm()" class="btn btn-wa" style="width:100%;margin-top:28px;font-size:15px;font-weight:600;padding:16px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Send to WhatsApp &amp; Get Pricing
@@ -934,7 +1010,7 @@
         <h2 class="t-display reveal" style="color:#061421;margin-bottom:20px;" data-delay="80">GT Road. Ghaziabad.<br>Before the Car Market Existed.</h2>
         <div class="gold-rule reveal" style="margin:0 0 32px;max-width:72px;" data-delay="120"></div>
         <p class="reveal" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(18px,2.2vw,24px);color:#0B2D46;line-height:1.60;margin-bottom:28px;" data-delay="160">"Madhuban was already a name this city knew before the car accessories market on GT Road became what it is today. We were here first. We watched it all grow around us."</p>
-        <p style="font-family:'Manrope',sans-serif;font-size:16px;color:#173A52;line-height:1.80;margin-bottom:16px;" class="reveal" data-delay="200">Vivek Paruthi, Bitoo Bhaiya to everyone in the market, has run this shop on one principle from day one: source it right, install it right, stand behind your work. The reputation came from 35 years of doing the job properly.</p>
+        <p style="font-family:'Manrope',sans-serif;font-size:16px;color:#173A52;line-height:1.80;margin-bottom:16px;" class="reveal" data-delay="200">Vivek Paruthi, Bitoo Bhaiya to everyone in the market, has run this shop on one principle from day one: source it right, install it right, stand behind your work. The reputation came from 37 years of doing the job properly.</p>
         <p style="font-family:'Manrope',sans-serif;font-size:16px;color:#173A52;line-height:1.80;margin-bottom:40px;" class="reveal" data-delay="240">Today Madhuban Motors serves customers across Delhi NCR, Ghaziabad, Noida, Delhi, Bulandshahr and beyond. The shop is still where it always was. Same GT Road. Same standard.</p>
         <div class="reveal" style="display:flex;gap:0;align-items:center;" data-delay="280">
           <div style="text-align:center;padding:0 28px 0 0;border-right:1px solid #FFB703;">
@@ -942,7 +1018,7 @@
             <div style="font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#0E6E9C;margin-top:4px;opacity:0.8;">Established</div>
           </div>
           <div style="text-align:center;padding:0 28px;border-right:1px solid #FFB703;">
-            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#0B3A5B;">35+</div>
+            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#0B3A5B;">37</div>
             <div style="font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#0E6E9C;margin-top:4px;opacity:0.8;">Years in Market</div>
           </div>
           <div style="text-align:center;padding:0 0 0 28px;">
@@ -1150,6 +1226,7 @@
       <a href="https://maps.google.com/?q=Madhuban+Motors+GT+Road+Ghaziabad" target="_blank" class="t-sm" style="color:#6E8AA0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFB703'" onmouseout="this.style.color='#6E8AA0'">Directions</a>
       <a href="https://maps.google.com/?cid=madhubanmotors" target="_blank" class="t-sm" style="color:#6E8AA0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFB703'" onmouseout="this.style.color='#6E8AA0'">Reviews</a>
     </div>
+    <div style="font-family:'DM Serif Display',serif;font-size:18px;letter-spacing:.18em;color:#FFB703;margin:4px 0 16px;">A.S.S.N.</div>
     <div class="t-sm" style="color:#5B7488;">© 2026 Madhuban Motors. All rights reserved.</div>
   </div>
 </footer>
@@ -1204,11 +1281,13 @@
       <div>
         <label class="field-label">Service</label>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;" id="qPillGroup">
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Seat Covers</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Car Audio</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Camera</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Safety</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Interiors</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Mats</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Sound</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Infotainment</button>
           <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Lighting</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">GPS</button>
+          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Solar Film</button>
           <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Other</button>
         </div>
       </div>
@@ -1216,6 +1295,10 @@
         <label class="field-label">Car Model <span style="opacity:0.4;">(optional)</span></label>
         <input class="field-line" id="qCar" type="text" placeholder="Swift, Creta, City..." />
       </div>
+      <label class="consent-row" style="margin-top:0;">
+        <input id="qMarketingConsent" type="checkbox" />
+        <span>Send me occasional service updates and offers by WhatsApp or SMS.</span>
+      </label>
     </div>
     <button onclick="submitQuick()" class="btn btn-wa quick-submit" style="width:100%;margin-top:28px;font-size:14px;font-weight:600;padding:15px;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -1334,13 +1417,15 @@ function submitForm() {
   const err = document.getElementById('phoneErr');
   if (!phone || phone.replace(/\D/g,'').length < 10) { err.style.display = 'block'; return; }
   err.style.display = 'none';
+  const name     = document.getElementById('fName').value.trim();
   const brand    = document.getElementById('fBrand').value.trim();
   const model    = document.getElementById('fModel').value.trim();
   const year     = document.getElementById('fYear').value.trim();
   const details  = document.getElementById('fDetails').value.trim();
+  const marketingConsent = document.getElementById('fMarketingConsent').checked;
   const services = [...document.querySelectorAll('#pillGroup .pill.active')].map(p => p.textContent).join(', ') || 'Not specified';
-  const msg = `🚗 *New Enquiry, Madhuban Motors*\n\n*Car:* ${brand} ${model} ${year ? '('+year+')' : ''}\n*Phone:* ${phone}\n*Services:* ${services}\n*Details:* ${details || 'None'}\n\n_Sent from website_`.trim();
-  saveLead({ phone, brand, model, year, services });
+  const msg = `🚗 *New Enquiry, Madhuban Motors*\n\n*Name:* ${name || 'Not provided'}\n*Car:* ${brand} ${model} ${year ? '('+year+')' : ''}\n*Phone:* ${phone}\n*Services:* ${services}\n*Details:* ${details || 'None'}\n\n_Sent from website_`.trim();
+  saveLead({ name, phone, brand, model, year, services, details, marketingConsent });
   window.open('https://wa.me/919911443751?text=' + encodeURIComponent(msg), '_blank');
 }
 
@@ -1351,8 +1436,9 @@ function submitQuick() {
   err.style.display = 'none';
   const service = document.querySelector('#qPillGroup .pill.active')?.textContent || 'Not specified';
   const car     = document.getElementById('qCar').value.trim();
+  const marketingConsent = document.getElementById('qMarketingConsent').checked;
   const msg = `Quick Quote, Madhuban Motors\n\nPhone: ${phone}\nService: ${service}\nCar: ${car || 'Not mentioned'}\n\nSent from website`.trim();
-  saveLead({ phone, service, car });
+  saveLead({ phone, service, car, marketingConsent });
   document.querySelector('#quickPanel button[onclick="submitQuick()"]').style.display = 'none';
   document.getElementById('qSuccess').style.display = 'block';
   window.open('https://wa.me/919911443751?text=' + encodeURIComponent(msg), '_blank');
@@ -1366,7 +1452,12 @@ function submitQuick() {
 function saveLead(data) {
   try {
     const leads = JSON.parse(localStorage.getItem('mm_leads') || '[]');
-    leads.push({ ...data, timestamp: new Date().toISOString() });
+    leads.push({
+      ...data,
+      source: 'website',
+      consentTimestamp: data.marketingConsent ? new Date().toISOString() : null,
+      timestamp: new Date().toISOString()
+    });
     localStorage.setItem('mm_leads', JSON.stringify(leads));
   } catch(e) {}
 }
