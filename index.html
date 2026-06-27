@@ -65,11 +65,11 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-    body { background: linear-gradient(180deg,#071827 0%,#061421 45%,#08243A 100%); color: #F8F3E7; font-family: 'Manrope', sans-serif; font-size: 16px; line-height: 1.55; overflow-x: hidden; -webkit-font-smoothing: antialiased; transition: background 900ms ease; }
+    body { background: linear-gradient(180deg,#F8F3E7 0%,#E8F0E7 48%,#F4EAD4 100%); color: #10251F; font-family: 'Manrope', sans-serif; font-size: 16px; line-height: 1.55; overflow-x: hidden; -webkit-font-smoothing: antialiased; transition: background 900ms ease; }
 
-    :root { --deep:#071827; --deep-2:#061421; --blue:#0B3A5B; --blue-2:#0B5D8E; --orange:#F97316; --orange-soft:#FFB703; --cream:#F8F3E7; --mist:#C9DCEB; --card:#0B1F32; }
-    #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 99999; background: linear-gradient(90deg, var(--orange), var(--orange-soft), #63D2FF); box-shadow: 0 0 18px rgba(249,115,22,.45); transition: width .08s linear; }
-    body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1; background: linear-gradient(120deg, rgba(99,210,255,.06), transparent 32%, rgba(249,115,22,.075) 68%, transparent), radial-gradient(ellipse at 50% 0%, rgba(14,75,115,.35), transparent 52%); }
+    :root { --deep:#10251F; --deep-2:#07140F; --blue:#2F5F53; --blue-2:#4D786B; --orange:#A84C2A; --orange-soft:#C8A24A; --cream:#F8F3E7; --mist:#DDE7DC; --card:#172D25; }
+    #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 99999; background: linear-gradient(90deg, #10251F, #C8A24A, #A84C2A); box-shadow: 0 0 18px rgba(200,162,74,.42); transition: width .08s linear; }
+    body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1; background: linear-gradient(120deg, rgba(47,95,83,.08), transparent 34%, rgba(200,162,74,.12) 70%, transparent), radial-gradient(ellipse at 50% 0%, rgba(248,243,231,.62), transparent 52%); }
 
     /* TYPE SCALE */
     .t-hero    { font-family: 'DM Serif Display', serif; font-size: clamp(52px, 9vw, 84px); line-height: 1.05; letter-spacing: -1.5px; }
@@ -78,18 +78,18 @@
     .t-stat    { font-family: 'Fraunces', 'DM Serif Display', serif; font-variation-settings: 'SOFT' 40; font-size: clamp(36px, 4vw, 56px); line-height: 1.10; letter-spacing: -1px; }
     .t-h2      { font-family: 'Manrope', sans-serif; font-size: clamp(22px, 3vw, 36px); font-weight: 500; line-height: 1.20; }
     .t-h3      { font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 600; line-height: 1.30; }
-    .t-sub     { font-family: 'Manrope', sans-serif; font-size: 19px; font-weight: 400; line-height: 1.65; color: #BED3E6; }
-    .t-body    { font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 400; line-height: 1.75; color: #BED3E6; }
-    .t-sm      { font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 400; line-height: 1.65; color: #9CB3C7; }
-    .t-caption { font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600; line-height: 1.40; letter-spacing: 0.10em; text-transform: uppercase; color: #FFB703; }
+    .t-sub     { font-family: 'Manrope', sans-serif; font-size: 19px; font-weight: 400; line-height: 1.65; color: #E8EFE6; }
+    .t-body    { font-family: 'Manrope', sans-serif; font-size: 17px; font-weight: 400; line-height: 1.75; color: #E8EFE6; }
+    .t-sm      { font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 400; line-height: 1.65; color: #5E746A; }
+    .t-caption { font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600; line-height: 1.40; letter-spacing: 0.10em; text-transform: uppercase; color: #C8A24A; }
 
     /* BRAND */
-    .mirror-b { display: inline-block; transform: scaleX(-1); color: #FFB703; font-family: inherit; font-size: inherit; font-weight: inherit; line-height: inherit; vertical-align: baseline; }
+    .mirror-b { display: inline-block; transform: scaleX(-1); color: #C8A24A; font-family: inherit; font-size: inherit; font-weight: inherit; line-height: inherit; vertical-align: baseline; }
     .brand-name { white-space: nowrap; font-family: 'DM Serif Display', serif; color: #F8F3E7; }
 
     .hero-wordmark { display:inline-flex; align-items:baseline; justify-content:center; white-space:nowrap; max-width:100%; text-shadow:0 18px 60px rgba(0,0,0,.22); }
     .hero-letter { display:inline-block; opacity:0; transform:translateY(22px) scale(.96); animation: heroGlyph 620ms cubic-bezier(.2,.9,.2,1) forwards; }
-    .hero-wordmark .mirror-b.hero-b { min-width:.48em; margin:0 .015em; color:#FFB703; filter:drop-shadow(0 0 18px rgba(255,183,3,.28)); transform:scaleX(-1) translateY(22px) scale(.96); animation: heroGlyphMirror 620ms cubic-bezier(.2,.9,.2,1) forwards; }
+    .hero-wordmark .mirror-b.hero-b { min-width:.48em; margin:0 .015em; color:#C8A24A; filter:drop-shadow(0 0 18px rgba(255,183,3,.28)); transform:scaleX(-1) translateY(22px) scale(.96); animation: heroGlyphMirror 620ms cubic-bezier(.2,.9,.2,1) forwards; }
     @keyframes heroGlyph { to { opacity:1; transform:translateY(0) scale(1); } }
     @keyframes heroGlyphMirror { to { opacity:1; transform:scaleX(-1) translateY(0) scale(1); } }
 
@@ -122,7 +122,7 @@
       bottom:0;
       height:150px;
       z-index:-1;
-      background:linear-gradient(transparent,#061421);
+      background:linear-gradient(transparent,#07140F);
       pointer-events:none;
     }
     .hero-proof {
@@ -153,7 +153,7 @@
       border-radius:999px;
       display:inline-grid;
       place-items:center;
-      color:#FFB703;
+      color:#C8A24A;
       background:rgba(255,183,3,.08);
       border:1px solid rgba(255,183,3,.28);
       flex:0 0 auto;
@@ -179,7 +179,7 @@
       border-radius:50%;
       display:grid;
       place-items:center;
-      color:#FFB703;
+      color:#C8A24A;
       background:rgba(7,24,39,.72);
       border:1px solid rgba(255,183,3,.48);
       box-shadow:0 12px 36px rgba(0,0,0,.28),0 0 0 7px rgba(255,183,3,.06);
@@ -197,37 +197,37 @@
       letter-spacing:.04em;
       transition:max-width .35s ease,opacity .25s ease;
     }
-    .hero-map-link:hover .hero-map-icon { transform:translateY(-2px) scale(1.06); background:rgba(11,58,91,.92); border-color:#FFB703; }
+    .hero-map-link:hover .hero-map-icon { transform:translateY(-2px) scale(1.06); background:rgba(11,58,91,.92); border-color:#C8A24A; }
     .hero-map-link:hover .hero-map-copy { max-width:180px; opacity:1; }
     .consent-row {
       display:flex;
       align-items:flex-start;
       gap:10px;
       margin-top:20px;
-      color:#9CB3C7;
+      color:#5E746A;
       font-size:12px;
       line-height:1.55;
     }
-    .consent-row input { width:16px; height:16px; margin-top:2px; accent-color:#F97316; flex:0 0 auto; }
+    .consent-row input { width:16px; height:16px; margin-top:2px; accent-color:#A84C2A; flex:0 0 auto; }
 
     /* BUTTONS */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.30; letter-spacing: 0.01em; text-decoration: none; border: none; cursor: pointer; transition: all 0.18s ease; white-space: nowrap; }
-    .btn-primary  { background: #F97316; color: #fff; }
-    .btn-primary:hover  { background: #EA580C; transform: translateY(-1px); box-shadow: 0 12px 32px rgba(249,115,22,.22); }
-    .btn-secondary { background: transparent; color: #FFB703; border: 1.5px solid rgba(255,183,3,0.5); }
-    .btn-secondary:hover { border-color: #FFB703; background: rgba(255,183,3,0.08); transform: translateY(-1px); }
+    .btn-primary  { background: #A84C2A; color: #fff; }
+    .btn-primary:hover  { background: #8F3D22; transform: translateY(-1px); box-shadow: 0 12px 32px rgba(249,115,22,.22); }
+    .btn-secondary { background: transparent; color: #C8A24A; border: 1.5px solid rgba(255,183,3,0.5); }
+    .btn-secondary:hover { border-color: #C8A24A; background: rgba(255,183,3,0.08); transform: translateY(-1px); }
     .btn-wa  { background: #16A34A; color: #fff; }
     .btn-wa:hover  { background: #1db954; }
     .btn-ghost { background: transparent; color: #F8F3E7; border: 1px solid rgba(248,243,231,0.25); }
     .btn-ghost:hover { border-color: rgba(248,243,231,0.6); }
-    .btn-cream { background: #EAF6FB; color: #0B3A5B; }
+    .btn-cream { background: #F8F3E7; color: #2F5F53; }
     .btn-cream:hover { background: #ede0c4; }
     .btn-sm { padding: 9px 18px; font-size: 13px; }
     .btn-lg { padding: 16px 36px; font-size: 15px; }
 
     /* SHIMMER CTA */
     .btn-shimmer {
-      background: linear-gradient(90deg, #F97316 0%, #F97316 34%, rgba(255,255,255,0.28) 50%, #FFB703 62%, #F97316 100%);
+      background: linear-gradient(90deg, #A84C2A 0%, #A84C2A 34%, rgba(255,255,255,0.28) 50%, #C8A24A 62%, #A84C2A 100%);
       background-size: 200% auto;
       animation: btnShimmer 3s linear infinite;
       color: #fff;
@@ -254,8 +254,8 @@
       position:relative;
       overflow:hidden;
       background:#F8F3E7;
-      border-bottom:1px solid rgba(7,24,39,.12);
-      box-shadow:0 18px 50px rgba(0,0,0,.20);
+      border-bottom:1px solid rgba(16,37,31,.14);
+      box-shadow:0 18px 50px rgba(16,37,31,.14);
     }
     .discovery-ribbons::before,
     .discovery-ribbons::after {
@@ -267,11 +267,11 @@
       z-index:4;
       pointer-events:none;
     }
-    .discovery-ribbons::before { left:0; background:linear-gradient(90deg,rgba(249,115,22,.96),transparent); }
+    .discovery-ribbons::before { left:0; background:linear-gradient(90deg,rgba(248,243,231,.96),transparent); }
     .discovery-ribbons::after { right:0; background:linear-gradient(-90deg,rgba(248,243,231,.96),transparent); }
-    .ticker-row { display:flex; align-items:center; min-height:76px; overflow:hidden; }
-    .ticker-row:first-child { background:linear-gradient(90deg,#EA580C,#F97316); }
-    .ticker-row:last-of-type { background:linear-gradient(90deg,#EAF6FB,#F8F3E7); border-top:1px solid rgba(7,24,39,.10); }
+    .ticker-row { display:flex; align-items:center; min-height:84px; overflow:hidden; }
+    .ticker-row:first-child { background:linear-gradient(90deg,#EFE4C6,#F8F3E7); }
+    .ticker-row:last-of-type { background:linear-gradient(90deg,#E8F0E7,#F8F3E7); border-top:1px solid rgba(16,37,31,.10); }
     .ticker-label {
       position:absolute;
       left:24px;
@@ -280,8 +280,8 @@
       align-items:center;
       gap:8px;
       padding:10px 15px;
-      background:#071827;
-      border:1px solid rgba(255,183,3,.45);
+      background:#10251F;
+      border:1px solid rgba(200,162,74,.55);
       border-radius:999px;
       color:#fff;
       font-size:12px;
@@ -295,8 +295,8 @@
       width:7px;
       height:7px;
       border-radius:50%;
-      background:#F97316;
-      box-shadow:0 0 12px rgba(249,115,22,.65);
+      background:#C8A24A;
+      box-shadow:0 0 12px rgba(200,162,74,.55);
       animation:tickerPulse 1.8s ease-in-out infinite;
     }
     .ticker-track { display:flex; align-items:center; width:max-content; will-change:transform; }
@@ -308,11 +308,11 @@
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding:0 34px;
-      color:#fff;
-      font-size:17px;
-      font-weight:750;
-      letter-spacing:.04em;
+      padding:0 38px;
+      color:#10251F;
+      font-size:22px;
+      font-weight:850;
+      letter-spacing:.02em;
       white-space:nowrap;
       transition:color .2s ease,transform .2s ease;
     }
@@ -321,13 +321,13 @@
       width:5px;
       height:5px;
       border-radius:50%;
-      background:#FFB703;
+      background:#C8A24A;
       opacity:.75;
     }
     .ticker-row:nth-of-type(2) .ticker-item {
-      font-size:24px;
-      font-weight:800;
-      color:#173A52;
+      font-size:30px;
+      font-weight:850;
+      color:#10251F;
       letter-spacing:.01em;
     }
     .brand-pioneer { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:-.07em !important; font-style:italic; }
@@ -354,8 +354,8 @@
     .brand-roots { font-family:Arial Black,'Manrope',sans-serif; font-weight:900 !important; letter-spacing:.06em !important; }
     .brand-mytvs { font-family:'Manrope',sans-serif; font-weight:800 !important; letter-spacing:-.025em !important; font-style:italic; }
     .ticker-item:hover { transform:scale(1.06); }
-    .ticker-row:first-child .ticker-item:hover { color:#071827 !important; }
-    .ticker-row:nth-of-type(2) .ticker-item:hover { color:#F97316 !important; }
+    .ticker-row:first-child .ticker-item:hover { color:#A84C2A !important; }
+    .ticker-row:nth-of-type(2) .ticker-item:hover { color:#A84C2A !important; }
     .ticker-note {
       position:absolute;
       right:22px;
@@ -370,8 +370,8 @@
 
     /* FAST SERVICE SELECTOR */
     .upgrade-selector {
-      background:linear-gradient(180deg,#EAF6FB 0%,#D8ECF7 100%);
-      color:#071827;
+      background:linear-gradient(180deg,#F8F3E7 0%,#E8F0E7 100%);
+      color:#10251F;
       padding:42px 24px 46px;
       overflow:hidden;
     }
@@ -393,7 +393,7 @@
       overflow:hidden;
       border:0;
       border-radius:14px;
-      background:#0B1F32;
+      background:#172D25;
       color:#fff;
       text-align:left;
       cursor:pointer;
@@ -420,7 +420,7 @@
     .upgrade-card:hover::before { transform:scale(1.12); }
     .upgrade-card-content { position:absolute; left:14px; right:14px; bottom:13px; }
     .upgrade-card-title { display:block; font-size:13px; font-weight:800; line-height:1.25; }
-    .upgrade-card-action { display:block; margin-top:4px; color:#FFB703; font-size:9px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+    .upgrade-card-action { display:block; margin-top:4px; color:#C8A24A; font-size:9px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
 
     .reveal       { opacity:0; transform:translateY(30px) scale(.985); transition:opacity 0.75s cubic-bezier(.2,.8,.2,1), transform 0.75s cubic-bezier(.2,.8,.2,1); will-change: opacity, transform; }
     .reveal.visible { opacity:1; transform:translateY(0) scale(1); }
@@ -428,7 +428,7 @@
     .reveal-l.visible { opacity:1; transform:translateX(0); }
     .reveal-r     { opacity:0; transform:translateX(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
     .reveal-r.visible { opacity:1; transform:translateX(0); }
-    .gold-rule    { height:1px; background:#FFB703; width:0; transition:width 1s ease; }
+    .gold-rule    { height:1px; background:#C8A24A; width:0; transition:width 1s ease; }
     .gold-rule.visible { width:100%; }
 
     /* NAV */
@@ -447,35 +447,50 @@
     /* SERVICE ROW */
     .service-row { border-bottom:1px solid rgba(255,183,3,0.12); border-radius:18px; transition:all 0.22s ease; }
     .service-row:hover { background:linear-gradient(90deg, rgba(14,75,115,.72), rgba(249,115,22,.08)); padding-left:12px; transform:scale(1.012); box-shadow: 0 18px 44px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,183,3,.12); }
-    .service-row:hover .s-name { color:#FFB703; }
+    .service-row:hover .s-name { color:#C8A24A; }
     .service-row .s-name { font-size:23px; line-height:1.25; }
     .service-visual { width:148px; height:104px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,183,3,.16); box-shadow:0 12px 28px rgba(0,0,0,.2); transition:transform .35s ease,border-color .25s ease; }
     .service-row:hover .service-visual { transform:scale(1.035); border-color:rgba(255,183,3,.48); }
+    .services-section {
+      background:linear-gradient(180deg,#F8F3E7 0%,#E8F0E7 100%) !important;
+      color:#10251F;
+    }
+    .services-section .t-caption { color:#A84C2A !important; }
+    .services-section .t-display { color:#10251F !important; }
+    .services-section .t-sub,
+    .services-section .t-sm { color:#41584D !important; }
+    .services-section .service-row { border-bottom-color:rgba(16,37,31,.13); }
+    .services-section .service-row:hover { background:linear-gradient(90deg,rgba(255,255,255,.78),rgba(200,162,74,.12)); box-shadow:0 18px 44px rgba(16,37,31,.10), inset 0 0 0 1px rgba(200,162,74,.20); }
+    .services-section .s-name { color:#10251F !important; }
+    .services-section .service-row:hover .s-name { color:#A84C2A !important; }
+    .stats-section .stat-num { color:#A84C2A !important; }
+    .stats-section .t-caption { color:#2F5F53 !important; opacity:.72 !important; }
+    .stats-section .stat-divider { background:rgba(168,76,42,.24); }
 
     /* REVIEW CARD */
     .review-card { background:linear-gradient(180deg,rgba(11,31,50,.96),rgba(7,24,39,.96)); border:1px solid rgba(255,183,3,0.14); padding:28px; border-radius:22px; box-shadow:0 20px 60px rgba(0,0,0,.18); }
     .review-card:hover { border-color:rgba(255,183,3,0.3); transform:translateY(-4px) scale(1.01); }
 
     /* GALLERY CELL */
-    .gallery-cell { aspect-ratio:4/3; background:linear-gradient(145deg,#0B1F32,#081522); border:1px solid rgba(255,183,3,0.12); position:relative; overflow:hidden; cursor:pointer; transition:transform .22s ease,border-color 0.2s,box-shadow .22s ease; border-radius:18px; }
+    .gallery-cell { aspect-ratio:4/3; background:linear-gradient(145deg,#172D25,#081522); border:1px solid rgba(255,183,3,0.12); position:relative; overflow:hidden; cursor:pointer; transition:transform .22s ease,border-color 0.2s,box-shadow .22s ease; border-radius:18px; }
     .gallery-cell:hover { transform: translateY(-4px); box-shadow:0 22px 52px rgba(0,0,0,.22); }
     .gallery-cell:hover { border-color:rgba(255,183,3,0.4); }
 
     /* STORY */
-    #story { background:linear-gradient(140deg,#EAF6FB 0%,#D8ECF7 100%); }
+    #story { background:linear-gradient(140deg,#F8F3E7 0%,#E8F0E7 100%); }
 
     /* WORK PHONE GALLERY */
     .work-phone-section {
       background:
         radial-gradient(ellipse 70% 80% at 68% 45%,rgba(14,110,156,.18),transparent 58%),
-        linear-gradient(135deg,#EAF6FB 0%,#D8ECF7 52%,#F8F3E7 100%);
+        linear-gradient(135deg,#F8F3E7 0%,#E8F0E7 52%,#F8F3E7 100%);
       overflow:hidden;
     }
     .work-showcase-wrap { display:grid; grid-template-columns:minmax(260px,380px) auto; align-items:center; justify-content:center; gap:42px; }
     .phone-gallery-copy { text-align:left; max-width:390px; }
     .phone-gallery-copy .work-points { display:grid; gap:10px; margin-top:22px; }
-    .work-point { display:flex; align-items:flex-start; gap:10px; color:#173A52; font-size:15px; line-height:1.65; font-weight:600; }
-    .work-point svg { width:18px; height:18px; color:#F97316; flex:0 0 auto; margin-top:3px; }
+    .work-point { display:flex; align-items:flex-start; gap:10px; color:#10251F; font-size:15px; line-height:1.65; font-weight:600; }
+    .work-point svg { width:18px; height:18px; color:#A84C2A; flex:0 0 auto; margin-top:3px; }
     .phone-stage { position:relative; display:grid; place-items:center; padding:14px; }
     .phone-stage::before {
       content:'';
@@ -485,52 +500,52 @@
       filter:blur(10px);
       pointer-events:none;
     }
-    .iphone-frame { width:300px; height:600px; background:#0D2438; border-radius:46px; box-shadow:0 0 0 2px #315872, 0 30px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.08); position:relative; overflow:hidden; flex-shrink:0; z-index:2; }
+    .iphone-frame { width:300px; height:600px; background:#0D2438; border-radius:46px; box-shadow:0 0 0 2px #6F8A7D, 0 30px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.08); position:relative; overflow:hidden; flex-shrink:0; z-index:2; }
     .iphone-island { position:absolute; top:12px; left:50%; transform:translateX(-50%); width:88px; height:26px; background:#020A12; border-radius:20px; z-index:10; }
-    .iphone-screen { position:absolute; top:50px; left:8px; right:8px; bottom:8px; background:#0B1F32; border-radius:36px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-    .phone-showcase { position:absolute; inset:0; overflow:hidden; background:#071827; }
-    .phone-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transform:scale(1.04); transition:opacity .55s ease,transform 4.5s ease; cursor:zoom-in; }
+    .iphone-screen { position:absolute; top:50px; left:8px; right:8px; bottom:8px; background:#172D25; border-radius:36px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+    .phone-showcase { position:absolute; inset:0; overflow:hidden; background:#10251F; }
+    .phone-slide { position:absolute; inset:0; background-size:cover; background-position:center; background-repeat:no-repeat; opacity:0; transform:scale(1.02); transition:opacity .55s ease,transform 4.5s ease; cursor:zoom-in; }
     .phone-slide.active { opacity:1; transform:scale(1); }
     .phone-slide::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(7,24,39,.04) 0%,rgba(7,24,39,.18) 48%,rgba(3,10,18,.86) 100%); }
     .phone-caption { position:absolute; left:0; right:0; bottom:0; z-index:4; padding:18px 16px 20px; text-align:left; background:linear-gradient(transparent,rgba(0,0,0,.78)); }
     .phone-caption-title { font-family:'DM Serif Display',serif; font-size:20px; line-height:1.1; color:#fff; margin-bottom:5px; }
-    .phone-caption-text { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#FFB703; font-weight:700; }
+    .phone-caption-text { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#C8A24A; font-weight:700; }
     .phone-dots { position:absolute; z-index:5; right:14px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:7px; }
     .phone-dots span { width:6px; height:18px; border-radius:999px; background:rgba(255,255,255,.22); transition:background .25s ease,box-shadow .25s ease; }
-    .phone-dots span.active { background:#FFB703; box-shadow:0 0 14px rgba(255,183,3,.45); }
+    .phone-dots span.active { background:#C8A24A; box-shadow:0 0 14px rgba(255,183,3,.45); }
     .phone-click-hint { position:absolute; left:16px; top:16px; z-index:6; color:#fff; background:rgba(7,24,39,.56); border:1px solid rgba(255,255,255,.14); backdrop-filter:blur(8px); border-radius:999px; padding:7px 10px; font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
-    .phone-nav { position:absolute; top:50%; z-index:5; transform:translateY(-50%); width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,183,3,.35); background:rgba(7,24,39,.68); color:#FFB703; cursor:pointer; font-size:24px; line-height:1; display:grid; place-items:center; transition:transform .2s ease,background .2s ease,border-color .2s ease; }
-    .phone-nav:hover { transform:translateY(-50%) scale(1.08); background:rgba(11,58,91,.92); border-color:#FFB703; }
+    .phone-nav { position:absolute; top:50%; z-index:5; transform:translateY(-50%); width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,183,3,.35); background:rgba(7,24,39,.68); color:#C8A24A; cursor:pointer; font-size:24px; line-height:1; display:grid; place-items:center; transition:transform .2s ease,background .2s ease,border-color .2s ease; }
+    .phone-nav:hover { transform:translateY(-50%) scale(1.08); background:rgba(11,58,91,.92); border-color:#C8A24A; }
     .phone-nav.prev { left:-18px; }
     .phone-nav.next { right:-18px; }
     .phone-thumb-rail { margin:18px auto 0; display:flex; gap:8px; justify-content:center; max-width:360px; overflow-x:auto; padding:4px 4px 10px; scrollbar-width:none; }
     .phone-thumb-rail::-webkit-scrollbar { display:none; }
     .phone-thumb { width:54px; height:68px; border-radius:11px; border:1px solid rgba(255,183,3,.18); background-size:cover; background-position:center; opacity:.6; cursor:pointer; flex:0 0 auto; transition:opacity .2s ease,transform .2s ease,border-color .2s ease; }
-    .phone-thumb.active { opacity:1; transform:translateY(-2px); border-color:#FFB703; box-shadow:0 10px 24px rgba(0,0,0,.24); }
+    .phone-thumb.active { opacity:1; transform:translateY(-2px); border-color:#C8A24A; box-shadow:0 10px 24px rgba(0,0,0,.24); }
     #workLightbox { position:fixed; inset:0; background:rgba(3,10,18,.92); z-index:650; display:none; align-items:center; justify-content:center; padding:28px; }
     #workLightbox.open { display:flex; }
-    .lightbox-card { width:min(960px,100%); background:#071827; border:1px solid rgba(255,183,3,.22); box-shadow:0 30px 100px rgba(0,0,0,.55); border-radius:24px; overflow:hidden; position:relative; }
+    .lightbox-card { width:min(960px,100%); background:#10251F; border:1px solid rgba(255,183,3,.22); box-shadow:0 30px 100px rgba(0,0,0,.55); border-radius:24px; overflow:hidden; position:relative; }
     .lightbox-card img { width:100%; max-height:76vh; object-fit:contain; background:#020A12; display:block; }
-    .lightbox-meta { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 18px; background:linear-gradient(90deg,#071827,#0B1F32); }
-    .lightbox-close { position:absolute; top:12px; right:12px; width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,183,3,.35); background:rgba(7,24,39,.82); color:#FFB703; font-size:24px; cursor:pointer; z-index:2; }
+    .lightbox-meta { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 18px; background:linear-gradient(90deg,#10251F,#172D25); }
+    .lightbox-close { position:absolute; top:12px; right:12px; width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,183,3,.35); background:rgba(7,24,39,.82); color:#C8A24A; font-size:24px; cursor:pointer; z-index:2; }
 
     /* FORM */
     .field-line { background:transparent; border:none; border-bottom:1px solid rgba(255,183,3,0.18); color:#F8F3E7; font-family:'Manrope',sans-serif; font-size:15px; padding:12px 0; width:100%; outline:none; transition:border-color 0.2s; }
-    .field-line::placeholder { color:#6E8AA0; opacity:.8; }
-    .field-line:focus { border-bottom-color:#FFB703; }
-    .field-label { font-family:'Manrope',sans-serif; font-size:11px; font-weight:600; color:#FFB703; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px; display:block; opacity:0.8; }
+    .field-line::placeholder { color:#71867B; opacity:.8; }
+    .field-line:focus { border-bottom-color:#C8A24A; }
+    .field-label { font-family:'Manrope',sans-serif; font-size:11px; font-weight:600; color:#C8A24A; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px; display:block; opacity:0.8; }
 
     /* PILLS */
-    .pill { border:1px solid rgba(255,183,3,0.2); color:#BED3E6; padding:7px 14px; font-size:13px; font-family:'Manrope',sans-serif; font-weight:500; cursor:pointer; transition:all 0.15s; border-radius:3px; background:transparent; }
-    .pill.active { background:#F97316; color:white; border-color:#F97316; }
-    .pill:hover:not(.active) { border-color:#FFB703; color:#FFB703; }
+    .pill { border:1px solid rgba(255,183,3,0.2); color:#E8EFE6; padding:7px 14px; font-size:13px; font-family:'Manrope',sans-serif; font-weight:500; cursor:pointer; transition:all 0.15s; border-radius:3px; background:transparent; }
+    .pill.active { background:#A84C2A; color:white; border-color:#A84C2A; }
+    .pill:hover:not(.active) { border-color:#C8A24A; color:#C8A24A; }
 
     /* FLOATER */
     #floater { position:fixed; right:24px; top:50%; transform:translateY(-50%); z-index:200; transition:opacity 0.3s; }
     #floater.hidden-floater { opacity:0; pointer-events:none; }
 
     /* SLIDE PANEL */
-    #quickPanel { position:fixed; right:0; top:0; height:100%; width:340px; background:linear-gradient(180deg,#071827,#061421); border-left:1px solid rgba(255,183,3,0.2); z-index:300; transform:translateX(100%); transition:transform 0.3s ease; }
+    #quickPanel { position:fixed; right:0; top:0; height:100%; width:340px; background:linear-gradient(180deg,#10251F,#07140F); border-left:1px solid rgba(255,183,3,0.2); z-index:300; transform:translateX(100%); transition:transform 0.3s ease; }
     #quickPanel.open { transform:translateX(0); }
     @media (max-width:640px) { #quickPanel { width:100%; } }
 
@@ -616,8 +631,8 @@
       #mobileBar { min-height:58px; }
       .ticker-row { min-height:66px; }
       .ticker-label { left:10px; padding:7px 10px; font-size:9px; }
-      .ticker-item { padding:0 22px; font-size:14px; }
-      .ticker-row:nth-of-type(2) .ticker-item { font-size:20px; }
+      .ticker-item { padding:0 24px; font-size:18px; }
+      .ticker-row:nth-of-type(2) .ticker-item { font-size:25px; }
       .ticker-note { display:none; }
       .ticker-track.forward { animation-duration:22s; }
       .ticker-track.reverse { animation-duration:29s; }
@@ -633,7 +648,7 @@
 
     /* STAT DIVIDER */
     .stat-divider { position:absolute; right:0; top:20%; height:60%; width:1px; background:rgba(255,183,3,0.12); }
-    .map-card { overflow:hidden; border-radius:24px; border:1px solid rgba(255,183,3,.16); background:linear-gradient(145deg,#0B1F32,#061421); box-shadow:0 24px 70px rgba(0,0,0,.22); }
+    .map-card { overflow:hidden; border-radius:24px; border:1px solid rgba(255,183,3,.16); background:linear-gradient(145deg,#172D25,#07140F); box-shadow:0 24px 70px rgba(0,0,0,.22); }
     .map-card iframe { width:100%; height:360px; border:0; display:block; filter:saturate(.92) contrast(.96); }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
   </style>
@@ -663,7 +678,7 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero-shell" style="min-height:100vh;padding-top:64px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#0B3A5B 0%,#071827 100%);display:flex;align-items:flex-start;position:relative;overflow:hidden;">
+<section class="hero-shell" style="min-height:100vh;padding-top:64px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#2F5F53 0%,#10251F 100%);display:flex;align-items:flex-start;position:relative;overflow:hidden;">
   <a class="hero-map-link" href="https://www.google.com/maps?cid=13467297807459514373" target="_blank" rel="noopener" aria-label="Open Madhuban Motors in Google Maps">
     <span class="hero-map-icon">
       <svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s6-5.34 6-11a6 6 0 10-12 0c0 5.66 6 11 6 11z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
@@ -711,8 +726,8 @@
   </div>
   <!-- Scroll hint -->
   <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);text-align:center;">
-    <div class="t-caption" style="margin-bottom:10px;opacity:0.65;font-size:10px;color:#FFB703;">SCROLL</div>
-    <div style="width:1px;height:32px;background:linear-gradient(to bottom,#FFB703,transparent);margin:0 auto;"></div>
+    <div class="t-caption" style="margin-bottom:10px;opacity:0.65;font-size:10px;color:#C8A24A;">SCROLL</div>
+    <div style="width:1px;height:32px;background:linear-gradient(to bottom,#C8A24A,transparent);margin:0 auto;"></div>
   </div>
 </section>
 
@@ -818,10 +833,10 @@
   <div class="container">
     <div class="upgrade-head">
       <div>
-        <div class="t-caption reveal" style="color:#0B5D8E;margin-bottom:8px;">START WITH WHAT YOUR CAR NEEDS</div>
-        <h2 class="t-h1 reveal" style="color:#071827;" data-delay="70">Choose your upgrade</h2>
+        <div class="t-caption reveal" style="color:#4D786B;margin-bottom:8px;">START WITH WHAT YOUR CAR NEEDS</div>
+        <h2 class="t-h1 reveal" style="color:#10251F;" data-delay="70">Choose your upgrade</h2>
       </div>
-      <p class="t-body reveal" style="max-width:430px;color:#31556F;" data-delay="120">Pick a category and send us your car model. We will recommend the right fit before you visit.</p>
+      <p class="t-body reveal" style="max-width:430px;color:#41584D;" data-delay="120">Pick a category and send us your car model. We will recommend the right fit before you visit.</p>
     </div>
     <div class="upgrade-grid">
       <button class="upgrade-card reveal" style="--upgrade-image:url('assets/web/service-safety.jpg')" onclick="selectUpgrade('Safety and Security')" data-delay="0">
@@ -847,26 +862,26 @@
 </section>
 
 <!-- TRUST BAR -->
-<section class="section-sm" style="background:#061421;">
+<section class="section-sm stats-section" style="background:#F8F3E7;border-top:1px solid rgba(16,37,31,.10);border-bottom:1px solid rgba(16,37,31,.10);">
   <div class="container">
     <div class="trust-grid" id="statsBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
       <div style="text-align:center;padding:24px 16px;position:relative;">
-        <div class="stat-num t-stat" data-type="year" style="color:#FFB703;opacity:0;">37 Years</div>
+        <div class="stat-num t-stat" data-type="year" style="color:#C8A24A;opacity:0;">37 Years</div>
         <div class="t-caption" style="margin-top:8px;opacity:0.5;">On GT Road</div>
         <div class="stat-divider"></div>
       </div>
       <div style="text-align:center;padding:24px 16px;position:relative;">
-        <div class="stat-num t-stat" data-type="gen" style="color:#FFB703;opacity:0;">3</div>
+        <div class="stat-num t-stat" data-type="gen" style="color:#C8A24A;opacity:0;">3</div>
         <div class="t-caption" style="margin-top:8px;opacity:0.5;">Generations</div>
         <div class="stat-divider"></div>
       </div>
       <div style="text-align:center;padding:24px 16px;position:relative;">
-        <div class="stat-num t-stat" data-type="rating" style="color:#FFB703;opacity:0;">4.6 ★</div>
+        <div class="stat-num t-stat" data-type="rating" style="color:#C8A24A;opacity:0;">4.6 ★</div>
         <div class="t-caption" style="margin-top:8px;opacity:0.5;">402 Google Reviews</div>
         <div class="stat-divider"></div>
       </div>
       <div style="text-align:center;padding:24px 16px;">
-        <div class="stat-num t-stat" data-type="customers" style="color:#FFB703;opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <div class="stat-num t-stat" data-type="customers" style="color:#C8A24A;opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;">
           1 Lakh+
           <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:pulse-dot 2s infinite;flex-shrink:0;"></span>
         </div>
@@ -879,11 +894,11 @@
 <div class="divider"></div>
 
 <!-- SERVICES -->
-<section class="section" style="background:#071827;">
+<section class="section services-section" style="background:#10251F;">
   <div class="container">
-    <div class="t-caption reveal" style="margin-bottom:16px;color:#FFB703;opacity:.82;">PERSONALISED FOR YOU</div>
-    <h2 class="t-display reveal" style="color:#F8F3E7;margin-bottom:14px;" data-delay="80">Your car. Your comfort.<br>Fitted around you.</h2>
-    <p class="t-sub reveal" style="margin-bottom:56px;max-width:680px;" data-delay="160">We do not push the same accessory into every car. Tell us how you drive, who travels with you and what experience you want. We will help you choose what genuinely fits.</p>
+    <div class="t-caption reveal" style="margin-bottom:16px;color:#C8A24A;opacity:.82;">PERSONALISED FOR YOU</div>
+    <h2 class="t-display reveal" style="color:#F8F3E7;margin-bottom:14px;" data-delay="80">Accessories that fit your car properly.</h2>
+    <p class="t-sub reveal" style="margin-bottom:56px;max-width:680px;" data-delay="160">Tell us your car model and what you need. We suggest the right fit, clean installation and sensible options before you spend.</p>
 
     <div>
       <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="0">
@@ -955,13 +970,13 @@
 <!-- WORK PHONE GALLERY -->
 <section class="section work-phone-section" style="text-align:center;">
   <div class="container">
-    <div class="t-caption reveal" style="margin-bottom:16px;color:#F97316;">REAL SHOP WORK</div>
-    <h2 class="t-h1 reveal" style="color:#071827;margin-bottom:10px;" data-delay="80">See the Finish Before You Visit</h2>
-    <p class="t-body reveal" style="margin:0 auto 34px;max-width:680px;color:#315872;" data-delay="160">Recent seat covers, steering covers, mats and panel work finished at Madhuban Motors. Tap any photo to see the detailing clearly.</p>
+    <div class="t-caption reveal" style="margin-bottom:16px;color:#A84C2A;">REAL SHOP WORK</div>
+    <h2 class="t-h1 reveal" style="color:#10251F;margin-bottom:10px;" data-delay="80">See the Finish Before You Visit</h2>
+    <p class="t-body reveal" style="margin:0 auto 34px;max-width:680px;color:#6F8A7D;" data-delay="160">Recent seat covers, steering covers, mats and panel work finished at Madhuban Motors. Tap any photo to see the detailing clearly.</p>
     <div class="work-showcase-wrap">
       <div class="phone-gallery-copy reveal" data-delay="40">
-        <h3 class="t-h2" style="color:#071827;margin-bottom:12px;font-weight:700;">Work That Looks Personal to Your Car</h3>
-        <p class="t-sm" style="color:#315872;">Every car gets a different recommendation. We match the accessory, fitment and finish to the way you use your car.</p>
+        <h3 class="t-h2" style="color:#10251F;margin-bottom:12px;font-weight:700;">Work That Looks Personal to Your Car</h3>
+        <p class="t-sm" style="color:#6F8A7D;">Every car gets a different recommendation. We match the accessory, fitment and finish to the way you use your car.</p>
         <div class="work-points">
           <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 5-3.2 8.7-7 10-3.8-1.3-7-5-7-10V6l7-3z"/><path d="M8.5 12.2l2.2 2.2 4.8-5"/></svg><span>Clean fitting with no loose finish.</span></div>
           <div class="work-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 18h6"/></svg><span>Seat covers, mats, steering and door-panel detailing.</span></div>
@@ -994,7 +1009,7 @@
 <div class="divider"></div>
 
 <!-- ENQUIRY FORM -->
-<section id="enquiry" class="section" style="background:linear-gradient(140deg,#0B3A5B 0%,#08243A 50%,#071827 100%);">
+<section id="enquiry" class="section" style="background:linear-gradient(140deg,#2F5F53 0%,#173A32 50%,#10251F 100%);">
   <div class="container-sm">
     <div style="text-align:center;margin-bottom:48px;">
       <div class="t-caption reveal" style="margin-bottom:16px;">GET A QUOTE</div>
@@ -1020,9 +1035,9 @@
           <input class="field-line" id="fYear" type="text" placeholder="e.g. 2022" />
         </div>
         <div>
-          <label class="field-label">Phone Number <span style="color:#F97316;">*</span></label>
+          <label class="field-label">Phone Number <span style="color:#A84C2A;">*</span></label>
           <input class="field-line" id="fPhone" type="tel" placeholder="+91 98765 43210" />
-          <div id="phoneErr" class="t-sm" style="color:#F97316;margin-top:6px;display:none;">Phone number required</div>
+          <div id="phoneErr" class="t-sm" style="color:#A84C2A;margin-top:6px;display:none;">Phone number required</div>
         </div>
       </div>
       <div style="margin-top:28px;">
@@ -1061,26 +1076,26 @@
     <div class="story-grid" style="display:grid;grid-template-columns:1fr 360px;gap:80px;align-items:start;position:relative;">
       <!-- Watermark -->
       <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden;">
-        <div style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(60px,11vw,160px);color:#0B3A5B;opacity:0.07;white-space:nowrap;user-select:none;">THREE GENERATIONS.</div>
+        <div style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(60px,11vw,160px);color:#2F5F53;opacity:0.07;white-space:nowrap;user-select:none;">THREE GENERATIONS.</div>
       </div>
       <div style="position:relative;z-index:1;">
-        <div class="t-caption reveal" style="color:#0B3A5B;margin-bottom:14px;opacity:0.8;">SINCE 1989 IN GT ROAD GHAZIABAD</div>
-        <h2 class="t-display reveal" style="color:#061421;margin-bottom:20px;" data-delay="80">GT Road. Ghaziabad.<br>Before the Car Market Existed.</h2>
+        <div class="t-caption reveal" style="color:#2F5F53;margin-bottom:14px;opacity:0.8;">SINCE 1989 IN GT ROAD GHAZIABAD</div>
+        <h2 class="t-display reveal" style="color:#07140F;margin-bottom:20px;" data-delay="80">GT Road. Ghaziabad.<br>Before the Car Market Existed.</h2>
         <div class="gold-rule reveal" style="margin:0 0 32px;max-width:72px;" data-delay="120"></div>
         <p class="reveal" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(18px,2.2vw,24px);color:#0B2D46;line-height:1.60;margin-bottom:28px;" data-delay="160">"Madhuban was already a name this city knew before the car accessories market on GT Road became what it is today. We were here first. We watched it all grow around us."</p>
-        <p style="font-family:'Manrope',sans-serif;font-size:16px;color:#173A52;line-height:1.80;margin-bottom:16px;" class="reveal" data-delay="200">Vivek Paruthi, Bitoo Bhaiya to everyone in the market, has run this shop on one principle from day one: source it right, install it right, stand behind your work. The reputation came from 37 years of doing the job properly.</p>
-        <p style="font-family:'Manrope',sans-serif;font-size:16px;color:#173A52;line-height:1.80;margin-bottom:40px;" class="reveal" data-delay="240">Today Madhuban Motors serves customers across Delhi NCR, Ghaziabad, Noida, Delhi, Bulandshahr and beyond. The shop is still where it always was. Same GT Road. Same standard.</p>
+        <p style="font-family:'Manrope',sans-serif;font-size:16px;color:#10251F;line-height:1.80;margin-bottom:16px;" class="reveal" data-delay="200">Vivek Paruthi, Bitoo Bhaiya to everyone in the market, has run this shop on one principle from day one: source it right, install it right, stand behind your work. The reputation came from 37 years of doing the job properly.</p>
+        <p style="font-family:'Manrope',sans-serif;font-size:16px;color:#10251F;line-height:1.80;margin-bottom:40px;" class="reveal" data-delay="240">Today Madhuban Motors serves customers across Delhi NCR, Ghaziabad, Noida, Delhi, Bulandshahr and beyond. The shop is still where it always was. Same GT Road. Same standard.</p>
         <div class="reveal" style="display:flex;gap:0;align-items:center;" data-delay="280">
-          <div style="text-align:center;padding:0 28px 0 0;border-right:1px solid #FFB703;">
-            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#0B3A5B;font-weight:400;">1989</div>
+          <div style="text-align:center;padding:0 28px 0 0;border-right:1px solid #C8A24A;">
+            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#2F5F53;font-weight:400;">1989</div>
             <div style="font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#0E6E9C;margin-top:4px;opacity:0.8;">Established</div>
           </div>
-          <div style="text-align:center;padding:0 28px;border-right:1px solid #FFB703;">
-            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#0B3A5B;">37</div>
+          <div style="text-align:center;padding:0 28px;border-right:1px solid #C8A24A;">
+            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#2F5F53;">37</div>
             <div style="font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#0E6E9C;margin-top:4px;opacity:0.8;">Years in Market</div>
           </div>
           <div style="text-align:center;padding:0 0 0 28px;">
-            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#0B3A5B;">Delhi NCR</div>
+            <div style="font-family:'DM Serif Display',serif;font-size:30px;color:#2F5F53;">Delhi NCR</div>
             <div style="font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#0E6E9C;margin-top:4px;opacity:0.8;">Area Served</div>
           </div>
         </div>
@@ -1090,7 +1105,7 @@
         <div style="background-image:linear-gradient(180deg,rgba(7,24,39,.05),rgba(7,24,39,.55)),url('https://source.unsplash.com/900x1200/?indian-business-owner,automotive-shop');background-size:cover;background-position:center;aspect-ratio:3/4;border:1px solid rgba(14,110,156,0.2);position:relative;overflow:hidden;">
           <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(7,24,39,0.65));">
             <div style="font-family:'Manrope',sans-serif;font-weight:600;font-size:13px;color:white;">Vivek Paruthi, Madhuban Motors</div>
-            <div style="font-family:'Manrope',sans-serif;font-size:11px;color:#FFB703;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;">GT Road, Est. 1989</div>
+            <div style="font-family:'Manrope',sans-serif;font-size:11px;color:#C8A24A;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;">GT Road, Est. 1989</div>
           </div>
         </div>
       </div>
@@ -1101,31 +1116,31 @@
 <div class="divider"></div>
 
 <!-- REVIEWS -->
-<section class="section" style="background:#071827;">
+<section class="section" style="background:#10251F;">
   <div class="container">
     <div class="t-caption reveal" style="margin-bottom:16px;">TOP GOOGLE REVIEWS</div>
     <h2 class="t-h1 reveal" style="color:#F8F3E7;margin-bottom:10px;" data-delay="80">Real Reviews From Google</h2>
     <div class="reveal" style="display:flex;align-items:center;gap:10px;margin-bottom:48px;" data-delay="140">
-      <span style="font-family:'DM Serif Display',serif;font-size:20px;color:#FFB703;">4.6 ★</span>
+      <span style="font-family:'DM Serif Display',serif;font-size:20px;color:#C8A24A;">4.6 ★</span>
       <span class="t-sm" style="color:#7793A8;">·</span>
       <span class="t-body"><span id="reviewCount">0</span>+ reviews on Google</span>
       <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s infinite;display:inline-block;flex-shrink:0;"></span>
     </div>
     <div class="reviews-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
       <div class="review-card reveal-l">
-        <div style="color:#FFB703;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+        <div style="color:#C8A24A;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
         <p class="t-body" style="font-style:italic;margin-bottom:20px;line-height:1.75;">"Excellent quality accessories with great accountability and a humble, customer-friendly approach. Special mention to the owner for his honest guidance."</p>
         <div class="t-h3" style="font-size:14px;color:#F8F3E7;">Garv Rohilla</div>
         <div class="t-caption" style="margin-top:4px;opacity:0.35;font-size:10px;">GOOGLE REVIEW</div>
       </div>
       <div class="review-card reveal" data-delay="80">
-        <div style="color:#FFB703;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+        <div style="color:#C8A24A;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
         <p class="t-body" style="font-style:italic;margin-bottom:20px;line-height:1.75;">"Music system setting done by professionals. The output is fantastic. Highly recommend Madhuban Motors to everyone."</p>
         <div class="t-h3" style="font-size:14px;color:#F8F3E7;">Google Review</div>
         <div class="t-caption" style="margin-top:4px;opacity:0.35;font-size:10px;">GOOGLE REVIEW</div>
       </div>
       <div class="review-card reveal-r">
-        <div style="color:#FFB703;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+        <div style="color:#C8A24A;font-size:18px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
         <p class="t-body" style="font-style:italic;margin-bottom:20px;line-height:1.75;">"Loved this showroom for my Wagon R. Genuine products and staff who really know their stuff. Will always come back."</p>
         <div class="t-h3" style="font-size:14px;color:#F8F3E7;">Google Review</div>
         <div class="t-caption" style="margin-top:4px;opacity:0.35;font-size:10px;">GOOGLE REVIEW</div>
@@ -1140,7 +1155,7 @@
 <div class="divider"></div>
 
 <!-- GALLERY -->
-<section class="section" style="background:#061421;">
+<section class="section" style="background:#07140F;">
   <div class="container">
     <div class="t-caption reveal" style="margin-bottom:16px;">OUR WORK</div>
     <h2 class="t-h1 reveal" style="color:#F8F3E7;margin-bottom:10px;" data-delay="80">Real Cars. Real Installs.</h2>
@@ -1148,56 +1163,56 @@
     <div class="gallery-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
       <div class="gallery-cell reveal" data-delay="0" style="background-image:linear-gradient(180deg,rgba(7,24,39,.08),rgba(7,24,39,.62)),url('assets/web/seat-cover-black-red.jpg');background-size:cover;background-position:center;">
         <div style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
-          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#FFB703;">SEAT COVER WORK</div>
-          <div class="t-sm" style="color:#6E8AA0;font-size:11px;">Real photos coming next</div>
+          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#C8A24A;">SEAT COVER WORK</div>
+          <div class="t-sm" style="color:#71867B;font-size:11px;">Real photos coming next</div>
         </div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
-          <div class="t-sm" style="color:#C9DCEB;font-size:12px;font-weight:500;">Seat Covers</div>
+          <div class="t-sm" style="color:#DDE7DC;font-size:12px;font-weight:500;">Seat Covers</div>
         </div>
       </div>
       <div class="gallery-cell reveal" data-delay="60" style="background-image:linear-gradient(180deg,rgba(7,24,39,.08),rgba(7,24,39,.62)),url('assets/web/steering-cover-dashboard.jpg');background-size:cover;background-position:center;">
         <div style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
-          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#FFB703;">INFOTAINMENT WORK</div>
-          <div class="t-sm" style="color:#6E8AA0;font-size:11px;">Real photos coming next</div>
+          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#C8A24A;">INFOTAINMENT WORK</div>
+          <div class="t-sm" style="color:#71867B;font-size:11px;">Real photos coming next</div>
         </div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
-          <div class="t-sm" style="color:#C9DCEB;font-size:12px;font-weight:500;">Steering Cover</div>
+          <div class="t-sm" style="color:#DDE7DC;font-size:12px;font-weight:500;">Steering Cover</div>
         </div>
       </div>
       <div class="gallery-cell reveal" data-delay="120" style="background-image:linear-gradient(180deg,rgba(7,24,39,.08),rgba(7,24,39,.62)),url('assets/web/door-panel-modification.jpg');background-size:cover;background-position:center;">
         <div style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
-          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#FFB703;">CAMERA FITTING</div>
-          <div class="t-sm" style="color:#6E8AA0;font-size:11px;">Real photos coming next</div>
+          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#C8A24A;">CAMERA FITTING</div>
+          <div class="t-sm" style="color:#71867B;font-size:11px;">Real photos coming next</div>
         </div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
-          <div class="t-sm" style="color:#C9DCEB;font-size:12px;font-weight:500;">Door Panel</div>
+          <div class="t-sm" style="color:#DDE7DC;font-size:12px;font-weight:500;">Door Panel</div>
         </div>
       </div>
       <div class="gallery-cell reveal" data-delay="180" style="background-image:linear-gradient(180deg,rgba(7,24,39,.08),rgba(7,24,39,.62)),url('assets/web/seat-cover-cream-blue.jpg');background-size:cover;background-position:center;">
         <div style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
-          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#FFB703;">LIGHTING WORK</div>
-          <div class="t-sm" style="color:#6E8AA0;font-size:11px;">Real photos coming next</div>
+          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#C8A24A;">LIGHTING WORK</div>
+          <div class="t-sm" style="color:#71867B;font-size:11px;">Real photos coming next</div>
         </div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
-          <div class="t-sm" style="color:#C9DCEB;font-size:12px;font-weight:500;">Cream Seat Covers</div>
+          <div class="t-sm" style="color:#DDE7DC;font-size:12px;font-weight:500;">Cream Seat Covers</div>
         </div>
       </div>
       <div class="gallery-cell reveal" data-delay="240" style="background-image:linear-gradient(180deg,rgba(7,24,39,.08),rgba(7,24,39,.62)),url('assets/web/steering-cover-dashboard.jpg');background-size:cover;background-position:center;">
         <div style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
-          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#FFB703;">AUDIO WIRING</div>
-          <div class="t-sm" style="color:#6E8AA0;font-size:11px;">Real photos coming next</div>
+          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#C8A24A;">AUDIO WIRING</div>
+          <div class="t-sm" style="color:#71867B;font-size:11px;">Real photos coming next</div>
         </div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
-          <div class="t-sm" style="color:#C9DCEB;font-size:12px;font-weight:500;">Dashboard Finish</div>
+          <div class="t-sm" style="color:#DDE7DC;font-size:12px;font-weight:500;">Dashboard Finish</div>
         </div>
       </div>
       <div class="gallery-cell reveal" data-delay="300" style="background-image:linear-gradient(180deg,rgba(7,24,39,.08),rgba(7,24,39,.62)),url('assets/web/door-panel-modification.jpg');background-size:cover;background-position:center;">
         <div style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
-          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#FFB703;">INTERIOR FINISH</div>
-          <div class="t-sm" style="color:#6E8AA0;font-size:11px;">Real photos coming next</div>
+          <div class="t-caption" style="opacity:0.65;font-size:10px;color:#C8A24A;">INTERIOR FINISH</div>
+          <div class="t-sm" style="color:#71867B;font-size:11px;">Real photos coming next</div>
         </div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
-          <div class="t-sm" style="color:#C9DCEB;font-size:12px;font-weight:500;">Door Panel Detail</div>
+          <div class="t-sm" style="color:#DDE7DC;font-size:12px;font-weight:500;">Door Panel Detail</div>
         </div>
       </div>
     </div>
@@ -1207,7 +1222,7 @@
 <div class="divider"></div>
 
 <!-- CTA BLOCK -->
-<section class="section" style="background:linear-gradient(140deg,#0B5D8E 0%,#0B3A5B 100%);text-align:center;">
+<section class="section" style="background:linear-gradient(140deg,#4D786B 0%,#2F5F53 100%);text-align:center;">
   <div class="container-sm">
     <h2 class="t-display reveal" style="font-style:italic;color:#F8F3E7;margin-bottom:14px;">Ready to upgrade your car?</h2>
     <p class="t-sub reveal" style="margin-bottom:40px;" data-delay="80">WhatsApp us your car model. We will guide you clearly before you visit.</p>
@@ -1224,7 +1239,7 @@
 <div class="divider"></div>
 
 <!-- VISIT US -->
-<section class="section" style="background:#071827;">
+<section class="section" style="background:#10251F;">
   <div class="container">
     <div class="visit-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;">
       <div>
@@ -1239,7 +1254,7 @@
         <div class="t-caption reveal" style="margin-bottom:6px;opacity:0.5;" data-delay="150">SERVING DELHI, NOIDA, GHAZIABAD, BULANDSHAHR AND NCR</div>
         <div class="reveal" style="margin-top:24px;margin-bottom:8px;" data-delay="180">
           <div class="t-caption" style="margin-bottom:8px;">HOURS</div>
-          <div class="t-body" style="line-height:2;">Mon, Wed to Sun: 10:00 AM to 8:00 PM<br><span style="color:#F97316;font-weight:500;">Tuesday: Closed</span></div>
+          <div class="t-body" style="line-height:2;">Mon, Wed to Sun: 10:00 AM to 8:00 PM<br><span style="color:#A84C2A;font-weight:500;">Tuesday: Closed</span></div>
         </div>
         <div class="reveal" style="font-family:'DM Serif Display',serif;font-size:28px;color:#F8F3E7;margin:24px 0;" data-delay="200">+91 99114 43751</div>
         <div class="reveal" style="display:flex;flex-direction:column;gap:10px;max-width:260px;" data-delay="240">
@@ -1262,7 +1277,7 @@
           <div style="padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
             <div>
               <div class="t-caption" style="font-size:10px;opacity:.78;">GOOGLE MAPS</div>
-              <div class="t-sm" style="margin-top:4px;color:#C9DCEB;">Near Opulent Mall, GT Road, Ghaziabad</div>
+              <div class="t-sm" style="margin-top:4px;color:#DDE7DC;">Near Opulent Mall, GT Road, Ghaziabad</div>
             </div>
             <a href="https://www.google.com/maps/search/?api=1&query=Madhuban%20Motors%20GT%20Road%20Ghaziabad" target="_blank" class="btn btn-secondary btn-sm">Open in Maps</a>
           </div>
@@ -1275,16 +1290,16 @@
 <!-- FOOTER -->
 <footer style="background:#06101A;border-top:1px solid rgba(255,183,3,0.1);padding:56px 24px 96px;">
   <div class="container" style="text-align:center;">
-    <div class="brand-name" style="font-size:32px;color:#FFB703;margin-bottom:10px;">Madhu<span class="mirror-b">B</span>an Motors</div>
+    <div class="brand-name" style="font-size:32px;color:#C8A24A;margin-bottom:10px;">Madhu<span class="mirror-b">B</span>an Motors</div>
     <div class="t-sm" style="margin-bottom:6px;">Est. 1989, Ghaziabad, Uttar Pradesh</div>
-    <div class="t-caption" style="opacity:0.72;margin-bottom:32px;font-size:11px;color:#FFB703;">PRECISION  CRAFTSMANSHIP  TRUST</div>
+    <div class="t-caption" style="opacity:0.72;margin-bottom:32px;font-size:11px;color:#C8A24A;">PRECISION  CRAFTSMANSHIP  TRUST</div>
     <div style="display:flex;justify-content:center;gap:36px;margin-bottom:32px;">
-      <a href="https://wa.me/919911443751" target="_blank" class="t-sm" style="color:#6E8AA0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFB703'" onmouseout="this.style.color='#6E8AA0'">WhatsApp</a>
-      <a href="tel:+919911443751" class="t-sm" style="color:#6E8AA0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFB703'" onmouseout="this.style.color='#6E8AA0'">Call</a>
-      <a href="https://maps.google.com/?q=Madhuban+Motors+GT+Road+Ghaziabad" target="_blank" class="t-sm" style="color:#6E8AA0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFB703'" onmouseout="this.style.color='#6E8AA0'">Directions</a>
-      <a href="https://maps.google.com/?cid=madhubanmotors" target="_blank" class="t-sm" style="color:#6E8AA0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFB703'" onmouseout="this.style.color='#6E8AA0'">Reviews</a>
+      <a href="https://wa.me/919911443751" target="_blank" class="t-sm" style="color:#71867B;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#C8A24A'" onmouseout="this.style.color='#71867B'">WhatsApp</a>
+      <a href="tel:+919911443751" class="t-sm" style="color:#71867B;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#C8A24A'" onmouseout="this.style.color='#71867B'">Call</a>
+      <a href="https://maps.google.com/?q=Madhuban+Motors+GT+Road+Ghaziabad" target="_blank" class="t-sm" style="color:#71867B;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#C8A24A'" onmouseout="this.style.color='#71867B'">Directions</a>
+      <a href="https://maps.google.com/?cid=madhubanmotors" target="_blank" class="t-sm" style="color:#71867B;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#C8A24A'" onmouseout="this.style.color='#71867B'">Reviews</a>
     </div>
-    <div style="font-family:'DM Serif Display',serif;font-size:18px;letter-spacing:.18em;color:#FFB703;margin:4px 0 16px;">A.S.S.N.</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:18px;letter-spacing:.18em;color:#C8A24A;margin:4px 0 16px;">A.S.S.N.</div>
     <div class="t-sm" style="color:#5B7488;">© 2026 Madhuban Motors. All rights reserved.</div>
   </div>
 </footer>
@@ -1297,7 +1312,7 @@
     WhatsApp
   </a>
   <a href="tel:+919911443751"
-    style="flex:1;background:#F97316;color:white;padding:16px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;">
+    style="flex:1;background:#A84C2A;color:white;padding:16px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:600;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
     Call Now
   </a>
@@ -1306,12 +1321,12 @@
 <!-- STEERING WHEEL FLOATER -->
 <div id="floater">
   <div style="position:relative;">
-    <div id="floaterTooltip" style="position:absolute;right:68px;top:50%;transform:translateY(-50%);background:#0B3A5B;border:1px solid rgba(255,183,3,0.4);color:#FFB703;padding:5px 12px;font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity 0.2s;pointer-events:none;">QUICK QUOTE</div>
+    <div id="floaterTooltip" style="position:absolute;right:68px;top:50%;transform:translateY(-50%);background:#2F5F53;border:1px solid rgba(255,183,3,0.4);color:#C8A24A;padding:5px 12px;font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity 0.2s;pointer-events:none;">QUICK QUOTE</div>
     <button id="floaterBtn" onclick="openPanel()"
-      style="width:56px;height:56px;border-radius:50%;background:#0B3A5B;border:1.5px solid rgba(255,183,3,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;animation:goldGlow 3s ease-in-out infinite;transition:transform 0.2s;"
+      style="width:56px;height:56px;border-radius:50%;background:#2F5F53;border:1.5px solid rgba(255,183,3,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;animation:goldGlow 3s ease-in-out infinite;transition:transform 0.2s;"
       onmouseover="document.getElementById('floaterTooltip').style.opacity='1';this.style.transform='scale(1.1)'"
       onmouseout="document.getElementById('floaterTooltip').style.opacity='0';this.style.transform='scale(1)'">
-      <svg class="animate-steer" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFB703" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="animate-steer" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C8A24A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
         <line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/>
         <line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/>
@@ -1343,13 +1358,13 @@
         <div style="font-family:'DM Serif Display',serif;font-size:24px;color:#F8F3E7;">Quick Quote</div>
         <div class="t-sm" style="margin-top:6px;">We'll reply in minutes</div>
       </div>
-      <button onclick="closePanel()" style="background:none;border:none;color:#FFB703;font-size:24px;cursor:pointer;padding:0;line-height:1;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">×</button>
+      <button onclick="closePanel()" style="background:none;border:none;color:#C8A24A;font-size:24px;cursor:pointer;padding:0;line-height:1;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">×</button>
     </div>
     <div class="quick-fields" style="flex:1;display:flex;flex-direction:column;gap:24px;">
       <div>
-        <label class="field-label">YOUR NUMBER <span style="color:#F97316;">*</span></label>
+        <label class="field-label">YOUR NUMBER <span style="color:#A84C2A;">*</span></label>
         <input class="field-line" id="qPhone" type="tel" placeholder="+91 98765 43210" />
-        <div id="qPhoneErr" class="t-sm" style="color:#F97316;margin-top:6px;display:none;">Required</div>
+        <div id="qPhoneErr" class="t-sm" style="color:#A84C2A;margin-top:6px;display:none;">Required</div>
       </div>
       <div>
         <label class="field-label">Service</label>
@@ -1386,8 +1401,8 @@
 
 <!-- COMING SOON OVERLAY -->
 <div id="comingSoon">
-  <button onclick="document.getElementById('comingSoon').classList.remove('open')" style="position:absolute;top:24px;right:28px;background:none;border:none;color:#FFB703;font-size:28px;cursor:pointer;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">×</button>
-  <div class="brand-name" style="font-size:clamp(28px,6vw,52px);color:#FFB703;margin-bottom:16px;text-align:center;">Madhu<span class="mirror-b">B</span>an Shop</div>
+  <button onclick="document.getElementById('comingSoon').classList.remove('open')" style="position:absolute;top:24px;right:28px;background:none;border:none;color:#C8A24A;font-size:28px;cursor:pointer;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">×</button>
+  <div class="brand-name" style="font-size:clamp(28px,6vw,52px);color:#C8A24A;margin-bottom:16px;text-align:center;">Madhu<span class="mirror-b">B</span>an Shop</div>
   <div style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,3vw,32px);color:#F8F3E7;margin-bottom:14px;text-align:center;">Coming Soon</div>
   <p class="t-body" style="text-align:center;max-width:360px;margin-bottom:12px;">Shop accessories online. Browse genuine products. We're building it.</p>
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:36px;">
@@ -1408,22 +1423,30 @@ const workGallery = [
   {
     src: 'assets/web/seat-cover-black-red.jpg',
     title: 'Black and Red Seat Covers',
-    text: 'Bucket-fit seat covers with contrast piping'
+    text: 'Bucket-fit seat covers with contrast piping',
+    fit: 'cover',
+    position: 'center'
   },
   {
     src: 'assets/web/seat-cover-cream-blue.jpg',
     title: 'Cream and Blue Seat Covers',
-    text: 'Clean interior finish with premium fitment'
+    text: 'Clean interior finish with premium fitment',
+    fit: 'cover',
+    position: 'center'
   },
   {
     src: 'assets/web/steering-cover-dashboard.jpg',
     title: 'Steering Cover and Interior',
-    text: 'Steering grip, seat work and dashboard finish'
+    text: 'Steering grip, seat work and dashboard finish',
+    fit: 'cover',
+    position: 'center'
   },
   {
     src: 'assets/web/door-panel-modification.jpg',
     title: 'Door Panel Modification',
-    text: 'Custom door panel insert with stitched detailing'
+    text: 'Custom door panel insert with stitched detailing',
+    fit: 'contain',
+    position: 'center'
   }
 ];
 let currentWorkIndex = 0;
@@ -1439,6 +1462,8 @@ function renderPhoneGallery() {
   if (!slide || !current) return;
 
   slide.style.backgroundImage = `url('${current.src}')`;
+  slide.style.backgroundSize = current.fit || 'cover';
+  slide.style.backgroundPosition = current.position || 'center';
   title.textContent = current.title;
   text.textContent = current.text;
   dots.innerHTML = workGallery.map((_, i) => `<span class="${i === currentWorkIndex ? 'active' : ''}"></span>`).join('');
@@ -1525,10 +1550,10 @@ window.addEventListener('scroll', () => {
   const pct = h > 0 ? (scrollY / h) * 100 : 0;
   if (progress) progress.style.width = pct + '%';
   const stops = [
-    'linear-gradient(180deg,#071827 0%,#061421 45%,#08243A 100%)',
-    'linear-gradient(180deg,#061421 0%,#0B3A5B 55%,#071827 100%)',
-    'linear-gradient(180deg,#08243A 0%,#0B5D8E 50%,#071827 100%)',
-    'linear-gradient(180deg,#071827 0%,#061421 52%,#0B3A5B 100%)'
+    'linear-gradient(180deg,#10251F 0%,#07140F 45%,#173A32 100%)',
+    'linear-gradient(180deg,#07140F 0%,#2F5F53 55%,#10251F 100%)',
+    'linear-gradient(180deg,#173A32 0%,#4D786B 50%,#10251F 100%)',
+    'linear-gradient(180deg,#10251F 0%,#07140F 52%,#2F5F53 100%)'
   ];
   document.body.style.background = stops[Math.min(stops.length - 1, Math.floor(pct / 25))];
 });
