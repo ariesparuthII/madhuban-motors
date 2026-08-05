@@ -683,7 +683,17 @@
       .work-showcase-wrap { grid-template-columns:1fr; gap:24px; }
       .phone-gallery-copy { text-align:center; max-width:360px; margin:0 auto; }
       .phone-gallery-copy .work-points { display:none; }
-      .phone-stage { padding:0; --phone-half:min(140px,39vw); }
+      /* Phone fills most of a mobile viewport, so a split leaves ~47px a side —
+         too little to read as a logo. Fall back to one centred badge behind it. */
+      .phone-stage { padding:0; --wm-w:180vw; }
+      .phone-wm.r { display:none; }
+      .phone-wm.l {
+        right:auto; left:50%;
+        transform:translate(-50%,-50%);
+        width:var(--wm-w);
+        background-position:center center;
+        opacity:.20;
+      }
       .iphone-frame { width:min(280px,78vw); height:min(560px,156vw); border-radius:42px; }
       .iphone-screen { top:48px; border-radius:34px; }
       .phone-nav.prev { left:-10px; }
