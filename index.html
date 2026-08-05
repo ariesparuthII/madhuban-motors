@@ -9,7 +9,16 @@
   <meta property="og:description" content="Three generations. One standard. Car accessories & custom installs." />
   <meta property="og:url" content="https://madhubanmotors.com/" />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://madhubanmotors.com/assets/web/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://madhubanmotors.com/assets/web/og-image.jpg" />
+  <meta name="theme-color" content="#0B0B0B" />
   <link rel="canonical" href="https://madhubanmotors.com/" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/web/icon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/web/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/web/icon-180.png" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -711,10 +720,15 @@
 
 <!-- NAV -->
 <nav id="mainNav">
-  <div class="container nav-inner" style="height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+  <div class="container nav-inner" style="height:78px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
     <div class="nav-brand">
-      <div class="brand-name" style="font-size:19px;letter-spacing:-0.3px;">Madhu<span class="mirror-b">B</span>an Motors</div>
-      <div class="t-caption" style="font-size:10px;margin-top:2px;opacity:0.65;">EST. 1989  GHAZIABAD</div>
+      <a href="#" aria-label="Madhuban Motors home" style="display:block;line-height:0;">
+        <picture>
+          <source srcset="assets/web/logo-nav.webp" type="image/webp">
+          <img src="assets/web/logo-nav.png" alt="Madhuban Motors" width="400" height="192"
+            style="height:58px;width:auto;display:block;" />
+        </picture>
+      </a>
     </div>
     <button onclick="document.getElementById('comingSoon').classList.add('open')"
       class="btn btn-secondary btn-sm hide-mobile"
@@ -731,7 +745,7 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero-shell" style="min-height:100vh;padding-top:64px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#303030 0%,#181818 100%);display:flex;align-items:flex-start;position:relative;overflow:hidden;">
+<section class="hero-shell" style="min-height:100vh;padding-top:78px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#303030 0%,#181818 100%);display:flex;align-items:flex-start;position:relative;overflow:hidden;">
   <div id="heroLights" class="hero-lights" aria-hidden="true"></div>
   <a class="hero-map-link" href="https://www.google.com/maps?cid=13467297807459514373" target="_blank" rel="noopener" aria-label="Open Madhuban Motors in Google Maps">
     <span class="hero-map-icon">
@@ -1321,7 +1335,11 @@
 <!-- FOOTER -->
 <footer style="background:#0B0B0B;border-top:1px solid rgba(255,242,0,0.18);padding:56px 24px 96px;">
   <div class="container" style="text-align:center;">
-    <div class="brand-name" style="font-size:32px;color:#FFF200;margin-bottom:10px;">Madhu<span class="mirror-b">B</span>an Motors</div>
+    <picture>
+      <source srcset="assets/web/logo.webp" type="image/webp">
+      <img src="assets/web/logo.png" alt="Madhuban Motors" width="800" height="385" loading="lazy"
+        style="height:96px;width:auto;display:block;margin:0 auto 14px;" />
+    </picture>
     <div class="t-sm" style="margin-bottom:6px;">Est. 1989, Ghaziabad, Uttar Pradesh</div>
     <div class="t-caption" style="opacity:0.72;margin-bottom:32px;font-size:11px;color:#FFF200;">PRECISION  CRAFTSMANSHIP  TRUST</div>
     <div style="display:flex;justify-content:center;gap:36px;margin-bottom:32px;">
