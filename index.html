@@ -548,6 +548,16 @@
       filter:blur(10px);
       pointer-events:none;
     }
+    .phone-watermark {
+      position:absolute; left:50%; top:46%;
+      transform:translate(-50%,-50%);
+      width:min(880px,128vw);
+      aspect-ratio:2804/1348;
+      background:url('assets/web/logo.webp') center/contain no-repeat;
+      opacity:.18;
+      z-index:0;
+      pointer-events:none;
+    }
     .iphone-frame { width:300px; height:600px; background:#181818; border-radius:46px; box-shadow:0 0 0 2px #303030, 0 30px 80px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(255,255,255,0.08); position:relative; overflow:hidden; flex-shrink:0; z-index:2; }
     .iphone-island { position:absolute; top:12px; left:50%; transform:translateX(-50%); width:88px; height:26px; background:#020A12; border-radius:20px; z-index:10; }
     .iphone-screen { position:absolute; top:50px; left:8px; right:8px; bottom:8px; background:#303030; border-radius:36px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
@@ -566,7 +576,7 @@
     .phone-nav:hover { transform:translateY(-50%) scale(1.08); background:rgba(176,30,10,.92); border-color:#FFF200; }
     .phone-nav.prev { left:-18px; }
     .phone-nav.next { right:-18px; }
-    .phone-thumb-rail { margin:18px auto 0; display:flex; gap:8px; justify-content:center; max-width:360px; overflow-x:auto; padding:4px 4px 10px; scrollbar-width:none; }
+    .phone-thumb-rail { position:relative; z-index:1; margin:18px auto 0; display:flex; gap:8px; justify-content:center; max-width:360px; overflow-x:auto; padding:4px 4px 10px; scrollbar-width:none; }
     .phone-thumb-rail::-webkit-scrollbar { display:none; }
     .phone-thumb { width:54px; height:68px; border-radius:11px; border:1px solid rgba(255,183,3,.18); background-size:cover; background-position:center; opacity:.6; cursor:pointer; flex:0 0 auto; transition:opacity .2s ease,transform .2s ease,border-color .2s ease; }
     .phone-thumb.active { opacity:1; transform:translateY(-2px); border-color:#FFF200; box-shadow:0 10px 24px rgba(0,0,0,.24); }
@@ -1029,6 +1039,7 @@
     <p class="t-body reveal" style="margin:0 auto 30px;max-width:620px;color:#444444;font-size:19px;" data-delay="160">Seat covers, steering covers, mats and panel finish from Madhuban Motors.</p>
     <div class="work-showcase-wrap">
       <div class="phone-stage reveal" data-delay="120">
+        <div class="phone-watermark" aria-hidden="true"></div>
         <div class="iphone-frame">
           <div class="iphone-island"></div>
           <div class="iphone-screen">
