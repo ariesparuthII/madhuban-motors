@@ -133,7 +133,11 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fraunces:opsz,wght@9..144,900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    /* overflow-x on <body> alone does not stop the layout viewport growing,
+       so a position:fixed nav anchored right:0 resolves against the wider
+       document and pushes its buttons off screen. Clipping at <html> keeps
+       the viewport honest. Safe here: the page uses no position:sticky. */
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; overflow-x: hidden; }
     body { background: #181818; color: #181818; font-family: 'Manrope', sans-serif; font-size: 16px; line-height: 1.55; overflow-x: hidden; -webkit-font-smoothing: antialiased; transition: background 900ms ease; }
 
     :root { --deep:#181818; --deep-2:#0B0B0B; --blue:#303030; --blue-2:#3A3A3A; --orange:#DA291C; --orange-soft:#FFF200; --cream:#FFFFFF; --mist:#F7F7F7; --card:#303030; }
@@ -519,6 +523,48 @@
     .reveal-l.visible { opacity:1; transform:translateX(0); }
     .reveal-r     { opacity:0; transform:translateX(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
     .reveal-r.visible { opacity:1; transform:translateX(0); }
+
+    /* ---- Jump menu ---------------------------------------------------- */
+    #jumpMenu { position:fixed; inset:0; z-index:10000; display:none; }
+    #jumpMenu.open { display:block; }
+    .jump-backdrop { position:absolute; inset:0; background:rgba(8,8,8,.80); backdrop-filter:blur(6px); }
+    .jump-sheet {
+      position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      width:min(980px,94vw); max-height:88vh; overflow-y:auto;
+      background:linear-gradient(160deg,#1E1E1E 0%,#131313 62%,#1A1A1A 100%);
+      border:1px solid rgba(255,242,0,.18); border-radius:20px;
+      box-shadow:0 40px 120px rgba(0,0,0,.72);
+      padding:26px clamp(18px,3vw,34px) 30px;
+      animation:jumpIn .34s cubic-bezier(.2,.8,.2,1);
+    }
+    @keyframes jumpIn {
+      from { opacity:0; transform:translate(-50%,-46%) scale(.975); }
+      to   { opacity:1; transform:translate(-50%,-50%) scale(1); }
+    }
+    .jump-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:22px; }
+    .jump-eyebrow { font-family:'Manrope',sans-serif; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#FFF200; margin-bottom:6px; }
+    .jump-title { font-family:'DM Serif Display',serif; font-size:clamp(23px,3.4vw,34px); color:#FFFFFF; line-height:1.15; }
+    .jump-close { background:none; border:1px solid rgba(255,255,255,.22); color:#FFFFFF; width:40px; height:40px; border-radius:50%; font-size:25px; line-height:1; cursor:pointer; flex:0 0 auto; transition:background .2s ease, border-color .2s ease, transform .3s ease; }
+    .jump-close:hover { background:#DA291C; border-color:#DA291C; transform:rotate(90deg); }
+
+    .jump-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:12px; }
+    .jump-card { position:relative; display:block; aspect-ratio:4/3; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.10); text-decoration:none; transition:border-color .25s ease, box-shadow .25s ease; }
+    .jump-card img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .55s cubic-bezier(.2,.8,.2,1); }
+    .jump-card::after { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(9,9,9,.93) 12%,rgba(9,9,9,.34) 54%,rgba(9,9,9,.04) 100%); }
+    .jump-card-label { position:absolute; left:13px; right:13px; bottom:11px; z-index:2; display:flex; flex-direction:column; gap:3px; font-family:'Manrope',sans-serif; font-weight:700; font-size:14.5px; color:#FFFFFF; line-height:1.25; }
+    .jump-card-label em { font-style:normal; font-weight:500; font-size:11px; color:rgba(255,255,255,.60); transition:color .25s ease; }
+    .jump-card:hover img { transform:scale(1.09); }
+    .jump-card:hover { border-color:rgba(255,242,0,.55); box-shadow:0 14px 40px rgba(0,0,0,.5); }
+    .jump-card:hover .jump-card-label em { color:#FFF200; }
+    .jump-card:focus-visible { outline:2px solid #FFF200; outline-offset:2px; }
+
+    .jump-links { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; padding-top:18px; border-top:1px solid rgba(255,255,255,.10); }
+    .jump-links a { font-family:'Manrope',sans-serif; font-size:13px; font-weight:600; color:rgba(255,255,255,.78); text-decoration:none; padding:8px 15px; border:1px solid rgba(255,255,255,.16); border-radius:999px; transition:color .2s ease, background .2s ease, border-color .2s ease; }
+    .jump-links a:hover { color:#181818; background:#FFF200; border-color:#FFF200; }
+    .jump-links a:focus-visible { outline:2px solid #FFF200; outline-offset:2px; }
+
+    .nav-menu-btn { display:inline-flex; align-items:center; gap:7px; background:none; border:1px solid rgba(255,255,255,.24); color:#FFFFFF; border-radius:999px; padding:8px 14px; font-family:'Manrope',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color .2s ease, border-color .2s ease; }
+    .nav-menu-btn:hover { border-color:#FFF200; color:#FFF200; }
     .gold-rule    { height:1px; background:#FFF200; width:0; transition:width 1s ease; }
     .gold-rule.visible { width:100%; }
 
@@ -692,6 +738,10 @@
       .nav-brand { min-width:0; flex:1; }
       .nav-brand .brand-name { font-size:16px !important; letter-spacing:-.2px !important; }
       .nav-brand .t-caption { font-size:8px !important; letter-spacing:.08em; }
+      /* Icon only — the text label costs ~60px the nav does not have once
+         the logo, WhatsApp and Call are placed. */
+      .nav-menu-btn { padding:9px 10px; gap:0; }
+      .nav-menu-label { display:none; }
       .nav-actions { gap:6px !important; flex-shrink:0; }
       .nav-actions .btn { min-width:44px; padding:9px 10px; font-size:11px; }
       .hero-shell { min-height:820px !important; padding-top:68px !important; overflow:hidden; animation:none; }
@@ -821,6 +871,10 @@
       Shop Online
     </button>
     <div class="nav-actions" style="display:flex;gap:10px;align-items:center;">
+      <button class="nav-menu-btn" onclick="openJumpMenu()" aria-haspopup="dialog" aria-controls="jumpMenu">
+        <svg viewBox="0 0 24 24" fill="none" width="15" height="15" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="nav-menu-label">Browse</span>
+      </button>
       <a href="https://wa.me/919911443751?text=Hi%2C%20I%20found%20you%20on%20Google%20and%20want%20to%20enquire%20about%20your%20services." target="_blank"
         class="btn btn-primary btn-sm">WhatsApp</a>
       <a href="tel:+919911443751" class="btn btn-secondary btn-sm">Call</a>
@@ -1032,14 +1086,14 @@
 <div class="divider"></div>
 
 <!-- SERVICES -->
-<section class="section services-section" style="background:#181818;">
+<section id="services" class="section services-section" style="background:#181818;">
   <div class="container">
     <div class="t-caption reveal" style="margin-bottom:16px;color:#FFF200;opacity:.82;">PERSONALISED FOR YOU</div>
     <h2 class="t-display reveal" style="color:#FFFFFF;margin-bottom:14px;" data-delay="80">Accessories that fit your car properly.</h2>
     <p class="t-sub reveal" style="margin-bottom:56px;max-width:680px;" data-delay="160">Tell us your car model and what you need. We suggest the right fit, clean installation and sensible options before you spend.</p>
 
     <div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="0">
+      <div id="svc-safety" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="0">
         <img class="service-visual" src="assets/web/service-safety.jpg" alt="Dash camera, reverse camera and parking sensor installation" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Safety and Security for Every Drive</div>
@@ -1047,7 +1101,7 @@
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="60">
+      <div id="svc-interior" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="60">
         <img class="service-visual" src="assets/web/service-interior.jpg" alt="Complete custom-fit premium car interior" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">An Interior That Feels Made for You</div>
@@ -1055,7 +1109,7 @@
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="105">
+      <div id="svc-mats" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="105">
         <img class="service-visual" src="assets/web/service-mats.jpg" alt="Custom-fit premium car floor mats" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Mats That Fit the Floor, Not Just Cover It</div>
@@ -1063,7 +1117,7 @@
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="150">
+      <div id="svc-audio" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="150">
         <img class="service-visual" src="assets/web/service-audio.jpg" alt="High-end car audio with DSP amplifiers and subwoofer" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Sound Tuned to the Way You Listen</div>
@@ -1071,7 +1125,7 @@
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="210">
+      <div id="svc-infotainment" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="210">
         <img class="service-visual" src="assets/web/service-infotainment.jpg" alt="Android infotainment touchscreen integrated into a car dashboard" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Smarter Entertainment and Navigation</div>
@@ -1079,7 +1133,7 @@
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="270">
+      <div id="svc-lighting" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="270">
         <img class="service-visual" src="assets/web/service-lighting.jpg" alt="Controlled LED headlight and fog-light beam upgrade" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Lighting That Helps You See with Confidence</div>
@@ -1087,7 +1141,7 @@
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
-      <div class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="330">
+      <div id="svc-film" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="330">
         <img class="service-visual" src="assets/web/service-solar-film.jpg" alt="High-clarity heat-control solar film being applied to a car window" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">A Cooler Cabin in the Harsh Summer</div>
@@ -1535,6 +1589,66 @@
   </div>
 </footer>
 
+<!-- JUMP MENU -->
+<div id="jumpMenu" role="dialog" aria-modal="true" aria-label="Browse the site" aria-hidden="true">
+  <div class="jump-backdrop" onclick="closeJumpMenu()"></div>
+  <div class="jump-sheet" role="document">
+
+    <div class="jump-head">
+      <div>
+        <div class="jump-eyebrow">Browse</div>
+        <div class="jump-title">What are you looking for?</div>
+      </div>
+      <button class="jump-close" onclick="closeJumpMenu()" aria-label="Close menu">&times;</button>
+    </div>
+
+    <div class="jump-grid">
+      <a class="jump-card" href="#svc-safety" onclick="jumpTo(event,'svc-safety')">
+        <img src="assets/web/service-safety.jpg" alt="" loading="lazy">
+        <span class="jump-card-label">Safety &amp; Security<em>Dash cams, reverse cameras, GPS</em></span>
+      </a>
+      <a class="jump-card" href="#svc-interior" onclick="jumpTo(event,'svc-interior')">
+        <img src="assets/web/service-interior.jpg" alt="" loading="lazy">
+        <span class="jump-card-label">Interiors<em>Seat covers, panels, finish</em></span>
+      </a>
+      <a class="jump-card" href="#svc-mats" onclick="jumpTo(event,'svc-mats')">
+        <img src="assets/web/service-mats.jpg" alt="" loading="lazy">
+        <span class="jump-card-label">Custom Mats<em>7D, 5D and full flooring</em></span>
+      </a>
+      <a class="jump-card" href="#svc-audio" onclick="jumpTo(event,'svc-audio')">
+        <img src="assets/web/service-audio.jpg" alt="" loading="lazy">
+        <span class="jump-card-label">Sound Systems<em>Speakers, bass, amplifiers</em></span>
+      </a>
+      <a class="jump-card" href="#svc-infotainment" onclick="jumpTo(event,'svc-infotainment')">
+        <img src="assets/web/service-infotainment.jpg" alt="" loading="lazy">
+        <span class="jump-card-label">Infotainment<em>Android screens, navigation</em></span>
+      </a>
+      <a class="jump-card" href="#svc-lighting" onclick="jumpTo(event,'svc-lighting')">
+        <img src="assets/web/service-lighting.jpg" alt="" loading="lazy">
+        <span class="jump-card-label">Lighting<em>LED, fog lamps, ambient</em></span>
+      </a>
+      <a class="jump-card" href="#svc-film" onclick="jumpTo(event,'svc-film')">
+        <img src="assets/web/service-solar-film.jpg" alt="" loading="lazy">
+        <span class="jump-card-label">Solar Film<em>Heat and glare protection</em></span>
+      </a>
+      <a class="jump-card" href="#gallery" onclick="jumpTo(event,'gallery')">
+        <img src="assets/web/seat-cover-cream-blue.jpg" alt="" loading="lazy">
+        <span class="jump-card-label">Our Work<em>Real installs from the shop</em></span>
+      </a>
+    </div>
+
+    <div class="jump-links">
+      <a href="#pricing" onclick="jumpTo(event,'pricing')">Pricing</a>
+      <a href="#reviews" onclick="jumpTo(event,'reviews')">Reviews</a>
+      <a href="#story" onclick="jumpTo(event,'story')">Our Story</a>
+      <a href="#faq" onclick="jumpTo(event,'faq')">FAQ</a>
+      <a href="#visit" onclick="jumpTo(event,'visit')">Visit Us</a>
+      <a href="#enquiry" onclick="jumpTo(event,'enquiry')">Get a Quote</a>
+    </div>
+
+  </div>
+</div>
+
 <!-- MOBILE STICKY BAR -->
 <div id="mobileBar" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;display:none;">
   <a href="https://wa.me/919911443751?text=Hi%2C%20I%20want%20to%20enquire%20about%20your%20services." target="_blank"
@@ -1783,6 +1897,48 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     runParallax();
   }
 }
+
+/* ---- Jump menu --------------------------------------------------------
+   The page is ~12,600px of one continuous scroll, so this exists to let
+   someone reach a service without wading through everything above it. */
+function openJumpMenu() {
+  const m = document.getElementById('jumpMenu');
+  m.classList.add('open');
+  m.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';           // don't scroll the page behind the sheet
+  const first = m.querySelector('.jump-card');
+  if (first) first.focus({ preventScroll: true });
+  window.mmTrack && window.mmTrack('menu_open', {});
+}
+
+function closeJumpMenu() {
+  const m = document.getElementById('jumpMenu');
+  m.classList.remove('open');
+  m.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+/* Close first, then scroll — the sheet locks body overflow, so scrolling
+   while it is still open would be swallowed. */
+function jumpTo(e, id) {
+  e.preventDefault();
+  const target = document.getElementById(id);
+  closeJumpMenu();
+  if (!target) return;
+  window.mmTrack && window.mmTrack('menu_jump', { target: id });
+  requestAnimationFrame(() => {
+    const navH = (document.getElementById('mainNav') || {}).offsetHeight || 78;
+    const y = target.getBoundingClientRect().top + window.scrollY - navH - 14;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('jumpMenu');
+    if (m && m.classList.contains('open')) closeJumpMenu();
+  }
+});
 
 /* ---- Conversion tracking ---------------------------------------------
    Delegated rather than bound per-link: there are 8 WhatsApp, 6 phone and
