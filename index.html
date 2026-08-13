@@ -780,7 +780,7 @@
   <div class="container" style="padding:80px 24px;width:100%;">
     <div class="hero-grid" style="display:grid;grid-template-columns:1fr;align-items:center;">
       <!-- Center -->
-      <div class="hero-content" style="text-align:center;">
+      <div class="hero-content" data-parallax="-0.35" style="text-align:center;">
         <div class="t-caption reveal hero-eyebrow" style="margin-bottom:20px;opacity:0.68;">CAR ACCESSORIES &amp; CUSTOM INSTALLATIONS</div>
         <div id="heroName" class="brand-name t-hero hero-wordmark" aria-label="Madhuban Motors" style="margin-bottom:24px;">
           <span class="hero-letter" style="animation-delay:0ms">M</span><span class="hero-letter" style="animation-delay:45ms">a</span><span class="hero-letter" style="animation-delay:90ms">d</span><span class="hero-letter" style="animation-delay:135ms">h</span><span class="hero-letter" style="animation-delay:180ms">u</span><span class="hero-letter mirror-b hero-b" style="animation-delay:225ms">B</span><span class="hero-letter" style="animation-delay:270ms">a</span><span class="hero-letter" style="animation-delay:315ms">n</span><span class="hero-letter" style="animation-delay:360ms">&nbsp;</span><span class="hero-letter" style="animation-delay:405ms">M</span><span class="hero-letter" style="animation-delay:450ms">o</span><span class="hero-letter" style="animation-delay:495ms">t</span><span class="hero-letter" style="animation-delay:540ms">o</span><span class="hero-letter" style="animation-delay:585ms">r</span><span class="hero-letter" style="animation-delay:630ms">s</span>
@@ -1173,9 +1173,9 @@
       </div>
       <!-- Photo -->
       <div class="reveal" style="position:relative;z-index:1;" data-delay="80">
-        <div style="background-image:linear-gradient(180deg,rgba(24,24,24,.05),rgba(24,24,24,.55)),url('https://source.unsplash.com/900x1200/?indian-business-owner,automotive-shop');background-size:cover;background-position:center;aspect-ratio:3/4;border:1px solid rgba(218,41,28,0.2);position:relative;overflow:hidden;">
+        <div style="background-image:linear-gradient(180deg,rgba(24,24,24,.05),rgba(24,24,24,.55)),url('assets/web/hero-mm-showroom.jpg');background-size:cover;background-position:center;aspect-ratio:3/4;border:1px solid rgba(218,41,28,0.2);position:relative;overflow:hidden;">
           <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(24,24,24,0.65));">
-            <div style="font-family:'Manrope',sans-serif;font-weight:600;font-size:13px;color:white;">Vivek Paruthi, Madhuban Motors</div>
+            <div style="font-family:'Manrope',sans-serif;font-weight:600;font-size:13px;color:white;">Madhuban Motors, GT Road</div>
             <div style="font-family:'Manrope',sans-serif;font-size:11px;color:#FFF200;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;">GT Road, Est. 1989</div>
           </div>
         </div>
@@ -1689,6 +1689,40 @@ const revealObs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal, .reveal-l, .reveal-r, .gold-rule').forEach(el => revealObs.observe(el));
+
+/* ---- Scroll-linked parallax ------------------------------------------
+   The .reveal system above is arrival-only: it fires once and stops.
+   These stay bound to scroll position, which is what reads as depth.
+   Transform-only so the work stays on the compositor. Elements that
+   already animate their own transform must not be tagged, or the
+   keyframe animation will fight the inline style. */
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const pxEls = [...document.querySelectorAll('[data-parallax]')];
+  if (pxEls.length) {
+    let pxTicking = false;
+    const runParallax = () => {
+      const vh = window.innerHeight;
+      // Some browsers report 0 during early load / background tabs. Without
+      // this the maths below collapses to a constant, parking the hero at a
+      // visible offset instead of its resting position.
+      if (!vh) { pxTicking = false; return; }
+      for (const el of pxEls) {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < -300 || r.top > vh + 300) continue;
+        const speed = parseFloat(el.dataset.parallax) || 0;
+        const centre = r.top + r.height / 2;
+        const prog = (centre - vh / 2) / (vh / 2 + r.height / 2); // -1 .. 1
+        el.style.transform = 'translate3d(0,' + (prog * speed * 100).toFixed(2) + 'px,0)';
+      }
+      pxTicking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!pxTicking) { requestAnimationFrame(runParallax); pxTicking = true; }
+    }, { passive: true });
+    window.addEventListener('resize', runParallax, { passive: true });
+    runParallax();
+  }
+}
 
 // STATS ANIMATION
 const statsObs = new IntersectionObserver((entries) => {
