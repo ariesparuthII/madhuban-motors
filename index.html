@@ -16,6 +16,66 @@
   <meta name="twitter:image" content="https://madhubanmotors.com/assets/web/og-image.jpg" />
   <meta name="theme-color" content="#0B0B0B" />
   <link rel="canonical" href="https://madhubanmotors.com/" />
+
+  <!-- ============================================================
+       MEASUREMENT
+       Paste the two IDs below to switch tracking on. While they are
+       blank nothing loads and no third-party request is made, so this
+       is safe to deploy as-is.
+
+         ga4       GA4 Measurement ID, looks like  G-XXXXXXXXXX
+                   analytics.google.com → Admin → Data streams
+         metaPixel Meta Pixel ID, a long number
+                   business.facebook.com → Events Manager → Data sources
+
+       Note: these send visitor data to Google and Meta. India's DPDP
+       Act has consent provisions — worth a quick check before you
+       switch them on, especially the Pixel.
+       ============================================================ -->
+  <script>
+    window.MM_ANALYTICS = {
+      ga4: '',
+      metaPixel: ''
+    };
+    (function () {
+      var cfg = window.MM_ANALYTICS || {};
+
+      if (cfg.ga4) {
+        var g = document.createElement('script');
+        g.async = true;
+        g.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.ga4);
+        document.head.appendChild(g);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', cfg.ga4);
+      }
+
+      if (cfg.metaPixel) {
+        !function (f, b, e, v, n, t, s) {
+          if (f.fbq) return; n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+          t = b.createElement(e); t.async = !0; t.src = v;
+          s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        window.fbq('init', cfg.metaPixel);
+        window.fbq('track', 'PageView');
+      }
+
+      /* Single entry point for the rest of the page. No-ops safely when
+         nothing is configured, so call sites never need to check. */
+      window.mmTrack = function (name, params) {
+        params = params || {};
+        if (window.gtag) window.gtag('event', name, params);
+        if (window.fbq) window.fbq('trackCustom', name, params);
+        if (!cfg.ga4 && !cfg.metaPixel && window.console && console.debug) {
+          console.debug('[mmTrack – not configured]', name, params);
+        }
+      };
+    })();
+  </script>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/web/icon-32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="assets/web/icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/web/icon-180.png" />
@@ -1187,7 +1247,7 @@
 <div class="divider"></div>
 
 <!-- REVIEWS -->
-<section class="section" style="background:#181818;">
+<section id="reviews" class="section" style="background:#181818;">
   <div class="container">
     <div class="t-caption reveal" style="margin-bottom:16px;">TOP GOOGLE REVIEWS</div>
     <h2 class="t-h1 reveal" style="color:#FFFFFF;margin-bottom:10px;" data-delay="80">Real Reviews From Google</h2>
@@ -1238,7 +1298,7 @@
 <div class="divider"></div>
 
 <!-- GALLERY -->
-<section class="section" style="background:#0B0B0B;">
+<section id="gallery" class="section" style="background:#0B0B0B;">
   <div class="container">
     <div class="t-caption reveal" style="margin-bottom:16px;">INSTALL GALLERY</div>
     <h2 class="t-h1 reveal" style="color:#FFFFFF;margin-bottom:10px;" data-delay="80">Finish Details</h2>
@@ -1301,7 +1361,7 @@
 <div class="divider"></div>
 
 <!-- PRICING -->
-<section class="section" style="background:#181818;">
+<section id="pricing" class="section" style="background:#181818;">
   <div class="container">
     <div class="t-caption reveal" style="margin-bottom:16px;">STARTING PRICES</div>
     <h2 class="t-h1 reveal" style="color:#FFFFFF;margin-bottom:12px;" data-delay="80">Rough Guide to Costs</h2>
@@ -1345,7 +1405,7 @@
 <div class="divider"></div>
 
 <!-- FAQ -->
-<section class="section" style="background:#0B0B0B;">
+<section id="faq" class="section" style="background:#0B0B0B;">
   <div class="container-sm">
     <div class="t-caption reveal" style="margin-bottom:16px;">FAQ</div>
     <h2 class="t-h1 reveal" style="color:#FFFFFF;margin-bottom:48px;" data-delay="80">Common Questions</h2>
@@ -1388,7 +1448,7 @@
 <div class="divider"></div>
 
 <!-- CTA BLOCK -->
-<section class="section" style="background:linear-gradient(140deg,#3A3A3A 0%,#303030 100%);text-align:center;">
+<section id="cta" class="section" style="background:linear-gradient(140deg,#3A3A3A 0%,#303030 100%);text-align:center;">
   <div class="container-sm">
     <h2 class="t-display reveal" style="font-style:italic;color:#FFFFFF;margin-bottom:14px;">Ready to upgrade your car?</h2>
     <p class="t-sub reveal" style="margin-bottom:40px;" data-delay="80">WhatsApp us your car model. We will guide you clearly before you visit.</p>
@@ -1405,7 +1465,7 @@
 <div class="divider"></div>
 
 <!-- VISIT US -->
-<section class="section" style="background:#181818;">
+<section id="visit" class="section" style="background:#181818;">
   <div class="container">
     <div class="visit-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;">
       <div>
@@ -1724,6 +1784,38 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   }
 }
 
+/* ---- Conversion tracking ---------------------------------------------
+   Delegated rather than bound per-link: there are 8 WhatsApp, 6 phone and
+   6 directions links today, and this keeps working when more are added.
+   mmTrack() no-ops until the IDs in <head> are filled in. */
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('a[href]');
+  if (!el) return;
+  const href = el.getAttribute('href') || '';
+  // Where on the page the click happened, so you can tell which section earns
+  // leads. Falls back to id then tag name — the nav carries an id and no class.
+  // The floating containers are listed explicitly: they sit outside any
+  // <section>, and #mobileBar in particular is the main mobile conversion
+  // path, so it must not fall through to 'unknown'. Add new floating
+  // CTA containers here.
+  const holder = el.closest('section, nav, footer, #mobileBar, #comingSoon, #quickPanel');
+  const where = holder
+    ? ((holder.className || '').split(/\s+/).filter(c =>
+          c && !c.startsWith('reveal') && c !== 'section' && c !== 'section-sm')[0]
+        || holder.id || holder.tagName.toLowerCase())
+    : 'unknown';
+
+  if (href.includes('wa.me')) {
+    window.mmTrack && window.mmTrack('whatsapp_click', { location: where });
+    if (window.fbq) window.fbq('track', 'Contact', { method: 'whatsapp' });
+  } else if (href.startsWith('tel:')) {
+    window.mmTrack && window.mmTrack('call_click', { location: where });
+    if (window.fbq) window.fbq('track', 'Contact', { method: 'phone' });
+  } else if (href.includes('google.com/maps')) {
+    window.mmTrack && window.mmTrack('directions_click', { location: where });
+  }
+}, { passive: true });
+
 // STATS ANIMATION
 const statsObs = new IntersectionObserver((entries) => {
   if (entries[0].isIntersecting) { animateStats(); statsObs.unobserve(entries[0].target); }
@@ -1816,6 +1908,10 @@ function submitForm() {
   const services = [...document.querySelectorAll('#pillGroup .pill.active')].map(p => p.textContent).join(', ') || 'Not specified';
   const msg = `🚗 *New Enquiry, Madhuban Motors*\n\n*Name:* ${name || 'Not provided'}\n*Car:* ${brand} ${model} ${year ? '('+year+')' : ''}\n*Phone:* ${phone}\n*Services:* ${services}\n*Details:* ${details || 'None'}\n\n_Sent from website_`.trim();
   saveLead({ name, phone, brand, model, year, services, details, marketingConsent });
+  /* Fires only after validation passes, so this counts real enquiries.
+     Deliberately sends no name or phone — only which services were picked. */
+  window.mmTrack && window.mmTrack('enquiry_submit', { services: services });
+  if (window.fbq) window.fbq('track', 'Lead', { content_name: services });
   window.open('https://wa.me/919911443751?text=' + encodeURIComponent(msg), '_blank');
 }
 
