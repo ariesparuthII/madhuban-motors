@@ -524,6 +524,11 @@
     .reveal-r     { opacity:0; transform:translateX(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
     .reveal-r.visible { opacity:1; transform:translateX(0); }
 
+    /* Scroll-linked drift. --py defaults to 0 so nothing shifts before the
+       engine runs, or at all when reduced motion is requested. */
+    [data-parallax] { transform:translate3d(0,var(--py,0px),0); will-change:transform; }
+    @media (prefers-reduced-motion:reduce) { [data-parallax] { transform:none; } }
+
     /* ---- Jump menu ---------------------------------------------------- */
     #jumpMenu { position:fixed; inset:0; z-index:10000; display:none; }
     #jumpMenu.open { display:block; }
@@ -604,7 +609,9 @@
     .service-row:hover .s-name { color:#FFF200; }
     .service-row .s-name { font-size:23px; line-height:1.25; }
     .service-visual { width:148px; height:104px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,183,3,.16); box-shadow:0 12px 28px rgba(0,0,0,.2); transition:transform .35s ease,border-color .25s ease; }
-    .service-row:hover .service-visual { transform:scale(1.035); border-color:rgba(255,183,3,.48); }
+    /* --py is written by the parallax engine; the scale is layered on top
+       of it so hovering a row does not cancel its drift. */
+    .service-row:hover .service-visual { transform:translate3d(0,var(--py,0px),0) scale(1.035); border-color:rgba(255,183,3,.48); }
     .services-section {
       background:linear-gradient(180deg,#181818 0%,#242424 58%,#181818 100%) !important;
       color:#FFFFFF;
@@ -1094,7 +1101,7 @@
 
     <div>
       <div id="svc-safety" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="0">
-        <img class="service-visual" src="assets/web/service-safety.jpg" alt="Dash camera, reverse camera and parking sensor installation" loading="lazy">
+        <img class="service-visual" data-parallax="0.14" src="assets/web/service-safety.jpg" alt="Dash camera, reverse camera and parking sensor installation" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Safety and Security for Every Drive</div>
           <div class="t-sm">Everyday protection for your family and your car, with dash cameras, reverse cameras, parking sensors, security systems and GPS tracking installed cleanly.</div>
@@ -1102,7 +1109,7 @@
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
       <div id="svc-interior" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="60">
-        <img class="service-visual" src="assets/web/service-interior.jpg" alt="Complete custom-fit premium car interior" loading="lazy">
+        <img class="service-visual" data-parallax="-0.14" src="assets/web/service-interior.jpg" alt="Complete custom-fit premium car interior" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">An Interior That Feels Made for You</div>
           <div class="t-sm">Premium and bucket-fit seat covers, steering wraps and interior detailing shaped around your car for a snug fit, a refined finish and an unmistakably personal feel.</div>
@@ -1110,7 +1117,7 @@
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
       <div id="svc-mats" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="105">
-        <img class="service-visual" src="assets/web/service-mats.jpg" alt="Custom-fit premium car floor mats" loading="lazy">
+        <img class="service-visual" data-parallax="0.14" src="assets/web/service-mats.jpg" alt="Custom-fit premium car floor mats" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Mats That Fit the Floor, Not Just Cover It</div>
           <div class="t-sm">Custom-fit premium mats follow your car's floor shape, protect the original carpet and make everyday cleaning easier without interfering with pedals or seat movement.</div>
@@ -1118,7 +1125,7 @@
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
       <div id="svc-audio" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="150">
-        <img class="service-visual" src="assets/web/service-audio.jpg" alt="High-end car audio with DSP amplifiers and subwoofer" loading="lazy">
+        <img class="service-visual" data-parallax="-0.14" src="assets/web/service-audio.jpg" alt="High-end car audio with DSP amplifiers and subwoofer" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Sound Tuned to the Way You Listen</div>
           <div class="t-sm">From a clean daily upgrade to ambitious ₹1–2 lakh custom builds with double, triple or four-woofer layouts, amplifiers, equalizers and DSP processing, we design and tune for the punch, clarity and musical character you actually want.</div>
@@ -1126,7 +1133,7 @@
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
       <div id="svc-infotainment" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="210">
-        <img class="service-visual" src="assets/web/service-infotainment.jpg" alt="Android infotainment touchscreen integrated into a car dashboard" loading="lazy">
+        <img class="service-visual" data-parallax="0.14" src="assets/web/service-infotainment.jpg" alt="Android infotainment touchscreen integrated into a car dashboard" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Smarter Entertainment and Navigation</div>
           <div class="t-sm">Android and LED touchscreen systems with navigation, calling, music, cameras and connected features integrated neatly into your dashboard.</div>
@@ -1134,7 +1141,7 @@
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
       <div id="svc-lighting" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="270">
-        <img class="service-visual" src="assets/web/service-lighting.jpg" alt="Controlled LED headlight and fog-light beam upgrade" loading="lazy">
+        <img class="service-visual" data-parallax="-0.14" src="assets/web/service-lighting.jpg" alt="Controlled LED headlight and fog-light beam upgrade" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Lighting That Helps You See with Confidence</div>
           <div class="t-sm">When factory lighting feels weak, we recommend properly matched LED, HID and fog-light upgrades for stronger road visibility without careless glare or messy wiring.</div>
@@ -1142,7 +1149,7 @@
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
       <div id="svc-film" class="service-row reveal" style="display:grid;grid-template-columns:148px 1fr auto;align-items:center;padding:22px 0;gap:24px;" data-delay="330">
-        <img class="service-visual" src="assets/web/service-solar-film.jpg" alt="High-clarity heat-control solar film being applied to a car window" loading="lazy">
+        <img class="service-visual" data-parallax="0.14" src="assets/web/service-solar-film.jpg" alt="High-clarity heat-control solar film being applied to a car window" loading="lazy">
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">A Cooler Cabin in the Harsh Summer</div>
           <div class="t-sm">High-clarity solar-film options help reduce cabin heat and protect seats and interiors while keeping visibility the priority. We guide you toward options appropriate for current vehicle-glass rules.</div>
@@ -1287,7 +1294,7 @@
       </div>
       <!-- Photo -->
       <div class="reveal" style="position:relative;z-index:1;" data-delay="80">
-        <div style="background-image:linear-gradient(180deg,rgba(24,24,24,.05),rgba(24,24,24,.55)),url('assets/web/hero-mm-showroom.jpg');background-size:cover;background-position:center;aspect-ratio:3/4;border:1px solid rgba(218,41,28,0.2);position:relative;overflow:hidden;">
+        <div data-parallax="0.10" style="background-image:linear-gradient(180deg,rgba(24,24,24,.05),rgba(24,24,24,.55)),url('assets/web/hero-mm-showroom.jpg');background-size:cover;background-position:center;aspect-ratio:3/4;border:1px solid rgba(218,41,28,0.2);position:relative;overflow:hidden;">
           <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(24,24,24,0.65));">
             <div style="font-family:'Manrope',sans-serif;font-weight:600;font-size:13px;color:white;">Madhuban Motors, GT Road</div>
             <div style="font-family:'Manrope',sans-serif;font-size:11px;color:#FFF200;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;">GT Road, Est. 1989</div>
@@ -1886,7 +1893,11 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const speed = parseFloat(el.dataset.parallax) || 0;
         const centre = r.top + r.height / 2;
         const prog = (centre - vh / 2) / (vh / 2 + r.height / 2); // -1 .. 1
-        el.style.transform = 'translate3d(0,' + (prog * speed * 100).toFixed(2) + 'px,0)';
+        /* Write a variable rather than `transform` directly. Several of
+           these elements already own a transform (the service thumbnails
+           scale on hover), and an inline transform would beat the
+           stylesheet and kill it. CSS composes the two instead. */
+        el.style.setProperty('--py', (prog * speed * 100).toFixed(2) + 'px');
       }
       pxTicking = false;
     };
