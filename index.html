@@ -17,63 +17,87 @@
   <meta name="theme-color" content="#0B0B0B" />
   <link rel="canonical" href="https://madhubanmotors.com/" />
 
-  <!-- ============================================================
-       MEASUREMENT
-       Paste the two IDs below to switch tracking on. While they are
-       blank nothing loads and no third-party request is made, so this
-       is safe to deploy as-is.
-
-         ga4       GA4 Measurement ID, looks like  G-XXXXXXXXXX
-                   analytics.google.com → Admin → Data streams
-         metaPixel Meta Pixel ID, a long number
-                   business.facebook.com → Events Manager → Data sources
-
-       Note: these send visitor data to Google and Meta. India's DPDP
-       Act has consent provisions — worth a quick check before you
-       switch them on, especially the Pixel.
-       ============================================================ -->
+  <!-- Analytics is loaded only after the visitor accepts analytics cookies. -->
   <script>
     window.MM_ANALYTICS = {
       ga4: 'G-674BE5JN8Q',
       metaPixel: ''
     };
+    window.MM_LEAD_CONFIG = {
+      /* Optional HTTPS endpoint that accepts POSTed JSON. Keep blank until an
+         authorised lead endpoint with CORS enabled has been configured. */
+      endpoint: ''
+    };
     (function () {
       var cfg = window.MM_ANALYTICS || {};
+      var consentKey = 'mm_privacy_preferences_v1';
+      var loaded = false;
 
-      if (cfg.ga4) {
-        var g = document.createElement('script');
-        g.async = true;
-        g.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.ga4);
-        document.head.appendChild(g);
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function () { window.dataLayer.push(arguments); };
-        window.gtag('js', new Date());
-        window.gtag('config', cfg.ga4);
+      function loadAnalytics() {
+        if (loaded) return;
+        loaded = true;
+        if (cfg.ga4) {
+          var g = document.createElement('script');
+          g.async = true;
+          g.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.ga4);
+          document.head.appendChild(g);
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () { window.dataLayer.push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('config', cfg.ga4);
+        }
+
+        if (cfg.metaPixel) {
+          !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+              n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+            t = b.createElement(e); t.async = !0; t.src = v;
+            s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+          }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+          window.fbq('init', cfg.metaPixel);
+          window.fbq('track', 'PageView');
+        }
       }
 
-      if (cfg.metaPixel) {
-        !function (f, b, e, v, n, t, s) {
-          if (f.fbq) return; n = f.fbq = function () {
-            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-          };
-          if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
-          t = b.createElement(e); t.async = !0; t.src = v;
-          s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
-        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        window.fbq('init', cfg.metaPixel);
-        window.fbq('track', 'PageView');
-      }
-
-      /* Single entry point for the rest of the page. No-ops safely when
-         nothing is configured, so call sites never need to check. */
       window.mmTrack = function (name, params) {
         params = params || {};
         if (window.gtag) window.gtag('event', name, params);
         if (window.fbq) window.fbq('trackCustom', name, params);
-        if (!cfg.ga4 && !cfg.metaPixel && window.console && console.debug) {
-          console.debug('[mmTrack – not configured]', name, params);
-        }
       };
+
+      function readPreference() {
+        try { return JSON.parse(localStorage.getItem(consentKey) || 'null'); }
+        catch (e) { return null; }
+      }
+
+      function savePreference(analytics) {
+        try {
+          localStorage.setItem(consentKey, JSON.stringify({
+            analytics: !!analytics,
+            updatedAt: new Date().toISOString()
+          }));
+        } catch (e) {}
+      }
+
+      function hideConsent() {
+        var banner = document.getElementById('privacyConsent');
+        if (banner) banner.hidden = true;
+      }
+
+      window.mmSetAnalyticsConsent = function (analytics) {
+        savePreference(analytics);
+        if (analytics) loadAnalytics();
+        hideConsent();
+      };
+
+      var preference = readPreference();
+      if (preference && preference.analytics === true) loadAnalytics();
+      document.addEventListener('DOMContentLoaded', function () {
+        var banner = document.getElementById('privacyConsent');
+        if (banner) banner.hidden = !!preference;
+      });
     })();
   </script>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/web/icon-32.png" />
@@ -139,6 +163,8 @@
        the viewport honest. Safe here: the page uses no position:sticky. */
     html { scroll-behavior: smooth; scroll-padding-top: 88px; overflow-x: hidden; }
     body { background: #181818; color: #181818; font-family: 'Manrope', sans-serif; font-size: 16px; line-height: 1.55; overflow-x: hidden; -webkit-font-smoothing: antialiased; transition: background 900ms ease; }
+    .skip-link { position:fixed; left:16px; top:8px; z-index:100000; transform:translateY(-140%); background:#FFF200; color:#0B0B0B; padding:10px 14px; font-weight:700; text-decoration:none; }
+    .skip-link:focus { transform:translateY(0); }
 
     :root { --deep:#181818; --deep-2:#0B0B0B; --blue:#303030; --blue-2:#3A3A3A; --orange:#DA291C; --orange-soft:#FFF200; --cream:#FFFFFF; --mist:#F7F7F7; --card:#303030; }
     #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 99999; background: linear-gradient(90deg, #181818, #FFF200, #DA291C); box-shadow: 0 0 18px rgba(200,162,74,.42); transition: width .08s linear; }
@@ -303,6 +329,20 @@
       line-height:1.55;
     }
     .consent-row input { width:16px; height:16px; margin-top:2px; accent-color:#DA291C; flex:0 0 auto; }
+    .privacy-note { margin-top:12px; color:#BDBDBD; font-size:12px; line-height:1.6; }
+    .privacy-note a, footer a.privacy-link { color:#FFF200; }
+
+    .privacy-consent {
+      position:fixed; left:20px; right:20px; bottom:20px; z-index:10001;
+      max-width:760px; margin:0 auto; padding:18px 20px;
+      background:#181818; color:#FFFFFF; border:1px solid rgba(255,242,0,.42);
+      border-radius:14px; box-shadow:0 22px 70px rgba(0,0,0,.45);
+      display:grid; grid-template-columns:1fr auto; gap:18px; align-items:center;
+    }
+    .privacy-consent[hidden] { display:none; }
+    .privacy-consent p { margin:5px 0 0; color:#C9C9C9; font-size:13px; line-height:1.55; }
+    .privacy-consent a { color:#FFF200; }
+    .privacy-consent-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
 
     /* BUTTONS */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.30; letter-spacing: 0.01em; text-decoration: none; border: none; cursor: pointer; transition: all 0.18s ease; white-space: nowrap; }
@@ -337,11 +377,56 @@
     @keyframes marqueeLeft { from { transform:translateX(0); } to { transform:translateX(-50%); } }
     @keyframes marqueeRight { from { transform:translateX(-50%); } to { transform:translateX(0); } }
     @keyframes tickerPulse { 0%,100% { opacity:.55; } 50% { opacity:1; } }
+    @keyframes heroAperture {
+      0% { opacity:0; transform:translate3d(-32%,0,0) skewX(-12deg); }
+      24% { opacity:.72; }
+      100% { opacity:0; transform:translate3d(132%,0,0) skewX(-12deg); }
+    }
+    @keyframes roadTrace {
+      0% { transform:translateX(-50%) scaleX(.06); opacity:0; }
+      35% { opacity:1; }
+      100% { transform:translateX(-50%) scaleX(1); opacity:.7; }
+    }
 
     .letter-span { display: inline-block; opacity: 0; animation: letterIn 0.4s forwards; }
     .animate-steer { animation: steerIdle 4s ease-in-out infinite; }
     .animate-pulse { animation: pulse-dot 2s ease-in-out infinite; }
     .animate-glow  { animation: goldGlow 3s ease-in-out infinite; }
+
+    /* PURPOSE-LED MOTION SYSTEM */
+    .hero-shell > .container { position:relative; z-index:2; }
+    .hero-cinema { position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+    .hero-cinema::before {
+      content:''; position:absolute; top:0; bottom:0; left:-42%; width:34%;
+      background:linear-gradient(92deg,transparent,rgba(255,242,0,.10) 44%,rgba(255,255,255,.16) 50%,rgba(218,41,28,.08) 58%,transparent);
+      filter:blur(8px); mix-blend-mode:screen;
+      animation:heroAperture 1.7s cubic-bezier(.2,.75,.15,1) .18s both;
+    }
+    .hero-roadline {
+      position:absolute; left:50%; bottom:86px; width:min(620px,62vw); height:1px;
+      transform:translateX(-50%) scaleX(.06); transform-origin:center;
+      background:linear-gradient(90deg,transparent,#DA291C 28%,#FFF200 50%,#DA291C 72%,transparent);
+      box-shadow:0 0 22px rgba(255,242,0,.28); opacity:0;
+      animation:roadTrace 1.25s cubic-bezier(.2,.75,.2,1) .72s forwards;
+    }
+    .motion-section { position:relative; isolation:isolate; }
+    .motion-edge {
+      position:absolute; z-index:3; top:0; left:50%; width:min(1120px,calc(100% - 48px)); height:1px;
+      transform:translateX(-50%) scaleX(.04); transform-origin:center; opacity:0;
+      background:linear-gradient(90deg,transparent,rgba(218,41,28,.9),#FFF200,rgba(218,41,28,.9),transparent);
+      transition:transform 1.1s cubic-bezier(.2,.75,.2,1),opacity .4s ease;
+      pointer-events:none;
+    }
+    .motion-index {
+      position:absolute; z-index:0; right:max(24px,calc((100vw - 1180px)/2)); top:clamp(22px,4vw,58px);
+      font-family:'DM Serif Display',serif; font-size:clamp(64px,10vw,144px); line-height:.8;
+      color:#FFF200; opacity:0; transform:translate3d(0,28px,0); pointer-events:none;
+      transition:opacity .8s ease,transform 1s cubic-bezier(.2,.75,.2,1);
+    }
+    .motion-section.is-inview .motion-edge { transform:translateX(-50%) scaleX(1); opacity:.52; }
+    .motion-section.is-inview .motion-index { opacity:.035; transform:translate3d(0,0,0); }
+    .motion-heading { clip-path:inset(0 0 100% 0); transform:translateY(20px); }
+    .motion-heading.visible { clip-path:inset(0 0 0 0); transform:translateY(0); }
 
     /* CONTINUOUS DISCOVERY RIBBONS */
     .discovery-ribbons {
@@ -396,6 +481,8 @@
     .ticker-track { display:flex; align-items:center; width:max-content; will-change:transform; }
     .ticker-track.forward { animation:marqueeLeft 28s linear infinite; }
     .ticker-track.reverse { animation:marqueeRight 36s linear infinite; }
+    .motion-ready .ticker-track { animation-play-state:paused; }
+    .motion-ready .discovery-ribbons.is-inview .ticker-track { animation-play-state:running; }
     .ticker-row:hover .ticker-track { animation-play-state:paused; }
     .ticker-set { display:flex; align-items:center; flex-shrink:0; }
     .ticker-item {
@@ -513,12 +600,16 @@
     }
     .upgrade-card:hover { transform:translateY(-6px); box-shadow:0 18px 38px rgba(24,24,24,.22); }
     .upgrade-card:hover::before { transform:scale(1.12); }
+    .upgrade-card:focus-visible { outline:3px solid #DA291C; outline-offset:3px; transform:translateY(-4px); }
     .upgrade-card-content { position:absolute; left:14px; right:14px; bottom:13px; }
     .upgrade-card-title { display:block; font-size:13px; font-weight:800; line-height:1.25; }
-    .upgrade-card-action { display:block; margin-top:4px; color:#FFF200; font-size:9px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+    .upgrade-card-action { display:flex; align-items:center; gap:7px; margin-top:4px; color:#FFF200; font-size:9px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+    .upgrade-card-action::after { content:'\2192'; font-size:14px; line-height:1; transition:transform .22s ease; }
+    .upgrade-card:hover .upgrade-card-action::after,
+    .upgrade-card:focus-visible .upgrade-card-action::after { transform:translateX(5px); }
 
     .reveal       { opacity:0; transform:translateY(30px) scale(.985); transition:opacity 0.75s cubic-bezier(.2,.8,.2,1), transform 0.75s cubic-bezier(.2,.8,.2,1); will-change: opacity, transform; }
-    .reveal.visible { opacity:1; transform:translateY(0) scale(1); }
+    .reveal.visible { opacity:1; transform:translateY(0) scale(1); will-change:auto; }
     .reveal-l     { opacity:0; transform:translateX(-28px); transition:opacity 0.65s ease, transform 0.65s ease; }
     .reveal-l.visible { opacity:1; transform:translateX(0); }
     .reveal-r     { opacity:0; transform:translateX(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
@@ -564,9 +655,12 @@
     .jump-card:focus-visible { outline:2px solid #FFF200; outline-offset:2px; }
 
     .jump-links { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; padding-top:18px; border-top:1px solid rgba(255,255,255,.10); }
-    .jump-links a { font-family:'Manrope',sans-serif; font-size:13px; font-weight:600; color:rgba(255,255,255,.78); text-decoration:none; padding:8px 15px; border:1px solid rgba(255,255,255,.16); border-radius:999px; transition:color .2s ease, background .2s ease, border-color .2s ease; }
-    .jump-links a:hover { color:#181818; background:#FFF200; border-color:#FFF200; }
-    .jump-links a:focus-visible { outline:2px solid #FFF200; outline-offset:2px; }
+    .jump-links a,
+    .jump-links button { font-family:'Manrope',sans-serif; font-size:13px; font-weight:600; color:rgba(255,255,255,.78); text-decoration:none; padding:8px 15px; border:1px solid rgba(255,255,255,.16); border-radius:999px; background:transparent; cursor:pointer; transition:color .2s ease, background .2s ease, border-color .2s ease; }
+    .jump-links a:hover,
+    .jump-links button:hover { color:#181818; background:#FFF200; border-color:#FFF200; }
+    .jump-links a:focus-visible,
+    .jump-links button:focus-visible { outline:2px solid #FFF200; outline-offset:2px; }
 
     .nav-menu-btn { display:inline-flex; align-items:center; gap:7px; background:none; border:1px solid rgba(255,255,255,.24); color:#FFFFFF; border-radius:999px; padding:8px 14px; font-family:'Manrope',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:color .2s ease, border-color .2s ease; }
     .nav-menu-btn:hover { border-color:#FFF200; color:#FFF200; }
@@ -576,6 +670,16 @@
     /* NAV */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(10,10,10,0.94); backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,242,0,0.16); transition:box-shadow 0.3s; }
     nav.scrolled { box-shadow:0 1px 0 rgba(255,183,3,0.2); }
+    .shop-entry { position:relative; overflow:hidden; isolation:isolate; letter-spacing:.04em; }
+    .shop-entry::before {
+      content:''; position:absolute; inset:-1px; z-index:-1;
+      background:linear-gradient(105deg,transparent 24%,rgba(255,242,0,.18) 48%,transparent 72%);
+      transform:translateX(-110%); transition:transform .55s cubic-bezier(.2,.75,.2,1);
+    }
+    .shop-entry:hover::before,
+    .shop-entry:focus-visible::before { transform:translateX(110%); }
+    .shop-entry-arrow { color:#FFF200; transition:transform .22s ease; }
+    .shop-entry:hover .shop-entry-arrow { transform:translateX(4px); }
 
     /* DIVIDERS */
     .divider { height:1px; background:linear-gradient(90deg, transparent, rgba(255,183,3,0.25), transparent); }
@@ -725,12 +829,30 @@
     @media (max-width:640px) { #quickPanel { width:100%; } }
 
     /* COMING SOON */
-    #comingSoon { position:fixed; inset:0; background:rgba(3,10,18,0.96); z-index:500; display:none; align-items:center; justify-content:center; flex-direction:column; }
+    #comingSoon { position:fixed; inset:0; background:rgba(3,10,18,.92); z-index:500; display:none; align-items:center; justify-content:center; padding:24px; backdrop-filter:blur(16px); }
     #comingSoon.open { display:flex; }
+    .shop-preview {
+      position:relative; width:min(1040px,100%); max-height:min(780px,92vh); overflow:auto;
+      background:linear-gradient(145deg,#202020,#0B0B0B 64%); border:1px solid rgba(255,242,0,.28);
+      border-radius:24px; box-shadow:0 44px 140px rgba(0,0,0,.72); padding:clamp(26px,5vw,58px);
+      animation:jumpIn .42s cubic-bezier(.2,.8,.2,1);
+    }
+    .shop-preview::before { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg,rgba(218,41,28,.10),transparent 38%); }
+    .shop-preview-close { position:absolute; top:18px; right:18px; width:44px; height:44px; border-radius:50%; border:1px solid rgba(255,255,255,.22); background:#181818; color:#FFF200; font-size:26px; cursor:pointer; z-index:3; }
+    .shop-preview-layout { position:relative; z-index:1; display:grid; grid-template-columns:minmax(260px,.9fr) 1.4fr; gap:clamp(24px,5vw,64px); align-items:center; }
+    .shop-preview-copy h2 { margin:10px 0 14px; color:#fff; font-family:'DM Serif Display',serif; font-size:clamp(34px,5vw,62px); line-height:1.04; font-weight:400; }
+    .shop-preview-copy p { color:#C5C5C5; max-width:48ch; }
+    .shop-preview-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; }
+    .shop-preview-grid { display:grid; grid-template-columns:1.15fr .85fr; grid-template-rows:repeat(2,minmax(150px,1fr)); gap:10px; min-height:410px; }
+    .shop-preview-card { position:relative; overflow:hidden; border-radius:16px; background-size:cover; background-position:center; border:1px solid rgba(255,255,255,.12); }
+    .shop-preview-card:first-child { grid-row:1 / 3; }
+    .shop-preview-card::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 25%,rgba(0,0,0,.86)); }
+    .shop-preview-card span { position:absolute; left:16px; right:16px; bottom:14px; z-index:2; color:#fff; font-size:13px; font-weight:800; }
 
     /* MOBILE */
     @media (max-width:768px) {
       body { padding-bottom:58px; }
+      main, main > section, .container, .container-sm { width:100%; max-width:100%; min-width:0; }
       .hide-mobile { display:none !important; }
       .section { padding:64px 20px; }
       .section-sm { padding:48px 20px; }
@@ -743,6 +865,7 @@
       .t-hero { letter-spacing:-0.5px; }
       .nav-inner { height:68px !important; padding:0 12px; gap:8px !important; }
       .nav-brand { min-width:0; flex:1; }
+      .nav-brand img { width:auto !important; height:52px !important; max-width:150px; }
       .nav-brand .brand-name { font-size:16px !important; letter-spacing:-.2px !important; }
       .nav-brand .t-caption { font-size:8px !important; letter-spacing:.08em; }
       /* Icon only — the text label costs ~60px the nav does not have once
@@ -751,14 +874,24 @@
       .nav-menu-label { display:none; }
       .nav-actions { gap:6px !important; flex-shrink:0; }
       .nav-actions .btn { min-width:44px; padding:9px 10px; font-size:11px; }
+      /* WhatsApp and Call already live in the persistent bottom bar on mobile.
+         Keeping them in the top nav crowds the logo and clips the viewport. */
+      .nav-actions > a { display:none !important; }
       .hero-shell { min-height:820px !important; padding-top:68px !important; overflow:hidden; animation:none; }
       .hero-shell > .container { padding:68px 14px 230px !important; }
-      .hero-wordmark { font-size:clamp(28px,8.5vw,40px) !important; letter-spacing:-.7px !important; width:100%; }
+      .hero-content { width:100%; max-width:100%; min-width:0; }
+      .hero-wordmark {
+        display:block; width:100%; max-width:100%; white-space:normal;
+        font-size:clamp(27px,8.2vw,36px) !important; line-height:1.02 !important;
+        letter-spacing:-.7px !important; overflow-wrap:normal;
+      }
+      .hero-wordmark .hero-letter { display:inline-block; }
+      .hero-wordmark .hero-space { display:block; width:100%; height:0; }
       .hero-eyebrow { max-width:300px; margin-left:auto !important; margin-right:auto !important; font-size:9px !important; line-height:1.6; }
       .hero-tagline { font-size:21px !important; line-height:1.3 !important; padding:0 12px; }
       .hero-copy { max-width:330px !important; font-size:15px !important; line-height:1.8 !important; padding:0 6px; }
       .hero-ctas { flex-direction:column; align-items:stretch; padding:0 18px; }
-      .hero-ctas .btn { width:100%; }
+      .hero-ctas .btn { width:100%; min-width:0; max-width:100%; }
       .hero-shell {
         background-image:
           linear-gradient(180deg,rgba(10,10,10,.88),rgba(10,10,10,.58) 50%,rgba(10,10,10,.18) 73%,rgba(10,10,10,.74)),
@@ -780,6 +913,10 @@
       }
       .hero-lights::before { left:2.5%; transform:rotate(-8deg) skewX(-10deg); }
       .hero-lights::after { right:2.5%; transform:rotate(8deg) skewX(10deg); }
+      .hero-cinema::before { display:none; }
+      .hero-roadline { bottom:94px; width:76vw; }
+      .motion-edge { width:calc(100% - 32px); }
+      .motion-index { right:18px; top:24px; font-size:72px; }
       .hero-map-link { left:16px; top:auto; bottom:156px; transform:none; gap:8px; }
       .hero-map-icon { width:48px; height:48px; }
       .hero-map-copy { max-width:90px; opacity:1; font-size:10px; background:rgba(24,24,24,.72); border:1px solid rgba(255,183,3,.22); padding:5px 8px; border-radius:999px; }
@@ -831,7 +968,11 @@
       #quickPanel .quick-fields { flex:none !important; gap:20px !important; }
       #quickPanel .quick-submit { position:relative; margin-top:26px !important; margin-bottom:8px; }
       .consent-row { font-size:11px; }
-      #mobileBar { min-height:58px; }
+      .privacy-consent { bottom:72px; left:10px; right:10px; width:auto; max-width:calc(100vw - 20px); padding:16px; grid-template-columns:1fr; gap:12px; overflow:hidden; }
+      .privacy-consent-actions { justify-content:stretch; }
+      .privacy-consent-actions .btn { flex:1 1 0; min-width:0; max-width:100%; }
+      #mobileBar { min-height:58px; width:100%; max-width:100vw; overflow:hidden; }
+      #mobileBar > a { min-width:0; padding:15px 8px !important; white-space:nowrap; }
       .ticker-row { min-height:66px; }
       .ticker-label { left:10px; padding:7px 10px; font-size:9px; }
       .ticker-item { padding:0 24px; font-size:18px; }
@@ -839,6 +980,10 @@
       .ticker-note { display:none; }
       .ticker-track.forward { animation-duration:22s; }
       .ticker-track.reverse { animation-duration:29s; }
+      .shop-preview { padding:58px 18px 24px; border-radius:18px; max-height:90vh; }
+      .shop-preview-layout { grid-template-columns:1fr; }
+      .shop-preview-copy h2 { font-size:38px; }
+      .shop-preview-grid { min-height:250px; grid-template-rows:repeat(2,120px); }
     }
     @media (prefers-reduced-motion:reduce) {
       .hero-shell { animation:none !important; }
@@ -847,6 +992,8 @@
     }
     @media (max-width:480px) {
       .gallery-grid { grid-template-columns:1fr !important; }
+      .privacy-consent-actions { flex-direction:column; }
+      .privacy-consent-actions .btn { width:100%; flex:none; }
     }
 
     /* STAT DIVIDER */
@@ -854,9 +1001,16 @@
     .map-card { overflow:hidden; border-radius:24px; border:1px solid rgba(255,183,3,.16); background:linear-gradient(145deg,#303030,#0B0B0B); box-shadow:0 24px 70px rgba(0,0,0,.22); }
     .map-card iframe { width:100%; height:360px; border:0; display:block; filter:saturate(.92) contrast(.96); }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
+    @media (prefers-reduced-motion: reduce) {
+      .motion-heading { clip-path:none !important; transform:none !important; }
+      .motion-edge { transform:translateX(-50%) scaleX(1) !important; opacity:.35 !important; }
+      .motion-index { transform:none !important; opacity:.035 !important; }
+      .ticker-track { animation:none !important; transform:none !important; }
+    }
   </style>
 </head>
 <body id="pageBody">
+<a class="skip-link" href="#mainContent">Skip to main content</a>
 <div id="scrollProgress"></div>
 
 <!-- NAV -->
@@ -871,11 +1025,11 @@
         </picture>
       </a>
     </div>
-    <button onclick="document.getElementById('comingSoon').classList.add('open')"
-      class="btn btn-secondary btn-sm hide-mobile"
-      style="gap:6px;">
+    <button type="button" onclick="openShopPreview()"
+      class="btn btn-secondary btn-sm hide-mobile shop-entry"
+      aria-haspopup="dialog" aria-controls="comingSoon" style="gap:8px;">
       <span style="width:7px;height:7px;border-radius:50%;background:#FFF200;animation:pulse-dot 2s infinite;display:inline-block;flex-shrink:0;"></span>
-      Shop Online
+      <span>Shop Online</span><span class="shop-entry-arrow" aria-hidden="true">→</span>
     </button>
     <div class="nav-actions" style="display:flex;gap:10px;align-items:center;">
       <button class="nav-menu-btn" onclick="openJumpMenu()" aria-haspopup="dialog" aria-controls="jumpMenu">
@@ -889,9 +1043,12 @@
   </div>
 </nav>
 
+<main id="mainContent">
+
 <!-- HERO -->
 <section class="hero-shell" style="min-height:100vh;padding-top:78px;background:radial-gradient(ellipse 80% 60% at 50% 40%,#303030 0%,#181818 100%);display:flex;align-items:flex-start;position:relative;overflow:hidden;">
   <div id="heroLights" class="hero-lights" aria-hidden="true"></div>
+  <div class="hero-cinema" aria-hidden="true"><span class="hero-roadline"></span></div>
   <a class="hero-map-link" href="https://www.google.com/maps?cid=13467297807459514373" target="_blank" rel="noopener" aria-label="Open Madhuban Motors in Google Maps">
     <span class="hero-map-icon">
       <svg width="25" height="25" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s6-5.34 6-11a6 6 0 10-12 0c0 5.66 6 11 6 11z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
@@ -903,9 +1060,9 @@
       <!-- Center -->
       <div class="hero-content" data-parallax="-0.35" style="text-align:center;">
         <div class="t-caption reveal hero-eyebrow" style="margin-bottom:20px;opacity:0.68;">CAR ACCESSORIES &amp; CUSTOM INSTALLATIONS</div>
-        <div id="heroName" class="brand-name t-hero hero-wordmark" aria-label="Madhuban Motors" style="margin-bottom:24px;">
-          <span class="hero-letter" style="animation-delay:0ms">M</span><span class="hero-letter" style="animation-delay:45ms">a</span><span class="hero-letter" style="animation-delay:90ms">d</span><span class="hero-letter" style="animation-delay:135ms">h</span><span class="hero-letter" style="animation-delay:180ms">u</span><span class="hero-letter mirror-b hero-b" style="animation-delay:225ms">B</span><span class="hero-letter" style="animation-delay:270ms">a</span><span class="hero-letter" style="animation-delay:315ms">n</span><span class="hero-letter" style="animation-delay:360ms">&nbsp;</span><span class="hero-letter" style="animation-delay:405ms">M</span><span class="hero-letter" style="animation-delay:450ms">o</span><span class="hero-letter" style="animation-delay:495ms">t</span><span class="hero-letter" style="animation-delay:540ms">o</span><span class="hero-letter" style="animation-delay:585ms">r</span><span class="hero-letter" style="animation-delay:630ms">s</span>
-        </div>
+        <h1 id="heroName" class="brand-name t-hero hero-wordmark" aria-label="Madhuban Motors" style="margin-bottom:24px;">
+          <span class="hero-letter" style="animation-delay:0ms">M</span><span class="hero-letter" style="animation-delay:45ms">a</span><span class="hero-letter" style="animation-delay:90ms">d</span><span class="hero-letter" style="animation-delay:135ms">h</span><span class="hero-letter" style="animation-delay:180ms">u</span><span class="hero-letter mirror-b hero-b" style="animation-delay:225ms">B</span><span class="hero-letter" style="animation-delay:270ms">a</span><span class="hero-letter" style="animation-delay:315ms">n</span><span class="hero-letter hero-space" style="animation-delay:360ms">&nbsp;</span><span class="hero-letter" style="animation-delay:405ms">M</span><span class="hero-letter" style="animation-delay:450ms">o</span><span class="hero-letter" style="animation-delay:495ms">t</span><span class="hero-letter" style="animation-delay:540ms">o</span><span class="hero-letter" style="animation-delay:585ms">r</span><span class="hero-letter" style="animation-delay:630ms">s</span>
+        </h1>
         <div class="gold-rule reveal" style="margin:0 auto 28px;max-width:280px;"></div>
         <p class="reveal hero-tagline" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,2.4vw,28px);color:#FFFFFF;line-height:1.45;margin-bottom:14px;opacity:0.92;" data-delay="80">Three Generations. One Standard.</p>
         <p class="t-sub reveal hero-copy" style="max-width:520px;margin:0 auto 36px;" data-delay="160">Known on GT Road, Ghaziabad since 1989.<br>Genuine accessories. Clear advice. Clean installation.</p>
@@ -1081,7 +1238,7 @@
       </div>
       <div style="text-align:center;padding:24px 16px;">
         <div class="stat-num t-stat" data-type="customers" style="color:#FFF200;opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;">
-          1 Lakh+
+          2.5 Lakh+
           <span style="width:8px;height:8px;border-radius:50%;background:#FFF200;display:inline-block;animation:pulse-dot 2s infinite;flex-shrink:0;"></span>
         </div>
         <div class="t-caption" style="margin-top:8px;opacity:0.5;">Customers Served</div>
@@ -1208,57 +1365,58 @@
       <h2 class="t-h1 reveal" style="color:#FFFFFF;margin-bottom:12px;" data-delay="80">Tell Us About Your Car</h2>
       <p class="t-sub reveal" data-delay="160">Send your car details once. We will reply on WhatsApp with clear guidance.</p>
     </div>
-    <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,183,3,0.15);padding:40px 36px;backdrop-filter:blur(8px);">
+    <form id="enquiryForm" onsubmit="submitForm(event)" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,183,3,0.15);padding:40px 36px;backdrop-filter:blur(8px);">
       <div id="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:28px 36px;">
         <div>
-          <label class="field-label">Your Name <span style="opacity:0.4;">(optional)</span></label>
+          <label class="field-label" for="fName">Your Name <span style="opacity:0.4;">(optional)</span></label>
           <input class="field-line" id="fName" type="text" autocomplete="name" placeholder="Your name" />
         </div>
         <div>
-          <label class="field-label">Car Brand</label>
+          <label class="field-label" for="fBrand">Car Brand</label>
           <input class="field-line" id="fBrand" type="text" placeholder="Maruti, Hyundai, Honda..." />
         </div>
         <div>
-          <label class="field-label">Car Model</label>
+          <label class="field-label" for="fModel">Car Model</label>
           <input class="field-line" id="fModel" type="text" placeholder="Swift, Creta, City..." />
         </div>
         <div>
-          <label class="field-label">Year</label>
-          <input class="field-line" id="fYear" type="text" placeholder="e.g. 2022" />
+          <label class="field-label" for="fYear">Year</label>
+          <input class="field-line" id="fYear" type="text" inputmode="numeric" placeholder="e.g. 2022" />
         </div>
         <div>
-          <label class="field-label">Phone Number <span style="color:#DA291C;">*</span></label>
-          <input class="field-line" id="fPhone" type="tel" placeholder="+91 98765 43210" />
-          <div id="phoneErr" class="t-sm" style="color:#DA291C;margin-top:6px;display:none;">Phone number required</div>
+          <label class="field-label" for="fPhone">Phone Number <span style="color:#DA291C;">*</span></label>
+          <input class="field-line" id="fPhone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="phoneErr" placeholder="+91 98765 43210" />
+          <div id="phoneErr" class="t-sm" role="alert" aria-live="polite" style="color:#DA291C;margin-top:6px;display:none;">Enter a valid phone number</div>
         </div>
       </div>
       <div style="margin-top:28px;">
-        <label class="field-label">Service Needed</label>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;" id="pillGroup">
-          <button class="pill" onclick="togglePill(this)">Safety and Security</button>
-          <button class="pill" onclick="togglePill(this)">Seat Covers and Interiors</button>
-          <button class="pill" onclick="togglePill(this)">Custom-fit Mats</button>
-          <button class="pill" onclick="togglePill(this)">Sound System and Tuning</button>
-          <button class="pill" onclick="togglePill(this)">Android and Infotainment</button>
-          <button class="pill" onclick="togglePill(this)">Lighting Upgrade</button>
-          <button class="pill" onclick="togglePill(this)">Heat Protection Film</button>
-          <button class="pill" onclick="togglePill(this)">Not Sure Yet</button>
+        <div class="field-label" id="serviceNeededLabel">Service Needed</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;" id="pillGroup" role="group" aria-labelledby="serviceNeededLabel">
+          <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Safety and Security</button>
+          <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Seat Covers and Interiors</button>
+          <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Custom-fit Mats</button>
+          <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Sound System and Tuning</button>
+          <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Android and Infotainment</button>
+          <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Lighting Upgrade</button>
+          <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Heat Protection Film</button>
+          <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Not Sure Yet</button>
         </div>
       </div>
       <div style="margin-top:28px;">
-        <label class="field-label">Additional Details <span style="opacity:0.4;">(optional)</span></label>
+        <label class="field-label" for="fDetails">Additional Details <span style="opacity:0.4;">(optional)</span></label>
         <textarea class="field-line" id="fDetails" rows="3" placeholder="Car issue, budget, brand preference, or anything you want to ask" style="resize:none;padding-top:12px;"></textarea>
       </div>
       <label class="consent-row">
         <input id="fMarketingConsent" type="checkbox" />
         <span>I agree to receive service updates and occasional offers from Madhuban Motors by WhatsApp or SMS. I can opt out anytime.</span>
       </label>
-      <button onclick="submitForm()" class="btn btn-wa" style="width:100%;margin-top:28px;font-size:15px;font-weight:600;padding:16px;">
+      <p class="privacy-note">By sending, you ask Madhuban Motors to contact you on WhatsApp about this enquiry. Marketing is optional. See our <a href="privacy.html">Privacy Notice</a>.</p>
+      <button type="submit" class="btn btn-wa" style="width:100%;margin-top:28px;font-size:15px;font-weight:600;padding:16px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Send to WhatsApp &amp; Get Pricing
       </button>
       <div class="t-caption" style="text-align:center;margin-top:14px;opacity:0.3;font-size:10px;">YOUR NUMBER IS USED ONLY TO REPLY TO THIS ENQUIRY.</div>
-    </div>
+    </form>
   </div>
 </section>
 
@@ -1543,7 +1701,7 @@
           <div class="t-caption" style="margin-bottom:8px;">HOURS</div>
           <div class="t-body" style="line-height:2;">Mon, Wed to Sun: 10:00 AM to 8:00 PM<br><span style="color:#DA291C;font-weight:500;">Tuesday: Closed</span></div>
         </div>
-        <div class="reveal" style="font-family:'DM Serif Display',serif;font-size:28px;color:#FFFFFF;margin:24px 0;" data-delay="200">+91 99114 43751</div>
+        <div class="reveal" data-routing-phone style="font-family:'DM Serif Display',serif;font-size:28px;color:#FFFFFF;margin:24px 0;" data-delay="200">+91 99114 43751</div>
         <div class="reveal" style="display:flex;flex-direction:column;gap:10px;max-width:260px;" data-delay="240">
           <a href="https://wa.me/919911443751?text=Hi%2C%20I%20want%20to%20enquire%20about%20your%20services." target="_blank" class="btn btn-primary">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -1574,6 +1732,8 @@
   </div>
 </section>
 
+</main>
+
 <!-- FOOTER -->
 <footer style="background:#0B0B0B;border-top:1px solid rgba(255,242,0,0.18);padding:56px 24px 96px;">
   <div class="container" style="text-align:center;">
@@ -1584,17 +1744,29 @@
     </picture>
     <div class="t-sm" style="margin-bottom:6px;">Est. 1989, Ghaziabad, Uttar Pradesh</div>
     <div class="t-caption" style="opacity:0.72;margin-bottom:32px;font-size:11px;color:#FFF200;">PRECISION  CRAFTSMANSHIP  TRUST</div>
-    <div style="display:flex;justify-content:center;gap:36px;margin-bottom:32px;">
+    <div style="display:flex;justify-content:center;gap:18px 36px;flex-wrap:wrap;margin-bottom:32px;">
       <a href="https://wa.me/919911443751" target="_blank" class="t-sm" style="color:#777777;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFF200'" onmouseout="this.style.color='#777777'">WhatsApp</a>
       <a href="tel:+919911443751" class="t-sm" style="color:#777777;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFF200'" onmouseout="this.style.color='#777777'">Call</a>
       <a href="https://www.instagram.com/accessories_madhuban/" target="_blank" class="t-sm" style="color:#777777;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFF200'" onmouseout="this.style.color='#777777'">Instagram</a>
       <a href="https://maps.google.com/?q=Madhuban+Motors+GT+Road+Ghaziabad" target="_blank" class="t-sm" style="color:#777777;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFF200'" onmouseout="this.style.color='#777777'">Directions</a>
       <a href="https://www.google.com/maps?cid=13467297807459514373" target="_blank" class="t-sm" style="color:#777777;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFF200'" onmouseout="this.style.color='#777777'">Reviews</a>
+      <a href="privacy.html" class="t-sm privacy-link" style="text-decoration:none;transition:color 0.2s;">Privacy</a>
     </div>
     <div style="font-family:'DM Serif Display',serif;font-size:18px;letter-spacing:.18em;color:#FFF200;margin:4px 0 16px;">A.S.S.N.</div>
     <div class="t-sm" style="color:#777777;">© 2026 Madhuban Motors. All rights reserved.</div>
   </div>
 </footer>
+
+<aside id="privacyConsent" class="privacy-consent" aria-label="Privacy choices" hidden>
+  <div>
+    <strong>Privacy choices</strong>
+    <p>We use necessary storage for your privacy choice. With permission, we also use analytics to understand website visits. Enquiry details are sent only when you choose to contact us. <a href="privacy.html">Read our Privacy Notice</a>.</p>
+  </div>
+  <div class="privacy-consent-actions">
+    <button type="button" class="btn btn-secondary btn-sm" onclick="mmSetAnalyticsConsent(false)">Necessary only</button>
+    <button type="button" class="btn btn-primary btn-sm" onclick="mmSetAnalyticsConsent(true)">Accept analytics</button>
+  </div>
+</aside>
 
 <!-- JUMP MENU -->
 <div id="jumpMenu" role="dialog" aria-modal="true" aria-label="Browse the site" aria-hidden="true">
@@ -1645,6 +1817,7 @@
     </div>
 
     <div class="jump-links">
+      <button type="button" onclick="closeJumpMenu();openShopPreview()">Shop Online Preview</button>
       <a href="#pricing" onclick="jumpTo(event,'pricing')">Pricing</a>
       <a href="#reviews" onclick="jumpTo(event,'reviews')">Reviews</a>
       <a href="#story" onclick="jumpTo(event,'story')">Our Story</a>
@@ -1688,7 +1861,7 @@
 </div>
 
 <!-- WORK PHOTO LIGHTBOX -->
-<div id="workLightbox" onclick="closeWorkModal(event)">
+<div id="workLightbox" role="dialog" aria-modal="true" aria-labelledby="workLightboxTitle" aria-hidden="true" onclick="closeWorkModal(event)">
   <div class="lightbox-card" onclick="event.stopPropagation()">
     <button class="lightbox-close" onclick="closeWorkModal()" type="button" aria-label="Close enlarged work photo">×</button>
     <img id="workLightboxImg" src="" alt="Madhuban Motors installation work">
@@ -1710,37 +1883,39 @@
         <div style="font-family:'DM Serif Display',serif;font-size:24px;color:#FFFFFF;">Quick Quote</div>
         <div class="t-sm" style="margin-top:6px;">We'll reply in minutes</div>
       </div>
-      <button onclick="closePanel()" style="background:none;border:none;color:#FFF200;font-size:24px;cursor:pointer;padding:0;line-height:1;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">×</button>
+      <button type="button" onclick="closePanel()" aria-label="Close quick quote" style="background:none;border:none;color:#FFF200;font-size:24px;cursor:pointer;padding:0;line-height:1;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">×</button>
     </div>
+    <form id="quickQuoteForm" onsubmit="submitQuick(event)" style="flex:1;display:flex;flex-direction:column;">
     <div class="quick-fields" style="flex:1;display:flex;flex-direction:column;gap:24px;">
       <div>
-        <label class="field-label">YOUR NUMBER <span style="color:#DA291C;">*</span></label>
-        <input class="field-line" id="qPhone" type="tel" placeholder="+91 98765 43210" />
-        <div id="qPhoneErr" class="t-sm" style="color:#DA291C;margin-top:6px;display:none;">Required</div>
+        <label class="field-label" for="qPhone">YOUR NUMBER <span style="color:#DA291C;">*</span></label>
+        <input class="field-line" id="qPhone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="qPhoneErr" placeholder="+91 98765 43210" />
+        <div id="qPhoneErr" class="t-sm" role="alert" aria-live="polite" style="color:#DA291C;margin-top:6px;display:none;">Enter a valid phone number</div>
       </div>
       <div>
-        <label class="field-label">Service</label>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;" id="qPillGroup">
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Safety</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Interiors</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Mats</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Sound</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Infotainment</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Lighting</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Solar Film</button>
-          <button class="pill" onclick="toggleQPill(this)" style="font-size:12px;padding:6px 11px;">Other</button>
+        <div class="field-label" id="quickServiceLabel">Service</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;" id="qPillGroup" role="group" aria-labelledby="quickServiceLabel">
+          <button type="button" class="pill" onclick="toggleQPill(this)" aria-pressed="false" style="font-size:12px;padding:6px 11px;">Safety</button>
+          <button type="button" class="pill" onclick="toggleQPill(this)" aria-pressed="false" style="font-size:12px;padding:6px 11px;">Interiors</button>
+          <button type="button" class="pill" onclick="toggleQPill(this)" aria-pressed="false" style="font-size:12px;padding:6px 11px;">Mats</button>
+          <button type="button" class="pill" onclick="toggleQPill(this)" aria-pressed="false" style="font-size:12px;padding:6px 11px;">Sound</button>
+          <button type="button" class="pill" onclick="toggleQPill(this)" aria-pressed="false" style="font-size:12px;padding:6px 11px;">Infotainment</button>
+          <button type="button" class="pill" onclick="toggleQPill(this)" aria-pressed="false" style="font-size:12px;padding:6px 11px;">Lighting</button>
+          <button type="button" class="pill" onclick="toggleQPill(this)" aria-pressed="false" style="font-size:12px;padding:6px 11px;">Solar Film</button>
+          <button type="button" class="pill" onclick="toggleQPill(this)" aria-pressed="false" style="font-size:12px;padding:6px 11px;">Other</button>
         </div>
       </div>
       <div>
-        <label class="field-label">Car Model <span style="opacity:0.4;">(optional)</span></label>
+        <label class="field-label" for="qCar">Car Model <span style="opacity:0.4;">(optional)</span></label>
         <input class="field-line" id="qCar" type="text" placeholder="Swift, Creta, City..." />
       </div>
       <label class="consent-row" style="margin-top:0;">
         <input id="qMarketingConsent" type="checkbox" />
         <span>Send me occasional service updates and offers by WhatsApp or SMS.</span>
       </label>
+      <p class="privacy-note">By sending, you ask us to contact you about this enquiry. <a href="privacy.html">Privacy Notice</a></p>
     </div>
-    <button onclick="submitQuick()" class="btn btn-wa quick-submit" style="width:100%;margin-top:28px;font-size:14px;font-weight:600;padding:15px;">
+    <button id="quickSubmit" type="submit" class="btn btn-wa quick-submit" style="width:100%;margin-top:28px;font-size:14px;font-weight:600;padding:15px;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Send on WhatsApp
     </button>
@@ -1748,27 +1923,63 @@
       <div style="font-size:36px;margin-bottom:10px;color:#FFF200;">✓</div>
       <div class="t-h3" style="color:#FFF200;font-size:15px;">Opening WhatsApp...</div>
     </div>
+    </form>
   </div>
 </div>
 
-<!-- COMING SOON OVERLAY -->
-<div id="comingSoon">
-  <button onclick="document.getElementById('comingSoon').classList.remove('open')" style="position:absolute;top:24px;right:28px;background:none;border:none;color:#FFF200;font-size:28px;cursor:pointer;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">×</button>
-  <div class="brand-name" style="font-size:clamp(28px,6vw,52px);color:#FFF200;margin-bottom:16px;text-align:center;">Madhu<span class="mirror-b">B</span>an Shop</div>
-  <div style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,3vw,32px);color:#FFFFFF;margin-bottom:14px;text-align:center;">Coming Soon</div>
-  <p class="t-body" style="text-align:center;max-width:360px;margin-bottom:12px;">Shop accessories online. Browse genuine products. We're building it.</p>
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:36px;">
-    <span style="width:7px;height:7px;border-radius:50%;background:#FFF200;animation:pulse-dot 2s infinite;display:inline-block;"></span>
-    <span class="t-sm" style="color:#FFF200;font-weight:500;">Live soon</span>
+<!-- SHOP PREVIEW OVERLAY -->
+<div id="comingSoon" role="dialog" aria-modal="true" aria-labelledby="shopPreviewTitle" aria-hidden="true" onclick="closeShopPreview(event)">
+  <div class="shop-preview" onclick="event.stopPropagation()">
+    <button class="shop-preview-close" type="button" onclick="closeShopPreview()" aria-label="Close online shop preview">×</button>
+    <div class="shop-preview-layout">
+      <div class="shop-preview-copy">
+        <div class="t-caption">THE DIGITAL COUNTER</div>
+        <h2 id="shopPreviewTitle">Shop access is being built properly.</h2>
+        <p>We are preparing a clear online catalogue for genuine accessories and car-specific fitment. Until it is ready, send your car model and we will recommend the right options directly.</p>
+        <div class="shop-preview-actions">
+          <a href="#enquiry" class="btn btn-primary" onclick="closeShopPreview();scrollToEnquiry(event)">Build My Quote</a>
+          <a href="https://wa.me/919911443751?text=Hi%2C%20please%20notify%20me%20when%20the%20Madhuban%20Motors%20online%20shop%20is%20live." target="_blank" rel="noopener" class="btn btn-wa">Notify Me on WhatsApp</a>
+        </div>
+      </div>
+      <div class="shop-preview-grid" aria-label="Online catalogue preview">
+        <div class="shop-preview-card" style="background-image:url('assets/web/service-safety.jpg')"><span>Safety &amp; Security</span></div>
+        <div class="shop-preview-card" style="background-image:url('assets/web/seat-cover-black-red.jpg')"><span>Interiors</span></div>
+        <div class="shop-preview-card" style="background-image:url('assets/web/service-infotainment.jpg')"><span>Infotainment</span></div>
+      </div>
+    </div>
   </div>
-  <a href="https://wa.me/919911443751?text=Notify%20me%20when%20the%20Madhuban%20Motors%20online%20shop%20is%20live%21" target="_blank" class="btn btn-wa btn-lg">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Notify Me on WhatsApp
-  </a>
 </div>
 
 <script>
 // HERO NAME IS STATIC HTML NOW SO THE MIRRORED B NEVER DISAPPEARS
+
+const reducedMotionQuery = matchMedia('(prefers-reduced-motion: reduce)');
+document.body.classList.add('motion-ready');
+
+// Editorial section markers and headlamp-edge transitions. These are added
+// progressively so the content remains complete when scripting is unavailable.
+const motionSections = [...document.querySelectorAll('main > section:not(.hero-shell)')];
+motionSections.forEach((section, index) => {
+  section.classList.add('motion-section');
+  const edge = document.createElement('span');
+  edge.className = 'motion-edge';
+  edge.setAttribute('aria-hidden', 'true');
+  section.prepend(edge);
+
+  if (!section.classList.contains('discovery-ribbons')) {
+    const marker = document.createElement('span');
+    marker.className = 'motion-index';
+    marker.textContent = String(index).padStart(2, '0');
+    marker.setAttribute('aria-hidden', 'true');
+    section.appendChild(marker);
+  }
+});
+document.querySelectorAll('main h2').forEach(heading => heading.classList.add('motion-heading'));
+
+const motionSectionObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => entry.target.classList.toggle('is-inview', entry.isIntersecting));
+}, { threshold:0.08, rootMargin:'80px 0px 80px' });
+motionSections.forEach(section => motionSectionObs.observe(section));
 
 // PHONE WORK GALLERY
 const workGallery = [
@@ -1803,6 +2014,7 @@ const workGallery = [
 ];
 let currentWorkIndex = 0;
 let workGalleryTimer = null;
+let workGalleryInView = false;
 
 function renderPhoneGallery() {
   const current = workGallery[currentWorkIndex];
@@ -1835,6 +2047,8 @@ function prevWorkPhoto() { setWorkPhoto(currentWorkIndex - 1); }
 
 function restartWorkGalleryTimer() {
   if (workGalleryTimer) clearInterval(workGalleryTimer);
+  workGalleryTimer = null;
+  if (reducedMotionQuery.matches || document.hidden || !workGalleryInView) return;
   workGalleryTimer = setInterval(() => {
     currentWorkIndex = (currentWorkIndex + 1) % workGallery.length;
     renderPhoneGallery();
@@ -1848,16 +2062,43 @@ function openWorkModal(index = currentWorkIndex) {
   document.getElementById('workLightboxImg').alt = current.title;
   document.getElementById('workLightboxTitle').textContent = current.title;
   document.getElementById('workLightboxText').textContent = current.text;
-  document.getElementById('workLightbox').classList.add('open');
+  const modal = document.getElementById('workLightbox');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  if (workGalleryTimer) clearInterval(workGalleryTimer);
+  modal.querySelector('.lightbox-close').focus({ preventScroll:true });
 }
 
 function closeWorkModal(event) {
   if (event && event.target.id !== 'workLightbox') return;
-  document.getElementById('workLightbox').classList.remove('open');
+  const modal = document.getElementById('workLightbox');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  restartWorkGalleryTimer();
+  const slide = document.getElementById('phoneSlide');
+  if (slide) slide.focus({ preventScroll:true });
 }
 
 renderPhoneGallery();
-restartWorkGalleryTimer();
+const workStage = document.querySelector('.phone-stage');
+if (workStage) {
+  const workStageObs = new IntersectionObserver((entries) => {
+    workGalleryInView = entries[0].isIntersecting;
+    restartWorkGalleryTimer();
+  }, { threshold:0.12 });
+  workStageObs.observe(workStage);
+}
+document.addEventListener('visibilitychange', restartWorkGalleryTimer);
+reducedMotionQuery.addEventListener && reducedMotionQuery.addEventListener('change', restartWorkGalleryTimer);
+const phoneSlideButton = document.getElementById('phoneSlide');
+if (phoneSlideButton) {
+  phoneSlideButton.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openWorkModal();
+    }
+  });
+}
 
 // SCROLL REVEAL
 const revealObs = new IntersectionObserver((entries) => {
@@ -1909,6 +2150,42 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   }
 }
 
+/* ---- Shop preview --------------------------------------------------- */
+let shopReturnFocus = null;
+
+function openShopPreview() {
+  const modal = document.getElementById('comingSoon');
+  shopReturnFocus = document.activeElement;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  modal.querySelector('.shop-preview-close').focus({ preventScroll:true });
+  window.mmTrack && window.mmTrack('shop_preview_open', {});
+}
+
+function closeShopPreview(event) {
+  if (event && event.target.id !== 'comingSoon') return;
+  const modal = document.getElementById('comingSoon');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (shopReturnFocus && shopReturnFocus.focus) shopReturnFocus.focus({ preventScroll:true });
+}
+
+function trapShopFocus(event) {
+  const modal = document.getElementById('comingSoon');
+  if (!modal.classList.contains('open') || event.key !== 'Tab') return;
+  const focusable = [...modal.querySelectorAll('button,a[href]')].filter(el => !el.disabled);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault(); last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault(); first.focus();
+  }
+}
+
 /* ---- Jump menu --------------------------------------------------------
    The page is ~12,600px of one continuous scroll, so this exists to let
    someone reach a service without wading through everything above it. */
@@ -1945,11 +2222,122 @@ function jumpTo(e, id) {
 }
 
 document.addEventListener('keydown', (e) => {
+  trapShopFocus(e);
   if (e.key === 'Escape') {
+    const work = document.getElementById('workLightbox');
+    if (work && work.classList.contains('open')) closeWorkModal();
+    const shop = document.getElementById('comingSoon');
+    if (shop && shop.classList.contains('open')) closeShopPreview();
     const m = document.getElementById('jumpMenu');
     if (m && m.classList.contains('open')) closeJumpMenu();
   }
 });
+
+/* ---- Lead routing ---------------------------------------------------
+   Organic sessions use the shop's long-standing contact. Paid Google and
+   Meta sessions use Aum's contact so those enquiries can be followed up and
+   attributed quickly. Only the paid channel and strictly sanitized campaign /
+   creative codes are kept for this browser tab's session; no names, phone
+   numbers, search terms, arbitrary query values or vehicle details are stored. */
+const MM_LEAD_CHANNEL_KEY = 'mm_lead_channel_v1';
+const MM_LEAD_CAMPAIGN_KEY = 'mm_lead_campaign_v1';
+const MM_LEAD_CREATIVE_KEY = 'mm_lead_creative_v1';
+const MM_ATTRIBUTION_MAX_LENGTH = 64;
+const MM_CONTACT_ROUTES = {
+  organic: { phone:'919911443751', display:'+91 99114 43751', code:'ORG' },
+  google:  { phone:'919718373751', display:'+91 97183 73751', code:'GGL' },
+  meta:    { phone:'919718373751', display:'+91 97183 73751', code:'META' }
+};
+
+function sanitizeMMAttribution(value) {
+  return (value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^[-_]+|[-_]+$/g, '')
+    .slice(0, MM_ATTRIBUTION_MAX_LENGTH);
+}
+
+function detectMMLeadAttribution() {
+  const params = new URLSearchParams(window.location.search);
+  const utmSource = (params.get('utm_source') || '').trim().toLowerCase();
+  let detected = '';
+  if (utmSource === 'google' || params.has('gclid') || params.has('gbraid') || params.has('wbraid')) {
+    detected = 'google';
+  } else if (utmSource === 'meta' || params.has('fbclid')) {
+    detected = 'meta';
+  }
+
+  let campaign = detected ? sanitizeMMAttribution(params.get('utm_campaign')) : '';
+  let creative = detected ? sanitizeMMAttribution(params.get('utm_content')) : '';
+
+  try {
+    if (detected) {
+      sessionStorage.setItem(MM_LEAD_CHANNEL_KEY, detected);
+      if (campaign) sessionStorage.setItem(MM_LEAD_CAMPAIGN_KEY, campaign);
+      else sessionStorage.removeItem(MM_LEAD_CAMPAIGN_KEY);
+      if (creative) sessionStorage.setItem(MM_LEAD_CREATIVE_KEY, creative);
+      else sessionStorage.removeItem(MM_LEAD_CREATIVE_KEY);
+    }
+    const stored = sessionStorage.getItem(MM_LEAD_CHANNEL_KEY);
+    if (!detected && (stored === 'google' || stored === 'meta')) {
+      detected = stored;
+      campaign = sanitizeMMAttribution(sessionStorage.getItem(MM_LEAD_CAMPAIGN_KEY));
+      creative = sanitizeMMAttribution(sessionStorage.getItem(MM_LEAD_CREATIVE_KEY));
+    }
+  } catch (error) {}
+  return { channel:detected || 'organic', campaign, creative };
+}
+
+const mmLeadAttribution = detectMMLeadAttribution();
+
+function getMMLeadRoute() {
+  return { ...mmLeadAttribution, ...MM_CONTACT_ROUTES[mmLeadAttribution.channel] };
+}
+
+function getMMWhatsAppUrl(message) {
+  const route = getMMLeadRoute();
+  const neutralMessage = (message || 'Hi, I want to enquire about Madhuban Motors services.')
+    .replace('Hi, I found you on Google and want to enquire about your services.', 'Hi, I want to enquire about your services.')
+    .trim();
+  const sourceParts = [route.code];
+  if (route.campaign) sourceParts.push(`cmp:${route.campaign}`);
+  if (route.creative) sourceParts.push(`cr:${route.creative}`);
+  const sourceTag = `[Source: ${sourceParts.join(' | ')}]`;
+  const preparedMessage = neutralMessage.includes(sourceTag)
+    ? neutralMessage
+    : `${neutralMessage}\n\n${sourceTag}`;
+  return `https://wa.me/${route.phone}?text=${encodeURIComponent(preparedMessage)}`;
+}
+
+function replaceContactNumberText(root, route) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  textNodes.forEach(node => {
+    node.nodeValue = node.nodeValue
+      .replace(/\+91\s*99114\s*43751/g, route.display)
+      .replace(/9911443751/g, route.phone.slice(2));
+  });
+}
+
+function applyMMLeadRouting() {
+  const route = getMMLeadRoute();
+  document.querySelectorAll('a[href*="wa.me/"]').forEach(link => {
+    let message = '';
+    try { message = new URL(link.href).searchParams.get('text') || ''; }
+    catch (error) {}
+    link.href = getMMWhatsAppUrl(message);
+  });
+  document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+    link.href = `tel:+${route.phone}`;
+    replaceContactNumberText(link, route);
+  });
+  document.querySelectorAll('[data-routing-phone]').forEach(el => replaceContactNumberText(el, route));
+}
+
+applyMMLeadRouting();
 
 /* ---- Conversion tracking ---------------------------------------------
    Delegated rather than bound per-link: there are 8 WhatsApp, 6 phone and
@@ -1996,18 +2384,19 @@ function animateStats() {
       el.style.opacity = '1';
       if (type === 'lakh') {
         let c = 0; const t = setInterval(() => {
-          c = Math.min(c + 5000, 300000);
-          const l = Math.floor(c / 100000);
+          c = Math.min(c + 5000, 250000);
+          const l = (c / 100000).toFixed(1);
           el.innerHTML = l + ' Lakh+ <span style="width:8px;height:8px;border-radius:50%;background:#FFF200;display:inline-block;animation:pulse-dot 2s infinite;vertical-align:middle;flex-shrink:0;"></span>';
-          if (c >= 300000) clearInterval(t);
+          if (c >= 250000) clearInterval(t);
         }, 33);
       }
     }, i * 180);
   });
 }
 
-// NAV SCROLL
-window.addEventListener('scroll', () => {
+// NAV + LIGHTING SCROLL (one compositor-aligned update per frame)
+let pageScrollTicking = false;
+function updatePageMotion() {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 80);
   const progress = document.getElementById('scrollProgress');
   const h = document.documentElement.scrollHeight - innerHeight;
@@ -2028,7 +2417,16 @@ window.addEventListener('scroll', () => {
     'linear-gradient(180deg,#181818 0%,#0B0B0B 52%,#303030 100%)'
   ];
   document.body.style.background = stops[Math.min(stops.length - 1, Math.floor(pct / 25))];
-});
+  pageScrollTicking = false;
+}
+window.addEventListener('scroll', () => {
+  if (!pageScrollTicking) {
+    requestAnimationFrame(updatePageMotion);
+    pageScrollTicking = true;
+  }
+}, { passive:true });
+window.addEventListener('resize', updatePageMotion, { passive:true });
+updatePageMotion();
 
 // REVIEW COUNTER
 const reviewObs = new IntersectionObserver((entries) => {
@@ -2054,17 +2452,29 @@ function openPanel()  { document.getElementById('quickPanel').classList.add('ope
 function closePanel() { document.getElementById('quickPanel').classList.remove('open'); }
 
 // PILLS
-function togglePill(btn)  { btn.classList.toggle('active'); }
+function togglePill(btn)  {
+  btn.classList.toggle('active');
+  btn.setAttribute('aria-pressed', btn.classList.contains('active') ? 'true' : 'false');
+}
 function toggleQPill(btn) {
-  document.querySelectorAll('#qPillGroup .pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#qPillGroup .pill').forEach(p => {
+    p.classList.remove('active');
+    p.setAttribute('aria-pressed', 'false');
+  });
   btn.classList.add('active');
+  btn.setAttribute('aria-pressed', 'true');
 }
 
 // FORM SUBMIT
-function submitForm() {
+function submitForm(event) {
+  if (event) event.preventDefault();
   const phone = document.getElementById('fPhone').value.trim();
   const err = document.getElementById('phoneErr');
-  if (!phone || phone.replace(/\D/g,'').length < 10) { err.style.display = 'block'; return; }
+  if (!phone || phone.replace(/\D/g,'').length < 10) {
+    err.style.display = 'block';
+    document.getElementById('fPhone').focus();
+    return;
+  }
   err.style.display = 'none';
   const name     = document.getElementById('fName').value.trim();
   const brand    = document.getElementById('fBrand').value.trim();
@@ -2074,45 +2484,65 @@ function submitForm() {
   const marketingConsent = document.getElementById('fMarketingConsent').checked;
   const services = [...document.querySelectorAll('#pillGroup .pill.active')].map(p => p.textContent).join(', ') || 'Not specified';
   const msg = `🚗 *New Enquiry, Madhuban Motors*\n\n*Name:* ${name || 'Not provided'}\n*Car:* ${brand} ${model} ${year ? '('+year+')' : ''}\n*Phone:* ${phone}\n*Services:* ${services}\n*Details:* ${details || 'None'}\n\n_Sent from website_`.trim();
-  saveLead({ name, phone, brand, model, year, services, details, marketingConsent });
+  sendLead({ name, phone, brand, model, year, services, details, marketingConsent, form: 'full-enquiry' });
   /* Fires only after validation passes, so this counts real enquiries.
      Deliberately sends no name or phone — only which services were picked. */
   window.mmTrack && window.mmTrack('enquiry_submit', { services: services });
   if (window.fbq) window.fbq('track', 'Lead', { content_name: services });
-  window.open('https://wa.me/919911443751?text=' + encodeURIComponent(msg), '_blank');
+  window.open(getMMWhatsAppUrl(msg), '_blank', 'noopener');
 }
 
-function submitQuick() {
+function submitQuick(event) {
+  if (event) event.preventDefault();
   const phone = document.getElementById('qPhone').value.trim();
   const err   = document.getElementById('qPhoneErr');
-  if (!phone || phone.replace(/\D/g,'').length < 10) { err.style.display = 'block'; return; }
+  if (!phone || phone.replace(/\D/g,'').length < 10) {
+    err.style.display = 'block';
+    document.getElementById('qPhone').focus();
+    return;
+  }
   err.style.display = 'none';
   const service = document.querySelector('#qPillGroup .pill.active')?.textContent || 'Not specified';
   const car     = document.getElementById('qCar').value.trim();
   const marketingConsent = document.getElementById('qMarketingConsent').checked;
   const msg = `Quick Quote, Madhuban Motors\n\nPhone: ${phone}\nService: ${service}\nCar: ${car || 'Not mentioned'}\n\nSent from website`.trim();
-  saveLead({ phone, service, car, marketingConsent });
-  document.querySelector('#quickPanel button[onclick="submitQuick()"]').style.display = 'none';
+  sendLead({ phone, service, car, marketingConsent, form: 'quick-quote' });
+  document.getElementById('quickSubmit').style.display = 'none';
   document.getElementById('qSuccess').style.display = 'block';
-  window.open('https://wa.me/919911443751?text=' + encodeURIComponent(msg), '_blank');
+  window.open(getMMWhatsAppUrl(msg), '_blank', 'noopener');
   setTimeout(() => {
     closePanel();
-    document.querySelector('#quickPanel button[onclick="submitQuick()"]').style.display = 'flex';
+    document.getElementById('quickSubmit').style.display = 'flex';
     document.getElementById('qSuccess').style.display = 'none';
   }, 3000);
 }
 
-function saveLead(data) {
-  try {
-    const leads = JSON.parse(localStorage.getItem('mm_leads') || '[]');
-    leads.push({
-      ...data,
-      source: 'website',
-      consentTimestamp: data.marketingConsent ? new Date().toISOString() : null,
-      timestamp: new Date().toISOString()
-    });
-    localStorage.setItem('mm_leads', JSON.stringify(leads));
-  } catch(e) {}
+function sendLead(data) {
+  const endpoint = (window.MM_LEAD_CONFIG && window.MM_LEAD_CONFIG.endpoint || '').trim();
+  if (!endpoint || !endpoint.startsWith('https://')) return;
+
+  const leadRoute = getMMLeadRoute();
+  const payload = {
+    ...data,
+    source: 'madhubanmotors.com',
+    leadChannel: leadRoute.channel,
+    campaign: leadRoute.campaign || null,
+    creative: leadRoute.creative || null,
+    submittedAt: new Date().toISOString(),
+    marketingConsentAt: data.marketingConsent ? new Date().toISOString() : null
+  };
+
+  fetch(endpoint, {
+    method: 'POST',
+    mode: 'cors',
+    credentials: 'omit',
+    keepalive: true,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function () {
+    /* WhatsApp remains the visible fallback. Do not persist personal data in
+       the visitor's browser when the optional endpoint is unavailable. */
+  });
 }
 
 function scrollToEnquiry(e) {
@@ -2123,7 +2553,10 @@ function scrollToEnquiry(e) {
 function selectUpgrade(serviceName) {
   const matchingPill = [...document.querySelectorAll('#pillGroup .pill')]
     .find(pill => pill.textContent.trim() === serviceName);
-  if (matchingPill) matchingPill.classList.add('active');
+  if (matchingPill) {
+    matchingPill.classList.add('active');
+    matchingPill.setAttribute('aria-pressed', 'true');
+  }
   document.getElementById('enquiry').scrollIntoView({ behavior: 'smooth' });
 }
 
