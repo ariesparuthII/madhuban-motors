@@ -3,3 +3,9 @@ assets/*.png
 .DS_Store
 assets/service-*.png
 assets/hero-*.png
+
+# Internal planning. Repo is public: these contain budgets, margins and cost prices.
+marketing/
+SYSTEM_BUILDER_SPEC.md
+PROJECT_MEMORY.md
+tools/

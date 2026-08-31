@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://madhubanmotors.com/</loc>
-    <lastmod>2026-08-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://madhubanmotors.com/privacy.html</loc>
-    <lastmod>2026-08-18</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
+  <url><loc>https://madhubanmotors.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://madhubanmotors.com/car-audio-system-ghaziabad.html</loc><priority>0.9</priority></url>
+  <url><loc>https://madhubanmotors.com/android-screen-fitting-ghaziabad.html</loc><priority>0.9</priority></url>
+  <url><loc>https://madhubanmotors.com/car-seat-covers-ghaziabad.html</loc><priority>0.9</priority></url>
+  <url><loc>https://madhubanmotors.com/car-accessories-raj-nagar-extension.html</loc><priority>0.8</priority></url>
+  <url><loc>https://madhubanmotors.com/privacy.html</loc><priority>0.2</priority></url>
+  <url><loc>https://madhubanmotors.com/builder.html</loc><priority>0.9</priority></url>
 </urlset>
