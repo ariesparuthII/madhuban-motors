@@ -1,0 +1,116 @@
+[
+  {
+    "mode": "standard",
+    "width": 390,
+    "timing": {
+      "start": 1378.3999999761581,
+      "modelReady": 2287.5,
+      "ready": 5055.100000023842
+    },
+    "contextLost": false,
+    "paint": "MeshStandardMaterial",
+    "vertices": 162650,
+    "pixelRatio": 1,
+    "aa": true,
+    "longTasks": [
+      {
+        "start": 458.39999997615814,
+        "duration": 377
+      },
+      {
+        "start": 1376.3999999761581,
+        "duration": 96
+      },
+      {
+        "start": 1848.1000000238419,
+        "duration": 202
+      },
+      {
+        "start": 2066.2000000476837,
+        "duration": 110
+      },
+      {
+        "start": 2286,
+        "duration": 129
+      },
+      {
+        "start": 2421.100000023842,
+        "duration": 2586
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car.glb",
+        "start": 1470.2000000476837,
+        "end": 1926.7000000476837,
+        "bytes": 2518104
+      },
+      {
+        "url": "http://localhost:8000/assets/vendor/three/showroom-core.min.js",
+        "start": 1472.3000000715256,
+        "end": 1620.3000000715256,
+        "bytes": 709039
+      }
+    ],
+    "errors": []
+  },
+  {
+    "mode": "standard",
+    "width": 1280,
+    "timing": {
+      "start": 2567.899999976158,
+      "modelReady": 3755.100000023842,
+      "ready": 4397.600000023842
+    },
+    "contextLost": false,
+    "paint": "MeshStandardMaterial",
+    "vertices": 162650,
+    "pixelRatio": 1,
+    "aa": true,
+    "longTasks": [
+      {
+        "start": 1627.5,
+        "duration": 168
+      },
+      {
+        "start": 1798.3999999761581,
+        "duration": 54
+      },
+      {
+        "start": 2053.8000000715256,
+        "duration": 51
+      },
+      {
+        "start": 2564.7000000476837,
+        "duration": 111
+      },
+      {
+        "start": 3080.7000000476837,
+        "duration": 382
+      },
+      {
+        "start": 3724.5,
+        "duration": 167
+      },
+      {
+        "start": 3899.100000023842,
+        "duration": 484
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car.glb",
+        "start": 2674,
+        "end": 3026.899999976158,
+        "bytes": 2518104
+      },
+      {
+        "url": "http://localhost:8000/assets/vendor/three/showroom-core.min.js",
+        "start": 2676,
+        "end": 2890.600000023842,
+        "bytes": 709039
+      }
+    ],
+    "errors": []
+  }
+]

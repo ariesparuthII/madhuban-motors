@@ -1,0 +1,5 @@
+.mm-sound{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 11px;border:1px solid #ffffff3d;border-radius:999px;background:#0b0b0b;color:#ddd;font:500 12px/1 'Mukta',sans-serif;white-space:nowrap;cursor:pointer}
+.mm-sound[aria-pressed="true"]{color:#fff200;border-color:#fff20080}
+.mm-sound:focus-visible{outline:2px solid #fff200;outline-offset:3px}
+.mm-sound[hidden]{display:none}
+@media(max-width:430px){.mm-sound{padding:8px;font-size:11px;gap:4px}}

@@ -1,0 +1,23 @@
+[
+  {
+    "width": 390,
+    "silentOnLoad": true,
+    "startsOnTap": true,
+    "mutesAndSuspends": true,
+    "mediaRequests": [],
+    "errors": []
+  },
+  {
+    "audioPeak": 0.09990934282541275,
+    "audioRms": 0.02305707356360494,
+    "seconds": 22
+  },
+  {
+    "width": 1280,
+    "silentOnLoad": true,
+    "startsOnTap": true,
+    "mutesAndSuspends": true,
+    "mediaRequests": [],
+    "errors": []
+  }
+]

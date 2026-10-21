@@ -1,0 +1,171 @@
+[
+  {
+    "mode": "before",
+    "width": 390,
+    "timing": {
+      "start": 1799.3999999761581,
+      "modelReady": 2388.1999999284744,
+      "ready": 3276.899999976158
+    },
+    "contextLost": false,
+    "paint": "MeshStandardMaterial",
+    "vertices": 85729,
+    "pixelRatio": 1,
+    "aa": false,
+    "longTasks": [
+      {
+        "start": 882.1999999284744,
+        "duration": 306
+      },
+      {
+        "start": 1701.5,
+        "duration": 77
+      },
+      {
+        "start": 1896.1999999284744,
+        "duration": 262
+      },
+      {
+        "start": 2226.7999999523163,
+        "duration": 92
+      },
+      {
+        "start": 2373.100000023842,
+        "duration": 88
+      },
+      {
+        "start": 2470.2999999523163,
+        "duration": 598
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/vendor/three/showroom-core.min.js",
+        "start": 1803,
+        "end": 1879.3999999761581,
+        "bytes": 709039
+      },
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car-fast.glb",
+        "start": 1943.7999999523163,
+        "end": 2218.5,
+        "bytes": 1629132
+      }
+    ],
+    "errors": []
+  },
+  {
+    "mode": "after",
+    "width": 390,
+    "timing": {
+      "start": 1517.6000000238419,
+      "modelReady": 2013,
+      "ready": 4864.299999952316
+    },
+    "contextLost": false,
+    "paint": "MeshPhysicalMaterial",
+    "vertices": 162650,
+    "pixelRatio": 1,
+    "aa": true,
+    "longTasks": [
+      {
+        "start": 804.3999999761581,
+        "duration": 251
+      },
+      {
+        "start": 1516.5,
+        "duration": 62
+      },
+      {
+        "start": 1665.8999999761581,
+        "duration": 178
+      },
+      {
+        "start": 1864.7999999523163,
+        "duration": 91
+      },
+      {
+        "start": 2007.3999999761581,
+        "duration": 79
+      },
+      {
+        "start": 2089.7999999523163,
+        "duration": 2759
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car.glb",
+        "start": 1578.1999999284744,
+        "end": 1673.7999999523163,
+        "bytes": 2518104
+      },
+      {
+        "url": "http://localhost:8000/assets/vendor/three/showroom-core.min.js",
+        "start": 1579.2999999523163,
+        "end": 1643,
+        "bytes": 709039
+      }
+    ],
+    "errors": []
+  },
+  {
+    "mode": "after",
+    "width": 1280,
+    "timing": {
+      "start": 1163.8999999761581,
+      "modelReady": 1968.3999999761581,
+      "ready": 2466.600000023842
+    },
+    "contextLost": false,
+    "paint": "MeshPhysicalMaterial",
+    "vertices": 162650,
+    "pixelRatio": 1,
+    "aa": true,
+    "longTasks": [
+      {
+        "start": 389.89999997615814,
+        "duration": 362
+      },
+      {
+        "start": 805.2000000476837,
+        "duration": 87
+      },
+      {
+        "start": 1162,
+        "duration": 123
+      },
+      {
+        "start": 1412.6000000238419,
+        "duration": 177
+      },
+      {
+        "start": 1621.8999999761581,
+        "duration": 197
+      },
+      {
+        "start": 1959.3000000715256,
+        "duration": 108
+      },
+      {
+        "start": 2085.7000000476837,
+        "duration": 367
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car.glb",
+        "start": 1278.5,
+        "end": 1501.8999999761581,
+        "bytes": 2518104
+      },
+      {
+        "url": "http://localhost:8000/assets/vendor/three/showroom-core.min.js",
+        "start": 1285.5,
+        "end": 1348,
+        "bytes": 709039
+      }
+    ],
+    "errors": []
+  }
+]

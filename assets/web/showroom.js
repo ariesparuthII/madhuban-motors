@@ -6,9 +6,9 @@
    - Each accessory chapter shows the real part in place; dashcam, seats and
      mats can "go inside" to a short explainer. */
 
-import { buildParts } from './studio3d-parts.js?v=perf3';
+import { buildParts } from './studio3d-parts.js?v=finish4';
 
-import { buildShopBoard } from './showroom-board.js';
+import { buildShopBoard } from './showroom-board.js?v=finish4';
 
 const ROOT = document.getElementById('showroom');
 
@@ -27,7 +27,7 @@ const SHOTS = {
   film:    { cam: [-4.9, 1.4, -0.9], look: [0, 0.8, 0], rot: 0, fov: 32, part: 'film', panelRight: true },
   car:     { cam: [-5.4, 1.25, 3.6], look: [0, 0.55, 0], rot: -0.2, fov: 30, spin: 0.4 }
 };
-const PAINTS = { red: 0xB01E0A, graphite: 0x2b2d31, pearl: 0xe9e6df, yellow: 0xE8C500 };
+const PAINTS = { red: 0xDA291C, graphite: 0x2b2d31, pearl: 0xe9e6df, yellow: 0xE8C500 };
 
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const smooth = t => t * t * (3 - 2 * t);
@@ -136,8 +136,8 @@ function init() {
   }));
 
   // Boot WebGL when close to view
-  const canGL = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { return false; } })();
-  if (!canGL || (navigator.connection && navigator.connection.saveData)) { ROOT.classList.add('is-fallback'); return; }
+  if (navigator.connection && navigator.connection.saveData) { ROOT.classList.add('is-fallback'); return; }
+  if (!('WebGL2RenderingContext' in window)) { ROOT.classList.add('is-fallback'); return; }
   const io = new IntersectionObserver(es => {
     if (!es.some(e => e.isIntersecting)) return;
     io.disconnect();
@@ -148,12 +148,24 @@ function init() {
 }
 
 async function boot(stage, ctx) {
+  // Check support with the actual canvas and reuse its context. Never allocate
+  // a throwaway second GPU context for the compatibility check.
+  const canvas = document.createElement('canvas');
+  const gl = canvas.getContext('webgl2', {antialias:true,powerPreference:'default'});
+  if (!gl) throw new Error('WebGL2 unavailable');
+  // Start the complete car download alongside the JS module, not after it.
+  const modelBytes = fetch(stage.dataset.model || 'assets/3d/concept-car.glb').then(r => {
+    if (!r.ok) throw new Error('Car download failed: ' + r.status);
+    return r.arrayBuffer();
+  });
+  modelBytes.catch(() => {});
   const cinematic = new URLSearchParams(location.search).get('quality') === 'cinematic';
-  const T = await import(cinematic ? '../vendor/three/three-bundle.min.js' : '../vendor/three/showroom-core.min.js');
+  const T = await import(cinematic ? '../vendor/three/three-bundle.min.js' : '../vendor/three/showroom-core-finish.min.js');
+  const rayToolsReady = import('./surface-raycast.min.js');
   const small = matchMedia('(max-width: 900px)').matches;
   // Begin network work before generating the studio environment.
   const modelLoader = new T.GLTFLoader(); modelLoader.setMeshoptDecoder(T.MeshoptDecoder);
-  const modelReady = modelLoader.loadAsync(stage.dataset.model || 'assets/3d/concept-car-fast.glb');
+  const modelReady = modelBytes.then(bytes => modelLoader.parseAsync(bytes, 'assets/3d/'));
   modelReady.catch(() => {});
   const logoReady = new T.TextureLoader().loadAsync('assets/web/logo.webp').catch(() => null);
   const boardReady = buildShopBoard(T, null);
@@ -164,8 +176,8 @@ async function boot(stage, ctx) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bar = stage.querySelector('.sr-loader i');
 
-  const renderer = new T.WebGLRenderer({ antialias: !small && !lightProfile, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, lightProfile ? 1 : small ? 1.25 : 1.6));
+  const renderer = new T.WebGLRenderer({ canvas, context:gl, antialias:true, powerPreference:'default' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, small ? 1.25 : 1.5));
   renderer.outputColorSpace = T.SRGBColorSpace;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.06;
@@ -213,7 +225,7 @@ async function boot(stage, ctx) {
   scene.add(key);
   const rim = new T.DirectionalLight(0xc9deff, 0); rim.position.set(4, 4, -4); scene.add(rim);
   const fill = new T.HemisphereLight(0xb4bfce, 0x18130f, 0); scene.add(fill);
-  const cabin = new T.PointLight(0xfff1dc, 0, 2.2, 1.5); cabin.position.set(0, 1.0, 0.5); scene.add(cabin);
+  const cabin = new T.PointLight(0xfff1dc, 0, 2.2, 1.5); cabin.position.set(0, 1.0, 0.5); // Added only when the visitor enters a cabin or fitment view.
 
   /* ---------- floor ---------- */
   let reflector = null;
@@ -254,42 +266,30 @@ async function boot(stage, ctx) {
   /* ---------- car ---------- */
   const gltf = await modelReady;
   const car = new T.Group(); car.add(gltf.scene); scene.add(car);
-  const hiddenCabin = [];
-  const fastMaterials = new Map();
   const paintMats = []; let headMat = null, tailMat = null;
   gltf.scene.traverse(o => {
     if (!o.isMesh) return;
     o.castShadow = !lightProfile;
-    let parent = o;
-    while (parent && parent !== gltf.scene) {
-      if (/Interior|Engine/.test(parent.name)) { hiddenCabin.push({mesh:o,visible:o.visible}); o.visible = false; break; }
-      parent = parent.parent;
-    }
-    let m = o.material; if (!m) return;
-    if (lightProfile && m.isMeshPhysicalMaterial) {
-      if (!fastMaterials.has(m)) {
-        const fast = new T.MeshStandardMaterial();
-        for (const key of ['name','map','normalMap','roughnessMap','metalnessMap','aoMap','emissiveMap','roughness','metalness','transparent','opacity','side','depthWrite','alphaTest','envMapIntensity']) {
-          if (m[key] !== undefined) fast[key] = m[key];
-        }
-        fast.color.copy(m.color); fast.emissive.copy(m.emissive); fast.normalScale.copy(m.normalScale);
-        if (m.transmission > 0) { fast.transparent = true; fast.opacity = .22; fast.depthWrite = false; }
-        fastMaterials.set(m, fast);
-      }
-      o.material = m = fastMaterials.get(m);
-    }
+    const m = o.material; if (!m) return;
     // Refraction renders the whole scene a second time. Tinted transparency
     // keeps the cabin visible without that extra full-car pass.
     if (m.transmission > 0) { m.transmission = 0; m.transparent = true; m.opacity = .22; m.depthWrite = false; }
+    if (/^Paint/.test(m.name)) {
+      // The source's 30x tiled metallic-flake normal map reads as dents at
+      // phone sizes. Use the full body normals and a clean clearcoat instead.
+      m.normalMap = null; m.aoMap = null;
+      if ('iridescence' in m) m.iridescence = 0;
+    }
     if (/^Paint 1/.test(m.name)) paintMats.push(m);
     if (m.name === 'Headlight') headMat = m;
     if (m.name === 'Brakelight') tailMat = m;
     if (m.envMapIntensity !== undefined) m.envMapIntensity = 1;
   });
-  paintMats.forEach(m => { m.color.setHex(PAINTS.red); m.metalness = 0.6; m.roughness = 0.32; if ('clearcoat' in m) { m.clearcoat = 1; m.clearcoatRoughness = 0.1; } });
+  paintMats.forEach(m => { m.color.setHex(PAINTS.red); m.metalness = 0.45; m.roughness = 0.26; if ('clearcoat' in m) { m.clearcoat = 1; m.clearcoatRoughness = 0.1; } });
   if (headMat) { headMat.emissive = new T.Color(0xeaf2ff); headMat.emissiveIntensity = 0; }
   if (tailMat) { tailMat.emissive = new T.Color(0xff1a0a); tailMat.emissiveIntensity = 0; }
-  const parts = buildParts(T, car, logoTex);
+  const rayTools = await rayToolsReady;
+  const parts = buildParts(T, car, logoTex, rayTools);
 
   /* ---------- post ---------- */
   const camera = new T.PerspectiveCamera(30, 1, 0.02, 60);
@@ -422,10 +422,13 @@ async function boot(stage, ctx) {
     if (running) return; running = true; last = performance.now();
     const tick = now => {
       if (!visible || document.hidden) { running = false; return; }
-      frameCost += (Math.min(100, now - last) - frameCost) * .04;
-      // Lower render resolution on struggling devices; retain the same scene.
-      if (++qualityFrames === 150 && frameCost > 28 && renderer.getPixelRatio() > 1) {
-        renderer.setPixelRatio(1); if (composer) composer.setPixelRatio(1); resize();
+      // Judge active frames only. Our intentional idle cap must never be
+      // mistaken for a slow device, and the car stays above a crisp 1.25 cap.
+      if ((dragging || now - lastInteraction < 700) && now - last < 100) {
+        frameCost += (now - last - frameCost) * .04;
+        if (++qualityFrames >= 150 && frameCost > 32 && renderer.getPixelRatio() > 1.25) {
+          renderer.setPixelRatio(1.25); if (composer) composer.setPixelRatio(1.25); resize();
+        }
       }
       if (!dragging && now - lastInteraction > 700 && now - lastDraw < 32) { requestAnimationFrame(tick); return; }
       lastDraw = now;
@@ -459,6 +462,7 @@ async function boot(stage, ctx) {
       dust.material.opacity += ((S.part ? 0 : 0.2 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
       dark += ((S.dark ? 1 : 0) - dark) * Math.min(1, dt * 3);
       inside += ((S.inside ? 1 : 0) - inside) * Math.min(1, dt * 3);
+      if ((S.inside || ['audio','seats','mats'].includes(S.part)) && !cabin.parent) scene.add(cabin);
       if (S.part === 'audio') { cabin.position.set(0, 1.08, -1.4); cabin.intensity = 1.8; }
       else { cabin.position.set(0, 1.0, 0.5); cabin.intensity = 1.1 * inside + (S.part === 'seats' || S.part === 'mats' ? .45 : 0); }
 
@@ -536,12 +540,7 @@ async function boot(stage, ctx) {
 
       // parts follow the nearest chapter
       const want = S.part || null;
-      if (want !== currentPart) {
-        if (want) hiddenCabin.forEach(({mesh,visible}) => { mesh.visible = visible; });
-        parts.show(want);
-        if (!want) hiddenCabin.forEach(({mesh}) => { mesh.visible = false; });
-        currentPart = want;
-      }
+      if (want !== currentPart) { parts.show(want); currentPart = want; }
       parts.update(dt, reduced ? 0 : now);
 
       // lights chapter: headlights blaze, tail lights glow
@@ -565,22 +564,11 @@ async function boot(stage, ctx) {
   if (renderer.compileAsync) {
     scene.updateMatrixWorld(true);
     const opening = scene.clone(false);
-    const programs = new Map();
     scene.traverseVisible(o => {
       if (!(o.isMesh || o.isPoints || o.isLight)) return;
-      const item = o.clone(false); item.matrixAutoUpdate = false; item.matrix.copy(o.matrixWorld);
-      if (o.isLight) opening.add(item);
-      else {
-        const key = o.material.uuid + ':' + Object.keys(o.geometry.attributes).sort().join(',') + ':' + !!o.isPoints;
-        if (!programs.has(key)) programs.set(key, item);
-      }
+      const item = o.clone(false); item.matrixAutoUpdate = false; item.matrix.copy(o.matrixWorld); opening.add(item);
     });
-    // Compile one material at a time, yielding so scrolling and buttons work
-    // even on browsers without parallel shader compilation.
-    for (const item of programs.values()) {
-      opening.add(item); await renderer.compileAsync(opening, camera); opening.remove(item);
-      await new Promise(resolve => setTimeout(resolve, 0));
-    }
+    await renderer.compileAsync(opening, camera);
   }
   loop();
 
@@ -601,7 +589,14 @@ async function boot(stage, ctx) {
       diveState = { key, t: 0, target: S.dive, cb, out: false };
     },
     diveOut() { if (diveState) { diveState.out = true; diveState.t = 0; } },
-    preview(key) { previewKey = key; }
+    preview(key) {
+      previewKey = key;
+      // Apply the selected fitting in the click itself; do not wait for the
+      // next animation frame after a dive/scroll transition.
+      if (ctx.keys[Math.round(ctx.getF())] === 'car') { parts.show(key); currentPart = key; }
+      const bounds = stage.getBoundingClientRect();
+      if (bounds.bottom > 0 && bounds.top < innerHeight && !document.hidden) { visible = true; lastInteraction = performance.now(); loop(); }
+    }
   };
   await firstFrame;
   return api;

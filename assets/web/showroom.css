@@ -203,3 +203,6 @@ body.sr-viewing #floater{display:none}
 
 /* Mirror the real B glyph so the name remains readable by search and assistive tools. */
 .sr-brand-b{display:inline-block;transform:scaleX(-1)}
+
+/* Keep the car finish clean and avoid a viewport-sized animated blend layer. */
+.sr-grain{display:none}

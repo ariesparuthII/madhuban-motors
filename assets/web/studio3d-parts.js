@@ -4,7 +4,7 @@
    +z = front of car, +x = left side). Swap these anchors if the car model
    changes. */
 
-export function buildParts(T, carRoot, logoTex) {
+export function buildParts(T, carRoot, logoTex, rayTools) {
   const builders = {};
   const parts = {};          // key -> { group, onShow(t), onHide() }
   const tweens = [];         // per-frame easing jobs
@@ -527,7 +527,11 @@ export function buildParts(T, carRoot, logoTex) {
   /* ---------- public API ---------- */
   let current = null;
   const OPEN_DOOR = { seats: 1, audio: 1, mats: 1 };
+  let surfacePrepared = false;
   function prepare(key) {
+    if ((key === 'ppf' || key === 'coating') && !surfacePrepared && rayTools) {
+      rayTools.speedUpSurfaceSampling(bodyMeshes); rc.firstHitOnly = true; surfacePrepared = true;
+    }
     if (key && !parts[key] && builders[key]) {
       carRoot.updateMatrixWorld(true); inv.copy(carRoot.matrixWorld).invert(); builders[key]();
     }

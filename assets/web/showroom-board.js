@@ -56,7 +56,7 @@ export async function buildShopBoard(T, logoImg, base = 'assets/web/') {
   const sideL = new T.Mesh(new T.BoxGeometry(0.35, 2.5, 0.35), new T.MeshStandardMaterial({ color: 0x2a2626, roughness: 0.8 }));
   sideL.position.set(-2.78, 1.09, 0.1); group.add(sideL);
   const sideR = sideL.clone(); sideR.position.x = 2.78; group.add(sideR);
-  const warm = new T.PointLight(0xffb35c, 0, 9, 1.6); warm.position.set(0, 1.4, 1.6); group.add(warm);
+  const warm = new T.PointLight(0xffb35c, 0, 9, 1.6); warm.position.set(0, 1.4, 1.6); // Photo and shelf panels are unlit; no point-light pass is needed.
 
   return {
     group,
