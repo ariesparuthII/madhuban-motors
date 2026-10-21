@@ -1,0 +1,144 @@
+{
+  "consent": {
+    "before": "No analytics request or gtag",
+    "reject": "No analytics after rejection or reload",
+    "accept": [
+      "https://www.googletagmanager.com/gtag/js?id=G-674BE5JN8Q"
+    ]
+  },
+  "attribution": [
+    {
+      "query": "",
+      "route": {
+        "channel": "organic",
+        "campaign": "",
+        "creative": "",
+        "callPhone": "919911443751",
+        "callDisplay": "+91 99114 43751",
+        "whatsappPhone": "919718373751",
+        "code": "ORG"
+      },
+      "url": "https://wa.me/919718373751?text=Test%20quote%0A%0A%5BSource%3A%20ORG%5D",
+      "stores": {},
+      "threeLoaded": false
+    },
+    {
+      "query": "?utm_source=google&utm_campaign=Diwali%20Offer!&utm_content=Car%20A",
+      "route": {
+        "channel": "google",
+        "campaign": "diwali-offer",
+        "creative": "car-a",
+        "callPhone": "919911443751",
+        "callDisplay": "+91 99114 43751",
+        "whatsappPhone": "919718373751",
+        "code": "GGL"
+      },
+      "url": "https://wa.me/919718373751?text=Test%20quote%0A%0A%5BSource%3A%20GGL%20%7C%20cmp%3Adiwali-offer%20%7C%20cr%3Acar-a%5D",
+      "stores": {
+        "mm_lead_creative_v1": "car-a",
+        "mm_lead_channel_v1": "google",
+        "mm_lead_campaign_v1": "diwali-offer"
+      },
+      "threeLoaded": false
+    },
+    {
+      "query": "?utm_source=meta",
+      "route": {
+        "channel": "meta",
+        "campaign": "",
+        "creative": "",
+        "callPhone": "919911443751",
+        "callDisplay": "+91 99114 43751",
+        "whatsappPhone": "919718373751",
+        "code": "META"
+      },
+      "url": "https://wa.me/919718373751?text=Test%20quote%0A%0A%5BSource%3A%20META%5D",
+      "stores": {
+        "mm_lead_channel_v1": "meta"
+      },
+      "threeLoaded": false
+    },
+    {
+      "query": "?gclid=test",
+      "route": {
+        "channel": "google",
+        "campaign": "",
+        "creative": "",
+        "callPhone": "919911443751",
+        "callDisplay": "+91 99114 43751",
+        "whatsappPhone": "919718373751",
+        "code": "GGL"
+      },
+      "url": "https://wa.me/919718373751?text=Test%20quote%0A%0A%5BSource%3A%20GGL%5D",
+      "stores": {
+        "mm_lead_channel_v1": "google"
+      },
+      "threeLoaded": false
+    },
+    {
+      "query": "?gbraid=test",
+      "route": {
+        "channel": "google",
+        "campaign": "",
+        "creative": "",
+        "callPhone": "919911443751",
+        "callDisplay": "+91 99114 43751",
+        "whatsappPhone": "919718373751",
+        "code": "GGL"
+      },
+      "url": "https://wa.me/919718373751?text=Test%20quote%0A%0A%5BSource%3A%20GGL%5D",
+      "stores": {
+        "mm_lead_channel_v1": "google"
+      },
+      "threeLoaded": false
+    },
+    {
+      "query": "?wbraid=test",
+      "route": {
+        "channel": "google",
+        "campaign": "",
+        "creative": "",
+        "callPhone": "919911443751",
+        "callDisplay": "+91 99114 43751",
+        "whatsappPhone": "919718373751",
+        "code": "GGL"
+      },
+      "url": "https://wa.me/919718373751?text=Test%20quote%0A%0A%5BSource%3A%20GGL%5D",
+      "stores": {
+        "mm_lead_channel_v1": "google"
+      },
+      "threeLoaded": false
+    },
+    {
+      "query": "?fbclid=test",
+      "route": {
+        "channel": "meta",
+        "campaign": "",
+        "creative": "",
+        "callPhone": "919911443751",
+        "callDisplay": "+91 99114 43751",
+        "whatsappPhone": "919718373751",
+        "code": "META"
+      },
+      "url": "https://wa.me/919718373751?text=Test%20quote%0A%0A%5BSource%3A%20META%5D",
+      "stores": {
+        "mm_lead_channel_v1": "meta"
+      },
+      "threeLoaded": false
+    }
+  ],
+  "fallback": [
+    {
+      "mode": "no-webgl",
+      "works": true,
+      "progressA": "width: 0.4%;",
+      "progressB": "width: 2.5%;"
+    },
+    {
+      "mode": "reduced",
+      "works": true,
+      "progressA": "width: 80%;",
+      "progressB": "width: 80%;"
+    }
+  ]
+}

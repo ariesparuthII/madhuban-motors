@@ -1,0 +1,68 @@
+/* ===== Oct 2026 layout upgrade: fill the empty space, tighten sections ===== */
+
+/* --- Stats: dark glass band instead of a near-empty white strip --- */
+.stats-section{background:linear-gradient(180deg,#070707,#141414)!important;border:0!important;padding:56px 24px!important}
+.stats-section .trust-grid{gap:14px!important}
+.stats-section .trust-grid>div{display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid rgba(255,242,0,.14);border-radius:20px;padding:28px 16px!important;transition:transform .3s,border-color .3s}
+.stats-section .trust-grid>div:hover{transform:translateY(-4px);border-color:rgba(255,242,0,.4)}
+.stats-section .stat-num{color:#FFF200!important}
+.stats-section .trust-grid>div:nth-child(3) .stat-num{color:#fff!important}
+.stats-section .t-caption{color:rgba(255,255,255,.62)!important;opacity:1!important}
+.stats-section .stat-divider{display:none}
+
+/* --- Services: bento grid of image cards instead of a thin list --- */
+#services .container>div:has(>.service-row){display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+#services .service-row{display:flex!important;flex-direction:column;align-items:stretch!important;gap:0!important;padding:0!important;border:1px solid rgba(255,242,0,.14)!important;border-radius:22px;overflow:hidden;background:#111;min-height:100%}
+#services .service-row:hover{padding-left:0!important;transform:translateY(-4px)!important;background:#151515!important;box-shadow:0 24px 60px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,242,0,.35)!important}
+#services .service-row .service-visual{width:100%!important;height:auto!important;aspect-ratio:16/10;object-fit:cover;border-radius:0!important;border:0!important;transform:none!important;margin:0!important;max-width:none!important}
+#services .service-row:hover .service-visual{transform:scale(1.04)!important}
+#services .service-row>div{padding:20px 22px 8px}
+#services .service-row .s-name{font-size:21px}
+#services .service-row .btn{margin:8px 22px 22px;align-self:flex-start}
+#services #svc-safety,#services #svc-audio{grid-column:span 2}
+#services #svc-safety .service-visual,#services #svc-audio .service-visual{aspect-ratio:21/10}
+#services .t-sub{margin-bottom:40px!important}
+
+/* --- Real shop work: less dead white space --- */
+.work-phone-section{padding-top:72px!important;padding-bottom:72px!important}
+
+/* --- Reviews: CTA card fills the last slot --- */
+.review-card--cta{display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(150deg,#B01E0A,#5a0f06)!important;border-color:rgba(255,242,0,.35)!important}
+.review-card--cta b{font-family:'Rozha One',serif;font-weight:400;font-size:56px;line-height:1;color:#FFF200}
+.review-card--cta .btn{align-self:flex-start;margin-top:18px}
+
+/* --- Pricing: 3 x 2 instead of 4 + 2 orphans --- */
+@media (min-width:900px){#pricing .container>div[style*="auto-fit"]{grid-template-columns:repeat(3,1fr)!important}}
+#pricing .container>div[style*="auto-fit"]>div{transition:transform .3s,border-color .3s}
+#pricing .container>div[style*="auto-fit"]>div:hover{transform:translateY(-4px);border-color:rgba(255,242,0,.45)!important}
+
+/* --- Hero 3D button --- */
+.hero-3d-btn{border-color:rgba(255,242,0,.55)!important;color:#FFF200!important}
+
+@media (max-width:900px){
+  #services .container>div:has(>.service-row){display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -24px;padding:0 24px 8px;scrollbar-width:none}
+  #services .container>div:has(>.service-row)::-webkit-scrollbar{display:none}
+  #services .service-row{flex:0 0 82%;scroll-snap-align:start}
+  #services #svc-safety .service-visual,#services #svc-audio .service-visual{aspect-ratio:16/10}
+  #services .service-row .btn{grid-column:auto!important}
+  .stats-section{padding:36px 20px!important}
+  .stats-section .trust-grid{gap:10px!important}
+  .stats-section .trust-grid>div{padding:20px 10px!important}
+  .work-phone-section{padding-top:56px!important;padding-bottom:56px!important}
+}
+
+/* --- Oct 20: carry the showroom's identity through the rest of the page --- */
+.motion-index{display:none!important}
+main h2.t-display,main h2.t-h1{font-family:'Rozha One',Georgia,serif!important;font-weight:400!important;letter-spacing:-.005em;line-height:1.02!important;font-style:normal!important}
+main h2.t-display{font-size:clamp(40px,5.4vw,76px)!important}
+main h2.t-h1{font-size:clamp(36px,4.4vw,62px)!important}
+body,main .t-body,main .t-sub,main .t-sm,main .t-h3{font-family:'Mukta','Manrope',system-ui,sans-serif}
+#story{background:#0d0d0e!important}
+#story h2,#story .t-caption{color:#fff!important}
+#story p{color:rgba(232,228,220,.75)!important}
+#story p.reveal[style*="italic"]{color:#fff!important}
+#story .story-grid>div:first-child>div:last-child div[style*="Rozha One"]{color:#FFF200!important}
+.work-phone-section{background:#111!important}
+.work-phone-section h2{color:#fff!important}
+.work-phone-section .t-sub{color:rgba(232,228,220,.7)!important}
+#story div[style*="font-size:30px"]{color:#FFF200!important}
