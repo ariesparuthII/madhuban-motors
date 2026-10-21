@@ -1,0 +1,38 @@
+[
+  {
+    "width": 390,
+    "speakers": [
+      {
+        "parent": "BodyDoorRColor1",
+        "visible": true
+      },
+      {
+        "parent": "BodyDoorLColor1",
+        "visible": true
+      }
+    ],
+    "engineVisible": false,
+    "hatch": 1.0999999953373965,
+    "tubeBottom": 0.6400000035762787,
+    "floorTop": 0.6399999995529652,
+    "errors": []
+  },
+  {
+    "width": 1280,
+    "speakers": [
+      {
+        "parent": "BodyDoorRColor1",
+        "visible": true
+      },
+      {
+        "parent": "BodyDoorLColor1",
+        "visible": true
+      }
+    ],
+    "engineVisible": false,
+    "hatch": 1.0999999991720262,
+    "tubeBottom": 0.6400000035762787,
+    "floorTop": 0.6399999995529652,
+    "errors": []
+  }
+]

@@ -58,8 +58,8 @@
 .sr-ch--hero{align-items:flex-end;padding-bottom:max(56px,8vh)}
 .sr-panel--hero{max-width:640px;opacity:1;transform:none}
 .sr-h1{margin:0 0 18px;display:flex;flex-direction:column;line-height:.86}
-.sr-h1__hi{font:400 clamp(92px,15vw,210px)/.9 var(--sr-hindi);color:var(--sr-red);text-shadow:0 0 60px rgba(218,41,28,.35);letter-spacing:-.01em}
-.sr-h1__en{font:400 clamp(30px,3.6vw,52px)/1 var(--sr-display);text-transform:uppercase;letter-spacing:.06em;color:#fff;margin-top:6px}
+.sr-h1__hi{font:400 clamp(82px,12.8vw,180px)/.9 var(--sr-hindi);color:var(--sr-red);text-shadow:0 0 60px rgba(218,41,28,.35);letter-spacing:-.01em}
+.sr-h1__en{font:400 clamp(34px,4vw,58px)/1 var(--sr-display);text-transform:uppercase;letter-spacing:.06em;color:#fff;margin-top:6px}
 .sr-lede{font-size:clamp(16px,1.5vw,19px)!important;color:var(--sr-chrome)!important;max-width:44ch}
 .sr-facts{display:flex;gap:28px;margin:26px 0 0;flex-wrap:wrap}
 .sr-facts div{margin:0}
@@ -157,8 +157,8 @@ body.sr-diving{overflow:hidden}
 
 @media (max-width:900px){
   .sr-ch--hero{padding-bottom:84px}
-  .sr-h1__hi{font-size:76px;line-height:1}
-  .sr-h1__en{font-size:26px;margin-top:0}
+  .sr-h1__hi{font-size:66px;line-height:1}
+  .sr-h1__en{font-size:clamp(27px,7.7vw,33px);letter-spacing:.035em;margin-top:4px}
   .sr-lede{font-size:15px!important}
   .sr-facts div:nth-child(3){display:none}
   .sr-ctas .sr-btn--ghost[href^="tel:"]{display:none}
@@ -187,3 +187,18 @@ body.sr-diving{overflow:hidden}
 
 /* The showroom already has quote CTAs and its own navigation. */
 body.sr-viewing #floater{display:none}
+
+/* Visible detailing-bay ceiling, kept clear of the original shop board. */
+.sr-ceiling{position:absolute;z-index:1;pointer-events:none;left:3%;top:86px;width:43%;height:74px;opacity:0;transform:perspective(380px) rotateX(-24deg);transform-origin:top;transition:opacity 1.2s}
+.sr-ceiling svg{display:block;width:100%;height:100%;overflow:visible}
+.sr-ceiling-frame{fill:none;stroke:#303236;stroke-width:7}
+.sr-ceiling-led{fill:none;stroke:#fff2dd;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px #ffe4b899)}
+.showroom.is-ready[data-chapter="hero"] .sr-ceiling,.showroom.is-ready[data-chapter="legacy"] .sr-ceiling,.showroom.is-ready[data-chapter="car"] .sr-ceiling{opacity:.88}
+@media(max-width:900px){.sr-ceiling{left:4%;top:76px;width:87%;height:30px;transform:perspective(260px) rotateX(-30deg)}.sr-ceiling-led{stroke-width:3.6}.showroom[data-chapter="legacy"] .sr-ceiling,.showroom[data-chapter="car"] .sr-ceiling{opacity:0!important}}
+@media(prefers-reduced-motion:reduce){.sr-ceiling{transition:none}}
+
+/* Full-screen chapter links align to the stage rather than the fixed-nav offset. */
+#sr-audio{scroll-margin-top:-88px}
+
+/* Mirror the real B glyph so the name remains readable by search and assistive tools. */
+.sr-brand-b{display:inline-block;transform:scaleX(-1)}

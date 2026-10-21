@@ -1,0 +1,58 @@
+[
+  {
+    "width": 390,
+    "key": "ppf",
+    "opacity": 0.3600040371738641
+  },
+  {
+    "width": 390,
+    "key": "coating",
+    "opacity": 0.3600000000000001
+  },
+  {
+    "width": 390,
+    "key": "film",
+    "opacity": 0.9999999541157351
+  },
+  {
+    "width": 390,
+    "meta": {
+      "h1": 1,
+      "schema": [
+        "AutoPartsStore",
+        "FAQPage"
+      ],
+      "badge": true
+    },
+    "errors": [],
+    "analyticsBeforeConsent": []
+  },
+  {
+    "width": 1280,
+    "key": "ppf",
+    "opacity": 0.3600149084173153
+  },
+  {
+    "width": 1280,
+    "key": "coating",
+    "opacity": 0.3600000000000001
+  },
+  {
+    "width": 1280,
+    "key": "film",
+    "opacity": 0.9999999761894938
+  },
+  {
+    "width": 1280,
+    "meta": {
+      "h1": 1,
+      "schema": [
+        "AutoPartsStore",
+        "FAQPage"
+      ],
+      "badge": true
+    },
+    "errors": [],
+    "analyticsBeforeConsent": []
+  }
+]

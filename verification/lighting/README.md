@@ -18,3 +18,9 @@ Chrome checks at 390×844 and 1280×800 passed: ready WebGL scene, all twelve ch
 `check.cjs` exercises these checks against before/after code. `stills.cjs` separately waits at least 100 rendered frames before capturing hero comparisons, avoiding misleading captures during initial shader compilation/camera easing. Both scripts use Playwright/Chrome; set MM_PLAYWRIGHT if its package is outside normal module resolution. The comparison baseline is `explore-showroom-options`.
 
 Screenshots are local and ignored by Git. Real iPhone animation smoothness remains a device check. Production is unchanged.
+
+## Local ceiling review, not pushed
+
+The owner asked to restore the visible overhead detailing-bay lights before the next push. A lightweight perspective LED ceiling graphic now occupies the clear area above the headline on desktop and above the board on phones. It is decorative, pointer-transparent and hidden in accessory close-ups. Mobile hero framing moves the board/car down slightly to leave a gap below the fixtures. The existing 3D lighting and board assets remain unchanged from the preceding lighting pass. This local revision has not been pushed.
+
+Board framing follow-up: the hero camera now projects all four original sign-photo corners and fits them inside a safe region below the ceiling fixtures. The photo itself is unchanged. Chrome checks at 390×844 and 1280×800 confirmed all corners within the viewport (phone x29–372, y118–251; desktop x654–1174, y174–377), with no page exceptions. Screenshots inspected locally. Changes remain unpushed.

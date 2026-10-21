@@ -18,12 +18,12 @@ const SHOTS = {
   legacy:  { cam: [-5.8, 1.1, 1.2], look: [0, 0.6, 0], rot: 0.15, fov: 30, spin: 0.3 },
   screen:  { cam: [-0.12, 1.22, 0.38], look: [0.34, 0.84, 1.0], rot: 0, fov: 44, part: 'screen', inside: true },
   dashcam: { cam: [0.32, 1.3, 1.45], look: [0.07, 1.04, 0.36], rot: 0, fov: 38, part: 'dashcam', inside: true, dive: [0.095, 1.055, 0.43] },
-  audio:   { cam: [3.1, 1.7, -1.7], look: [0.45, 0.45, 0.15], rot: 0, fov: 42, part: 'audio' },
+  audio:   { cam: [2.4, 2.9, -5.7], look: [0, 0.65, -1.2], rot: 0, fov: 38, part: 'audio' },
   seats:   { cam: [2.2, 1.95, 0.9], look: [0.2, 0.55, -0.1], rot: 0, fov: 44, part: 'seats', dive: [0.3, 0.6, -0.1] },
   mats:    { cam: [0.9, 2.3, 0.9], look: [0.1, 0.1, 0.4], rot: 0, fov: 48, part: 'mats', dive: [0.1, 0.12, 0.4] },
   lights:  { cam: [2.3, 0.9, 6.2], look: [0, 0.45, 2.2], rot: 0, fov: 34, part: 'lights', dark: true },
-  ppf:     { cam: [1.9, 1.35, 4.4], look: [0, 0.6, 1.6], rot: 0, fov: 34, part: 'ppf', dive: [0, 0.75, 2.0] },
-  coating: { cam: [-3.2, 2.6, 2.6], look: [0, 0.75, 0.2], rot: 0, fov: 36, part: 'coating', dive: [-0.3, 0.95, 0.6] },
+  ppf:     { cam: [2.8, 2.4, 5.5], look: [0, 0.65, 1.0], rot: 0, fov: 34, part: 'ppf', dive: [0, 0.75, 2.0] },
+  coating: { cam: [-3.2, 3.0, 4.5], look: [0, 0.65, 0.6], rot: 0, fov: 36, part: 'coating', dive: [-0.3, 0.95, 0.6] },
   film:    { cam: [-4.9, 1.4, -0.9], look: [0, 0.8, 0], rot: 0, fov: 32, part: 'film', panelRight: true },
   car:     { cam: [-5.4, 1.25, 3.6], look: [0, 0.55, 0], rot: -0.2, fov: 30, spin: 0.4 }
 };
@@ -228,6 +228,9 @@ async function boot(stage, ctx) {
   scene.add(dust);
 
   /* ---------- back wall sign: the MM logo ---------- */
+  const modelLoader = new T.GLTFLoader(); modelLoader.setMeshoptDecoder(T.MeshoptDecoder);
+  const modelReady = modelLoader.loadAsync(stage.dataset.model || 'assets/3d/concept-car.glb');
+  modelReady.catch(() => {}); // The outer boot handler reports load failure when awaited.
   const logoTex = await new Promise(res => new T.TextureLoader().load(stage.dataset.logo || 'assets/web/logo-2x.webp', t => { t.colorSpace = T.SRGBColorSpace; res(t); }, undefined, () => res(null)));
   // the real shopfront as the back wall, so people recognise the shop
   const board = await buildShopBoard(T, logoTex && logoTex.image);
@@ -241,9 +244,7 @@ async function boot(stage, ctx) {
   const sign = null;
 
   /* ---------- car ---------- */
-  const loader = new T.GLTFLoader(); loader.setMeshoptDecoder(T.MeshoptDecoder);
-  const gltf = await new Promise((res, rej) => loader.load(stage.dataset.model || 'assets/3d/concept-car.glb', res,
-    e => { if (e.total && bar) bar.style.width = Math.round(e.loaded / e.total * 100) + '%'; }, rej));
+  const gltf = await modelReady;
   const car = new T.Group(); car.add(gltf.scene); scene.add(car);
   const paintMats = []; let headMat = null, tailMat = null;
   gltf.scene.traverse(o => {
@@ -258,7 +259,7 @@ async function boot(stage, ctx) {
   paintMats.forEach(m => { m.color.setHex(PAINTS.red); m.metalness = 0.6; m.roughness = 0.32; if ('clearcoat' in m) { m.clearcoat = 1; m.clearcoatRoughness = 0.1; } });
   if (headMat) { headMat.emissive = new T.Color(0xeaf2ff); headMat.emissiveIntensity = 0; }
   if (tailMat) { tailMat.emissive = new T.Color(0xff1a0a); tailMat.emissiveIntensity = 0; }
-  const parts = buildParts(T, car);
+  const parts = buildParts(T, car, logoTex);
 
   /* ---------- post ---------- */
   const camera = new T.PerspectiveCamera(30, 1, 0.02, 60);
@@ -283,6 +284,7 @@ async function boot(stage, ctx) {
 
   /* ---------- state ---------- */
   let visible = true, running = false, last = performance.now();
+  let frameCost = 16, qualityFrames = 0;
   let paintFrom = null, paintTo = null, paintT = 1;
   let currentPart = undefined;
   let diveState = null; let previewKey = null;               // {key, t, target, done}
@@ -382,6 +384,11 @@ async function boot(stage, ctx) {
     if (running) return; running = true; last = performance.now();
     const tick = now => {
       if (!visible || document.hidden) { running = false; return; }
+      frameCost += (Math.min(100, now - last) - frameCost) * .04;
+      // Lower render resolution on struggling devices; retain the same scene.
+      if (++qualityFrames === 150 && frameCost > 28 && renderer.getPixelRatio() > 1) {
+        renderer.setPixelRatio(1); if (composer) composer.setPixelRatio(1); resize();
+      }
       const dt = Math.min((now - last) / 1000, 0.05); last = now;
       const it = clamp((now - t0) / 1000 / INTRO);
 
@@ -412,11 +419,12 @@ async function boot(stage, ctx) {
       dust.material.opacity += ((S.part ? 0 : 0.2 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
       dark += ((S.dark ? 1 : 0) - dark) * Math.min(1, dt * 3);
       inside += ((S.inside ? 1 : 0) - inside) * Math.min(1, dt * 3);
-      cabin.intensity = 1.1 * inside + (S.part === 'seats' || S.part === 'mats' || S.part === 'audio' ? 0.45 : 0);
+      if (S.part === 'audio') { cabin.position.set(0, 1.08, -1.4); cabin.intensity = 1.8; }
+      else { cabin.position.set(0, 1.0, 0.5); cabin.intensity = 1.1 * inside + (S.part === 'seats' || S.part === 'mats' ? .45 : 0); }
 
       // portrait screens: pull exterior shots back so the car fits
       const asp = camera.aspect;
-      const pull = S.inside || S.part === 'seats' || S.part === 'mats' ? 1 : (asp >= 1.4 ? 1 : Math.min(ctx.keys[Math.round(f)] === 'car' && !previewKey ? 3.2 : 2.35, 1.7 / asp));
+      const pull = S.part === 'audio' ? (asp < 1.4 ? 2.1 : 1.75) : S.inside || S.part === 'seats' || S.part === 'mats' ? 1 : (asp >= 1.4 ? 1 : Math.min(ctx.keys[Math.round(f)] === 'car' && !previewKey ? 3.2 : 2.35, 1.7 / asp));
       tA.sub(lA).multiplyScalar(pull).add(lA);
 
       // the intro also dollies in
@@ -447,18 +455,44 @@ async function boot(stage, ctx) {
       const W = stage.clientWidth, H = stage.clientHeight;
       // where the car should sit on screen: right half on desktop (text left),
       // upper-middle on phones (text below). Signs are measured, not assumed.
-      const wantX = W > 900 ? (S.panelRight ? 0.3 : 0.7) : 0.5;
+      const wantX = W > 900 ? (S.panelRight ? 0.3 : 0.7) : S.part === 'audio' ? .56 : .5;
       const panel = ROOT.querySelector('.sr-ch.is-on .sr-panel');
       const panelTop = panel ? panel.getBoundingClientRect().top : H * .5;
       const visualBottom = Math.max(70, Math.min(H * .57, panelTop - 18));
       // Keep the moving scene above phone copy, including the taller builder.
       renderer.domElement.style.clipPath = W > 900 ? '' : `inset(70px 0 ${Math.max(0, H - visualBottom)}px 0)`;
-      const wantY = W > 900 ? 0.52 : ctx.keys[Math.round(f)] === 'hero' ? .34 : Math.max(.2, Math.min(.33, (90 + visualBottom) / 2 / H));
+      const wantY = W > 900 ? 0.52 : ctx.keys[Math.round(f)] === 'hero' ? .375 : Math.max(.2, Math.min(.33, (90 + visualBottom) / 2 / H));
       if (!offSign) offSign = calibrateOffset(W, H);
       const tx = offSign.x * (wantX - 0.5) * W, ty = offSign.y * (wantY - 0.5) * H;
       offX += (tx - offX) * Math.min(1, dt * 3); offY += (ty - offY) * Math.min(1, dt * 3);
       camera.setViewOffset(W, H, offX, offY, W, H);
+      camera.zoom = 1;
       camera.fov = curFov; camera.updateProjectionMatrix();
+      // Fit the complete original sign inside the usable hero area. The board
+      // sits behind the car, so centring the car alone can crop the sign.
+      if (ctx.keys[near] === 'hero' && !diveState) {
+        board.face.updateWorldMatrix(true, false);
+        camera.updateMatrixWorld();
+        const bounds = () => {
+          const points = [[-4.3, -1.66625], [4.3, -1.66625], [-4.3, 1.66625], [4.3, 1.66625]]
+            .map(([x, y]) => board.face.localToWorld(new T.Vector3(x, y, 0)).project(camera));
+          return { left: Math.min(...points.map(p => (p.x + 1) * W / 2)),
+            right: Math.max(...points.map(p => (p.x + 1) * W / 2)),
+            top: Math.min(...points.map(p => (1 - p.y) * H / 2)),
+            bottom: Math.max(...points.map(p => (1 - p.y) * H / 2)) };
+        };
+        const safe = { left: W > 900 ? W * .49 : 18, right: W - 18,
+          top: W > 900 ? 174 : 118, bottom: W > 900 ? H * .59 : visualBottom - 12 };
+        let b = bounds();
+        camera.zoom = Math.min(1, (safe.right - safe.left) / (b.right - b.left),
+          (safe.bottom - safe.top) / (b.bottom - b.top));
+        camera.updateProjectionMatrix();
+        b = bounds();
+        const dx = b.left < safe.left ? safe.left - b.left : b.right > safe.right ? safe.right - b.right : 0;
+        const dy = b.top < safe.top ? safe.top - b.top : b.bottom > safe.bottom ? safe.bottom - b.bottom : 0;
+        camera.setViewOffset(W, H, offX - dx, offY - dy, W, H);
+        camera.updateProjectionMatrix();
+      }
 
       // parts follow the nearest chapter
       const want = S.part || null;

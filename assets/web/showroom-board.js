@@ -61,6 +61,8 @@ export async function buildShopBoard(T, logoImg, base = 'assets/web/') {
 
   return {
     group,
+    // Exact photo bounds for responsive camera framing.
+    face: nightMesh,
     setPower(v) {
       mats.forEach(m => m.color.setScalar(v * m.userData.gain)); warm.intensity = 18 * v;
       dayMat.color.setScalar(0.25 + 0.35 * v); nightMat.opacity = v; nightMat.color.setScalar(1.05);

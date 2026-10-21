@@ -1,0 +1,76 @@
+[
+  {
+    "width": 390,
+    "speakers": [
+      {
+        "name": "audio-door-speaker-BodyDoorRColor1",
+        "parent": "BodyDoorRColor1",
+        "visible": true,
+        "position": [
+          -1.3154240966782136,
+          0.43,
+          0.696930869233978
+        ]
+      },
+      {
+        "name": "audio-door-speaker-BodyDoorLColor1",
+        "parent": "BodyDoorLColor1",
+        "visible": true,
+        "position": [
+          1.3161931811887164,
+          0.43,
+          0.6956591043587428
+        ]
+      }
+    ],
+    "hatch": 1.0999999999999999,
+    "lidTriangles": 2802,
+    "tubeBottom": 0.48000000357627864,
+    "floorTop": 0.4799999995529652,
+    "current": "audio",
+    "reset": {
+      "hatch": 0,
+      "lid": false,
+      "speakers": false
+    },
+    "builderAudio": true,
+    "errors": []
+  },
+  {
+    "width": 1280,
+    "speakers": [
+      {
+        "name": "audio-door-speaker-BodyDoorRColor1",
+        "parent": "BodyDoorRColor1",
+        "visible": true,
+        "position": [
+          -1.3154240966782136,
+          0.43,
+          0.6969308692339778
+        ]
+      },
+      {
+        "name": "audio-door-speaker-BodyDoorLColor1",
+        "parent": "BodyDoorLColor1",
+        "visible": true,
+        "position": [
+          1.3161931811887166,
+          0.43,
+          0.6956591043587428
+        ]
+      }
+    ],
+    "hatch": 1.0999999999999999,
+    "lidTriangles": 2802,
+    "tubeBottom": 0.48000000357627864,
+    "floorTop": 0.4799999995529652,
+    "current": "audio",
+    "reset": {
+      "hatch": 0,
+      "lid": false,
+      "speakers": false
+    },
+    "builderAudio": true,
+    "errors": []
+  }
+]

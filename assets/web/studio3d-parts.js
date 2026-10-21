@@ -4,7 +4,7 @@
    +z = front of car, +x = left side). Swap these anchors if the car model
    changes. */
 
-export function buildParts(T, carRoot) {
+export function buildParts(T, carRoot, logoTex) {
   const parts = {};          // key -> { group, onShow(t), onHide() }
   const tweens = [];         // per-frame easing jobs
   const byName = {};
@@ -151,57 +151,117 @@ export function buildParts(T, carRoot) {
     });
   }
 
-  /* ---------- 3. Audio: door speakers + boot bass tube & amp ---------- */
+  /* ---------- 3. Audio: fitted doors and an opening, lined boot ---------- */
   {
     const g = group('audio');
+    g.position.y = .16; // Raised, lined false floor clears the concept car's rear sill.
+    carRoot.updateMatrixWorld(true);
     const coneTex = canvasTex(256, 256, (c, w) => {
       const r = c.createRadialGradient(w / 2, w / 2, 8, w / 2, w / 2, w / 2);
-      r.addColorStop(0, '#3a3a3a'); r.addColorStop(.18, '#111'); r.addColorStop(.2, '#da291c'); r.addColorStop(.24, '#151515'); r.addColorStop(.85, '#202020'); r.addColorStop(.9, '#555'); r.addColorStop(1, '#111');
+      r.addColorStop(0, '#252525'); r.addColorStop(.2, '#111'); r.addColorStop(.25, '#454545'); r.addColorStop(.85, '#202020'); r.addColorStop(1, '#111');
       c.fillStyle = r; c.fillRect(0, 0, w, w);
-      c.strokeStyle = 'rgba(255,255,255,.06)'; for (let i = 0; i < 24; i++) { c.beginPath(); c.arc(w / 2, w / 2, 40 + i * 3.6, 0, 7); c.stroke(); }
+      c.strokeStyle = 'rgba(255,255,255,.08)';
+      for (let i = 0; i < 20; i++) { c.beginPath(); c.arc(w / 2, w / 2, 40 + i * 3.6, 0, 7); c.stroke(); }
     });
-    const coneMat = new T.MeshStandardMaterial({ map: coneTex, roughness: 0.6 });
-    const speakers = [];
-    [[0.785, 1], [-0.785, -1]].forEach(([x, s]) => {
-      const spk = new T.Group();
-      const ring = new T.Mesh(new T.TorusGeometry(0.075, 0.009, 12, 48), chrome);
-      const cone = new T.Mesh(new T.CircleGeometry(0.075, 48), coneMat);
-      cone.position.z = 0.004; ring.position.z = 0.006;
-      const tw = new T.Mesh(new T.SphereGeometry(0.02, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2), chrome);
-      tw.rotation.x = Math.PI / 2; tw.position.set(0, 0.16, 0.004);
-      spk.add(cone, ring, tw);
-      spk.position.set(x, 0.5, 0.35); spk.rotation.y = -s * Math.PI / 2;
-      g.add(spk); speakers.push(cone);
+    const coneMat = new T.MeshStandardMaterial({ map: coneTex, roughness: 0.65 });
+    const carpet = new T.MeshStandardMaterial({ color: 0x292a2c, roughness: .95 });
+    const speakers = [], mounts = [];
+    [[0.94, 1, 'BodyDoorLColor1'], [-0.94, -1, 'BodyDoorRColor1']].forEach(([x, side, name]) => {
+      const door = byName[name]; if (!door) return;
+      const mount = new T.Group(); mount.name = 'audio-door-speaker-' + name;
+      const backing = new T.Mesh(new T.CylinderGeometry(.104, .104, .026, 40), black);
+      backing.rotation.x = Math.PI / 2;
+      const ring = new T.Mesh(new T.TorusGeometry(.09, .009, 10, 40), satin);
+      const cone = new T.Mesh(new T.CircleGeometry(.086, 40), coneMat);
+      cone.position.z = .017; ring.position.z = .019;
+      const tweeter = new T.Mesh(new T.SphereGeometry(.022, 16, 10), satin);
+      tweeter.position.set(0, .19, .01);
+      mount.add(backing, ring, cone, tweeter);
+      mount.position.set(x, .43, .65); mount.rotation.y = -side * Math.PI / 2;
+      carRoot.add(mount); carRoot.updateMatrixWorld(true);
+      // Preserve the fitted position, then inherit every door movement.
+      door.attach(mount); mount.visible = false;
+      mounts.push(mount); speakers.push(cone);
     });
-    // bass tube in the boot
-    const tube = new T.Mesh(new T.CylinderGeometry(0.13, 0.13, 0.78, 40, 1, true), new T.MeshStandardMaterial({ color: 0x141414, roughness: 0.9, side: T.DoubleSide }));
-    tube.rotation.z = Math.PI / 2; tube.position.set(0, 0.3, -0.98); g.add(tube);
-    const capMat = new T.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.5 });
-    const capL = new T.Mesh(new T.CircleGeometry(0.13, 40), capMat); capL.position.set(0.39, 0.3, -0.98); capL.rotation.y = Math.PI / 2; g.add(capL);
-    const capR = capL.clone(); capR.position.x = -0.39; capR.rotation.y = -Math.PI / 2; g.add(capR);
-    const subCone = new T.Mesh(new T.CircleGeometry(0.1, 40), coneMat);
-    subCone.position.set(0, 0.3, -0.845); g.add(subCone);
-    const subRing = new T.Mesh(new T.TorusGeometry(0.105, 0.012, 12, 48), chrome);
-    subRing.position.set(0, 0.3, -0.843); g.add(subRing);
-    // tube front face needs a flat panel for the woofer
-    const face = new T.Mesh(new T.PlaneGeometry(0.5, 0.2), capMat); face.position.set(0, 0.3, -0.85); g.add(face);
-    subCone.position.z = -0.846; subRing.position.z = -0.844;
-    // amplifier with fins
-    const amp = new T.Group();
-    const ampBody = new T.Mesh(new T.BoxGeometry(0.34, 0.05, 0.2), new T.MeshStandardMaterial({ color: 0x2a2a2e, metalness: 0.8, roughness: 0.3 }));
-    amp.add(ampBody);
-    for (let i = 0; i < 9; i++) { const fin = new T.Mesh(new T.BoxGeometry(0.008, 0.02, 0.2), chrome); fin.position.set(-0.15 + i * 0.0375, 0.033, 0); amp.add(fin); }
-    const badge = new T.Mesh(new T.BoxGeometry(0.12, 0.004, 0.03), redAccent); badge.position.set(0, 0.046, 0.07); amp.add(badge);
-    amp.position.set(0, 0.47, -0.98); g.add(amp);
-    // speaker wire
-    g.add(new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3([
-      new T.Vector3(0.17, 0.47, -0.98), new T.Vector3(0.45, 0.3, -0.8), new T.Vector3(0.7, 0.25, -0.3), new T.Vector3(0.78, 0.45, 0.3)]), 40, 0.004, 6),
-      new T.MeshBasicMaterial({ color: 0xfff200 })));
+
+    // Reuse this concept car's rear glazing/inner hatch as a hinged lid.
+    // Separate only the central upper rear-body triangles, retaining the fenders.
+    const hatch = new T.Group(); hatch.name = 'audio-boot-hinge';
+    hatch.position.set(0, 1.08, -.55); carRoot.add(hatch);
+    const rear = byName.BodyRearPanelsColor1;
+    let rearMesh = null, closedGeometry = null, openGeometry = null;
+    if (rear) rear.traverse(o => { if (o.isMesh && /^Paint 1/.test(o.material && o.material.name || '')) rearMesh = o; });
+    if (rearMesh) {
+      closedGeometry = rearMesh.geometry;
+      const geo = closedGeometry.index ? closedGeometry.toNonIndexed() : closedGeometry.clone();
+      const pos = geo.attributes.position, decoded = new Float32Array(pos.count * 3);
+      for (let i = 0; i < pos.count; i++) { decoded[i * 3] = pos.getX(i); decoded[i * 3 + 1] = pos.getY(i); decoded[i * 3 + 2] = pos.getZ(i); }
+      geo.setAttribute('position', new T.BufferAttribute(decoded, 3));
+      const relative = new T.Matrix4().copy(carRoot.matrixWorld).invert().multiply(rearMesh.matrixWorld);
+      const keep = [], lift = [], centre = new T.Vector3(), v = new T.Vector3();
+      for (let i = 0; i < pos.count; i += 3) {
+        centre.set(0, 0, 0);
+        for (let j = 0; j < 3; j++) { v.fromBufferAttribute(geo.attributes.position, i + j).applyMatrix4(relative); centre.add(v); }
+        centre.multiplyScalar(1 / 3);
+        const lid = Math.abs(centre.x) < .68 && centre.y > .57 && centre.z < -.7 && centre.z > -1.85;
+        (lid ? lift : keep).push(i, i + 1, i + 2);
+      }
+      openGeometry = geo.clone(); openGeometry.setIndex(keep);
+      hatch.userData.cutTriangles = lift.length / 3;
+    }
+    ['BodyRearwindow', 'InteriorRearHatch'].forEach(name => { const part = byName[name]; if (part) hatch.attach(part); });
+    hatch.userData.open = 0;
+    const box = (w, h, d, x, y, z, material = carpet) => {
+      const m = new T.Mesh(new T.BoxGeometry(w, h, d), material); m.position.set(x, y, z); g.add(m); return m;
+    };
+    box(.045, .045, 1.05, -.68, .74, -1.30, black);
+    box(.045, .045, 1.05, .68, .74, -1.30, black);
+    box(1.36, .045, .045, 0, .61, -1.83, black);
+    box(1.30, .04, .98, 0, .46, -1.30).name = 'audio-boot-floor';
+    box(.035, .20, .98, -.66, .56, -1.30);
+    box(.035, .20, .98, .66, .56, -1.30);
+    box(1.30, .18, .035, 0, .55, -1.80);
+    box(1.30, .28, .035, 0, .60, -.81);
+
+    // Bass tube rests on the carpet. Its cone faces out of the boot.
+    const tube = new T.Mesh(new T.CylinderGeometry(.16, .16, .57, 40), carpet);
+    tube.rotation.x = Math.PI / 2; tube.position.set(-.28, .64, -1.34); tube.name = 'audio-bass-tube'; g.add(tube);
+    const subCone = new T.Mesh(new T.CircleGeometry(.135, 40), coneMat);
+    subCone.rotation.y = Math.PI; subCone.position.set(-.28, .64, -1.627); g.add(subCone);
+    const subRing = new T.Mesh(new T.TorusGeometry(.139, .009, 10, 40), satin);
+    subRing.rotation.y = Math.PI; subRing.position.set(-.28, .64, -1.63); g.add(subRing);
+    [-1.49, -1.18].forEach(z => box(.34, .025, .045, -.28, .485, z, black));
+    // Amp is bolted to a low board beside the tube, not suspended above it.
+    box(.40, .025, .48, .35, .493, -1.30, black);
+    const amp = new T.Group(); amp.name = 'audio-amplifier';
+    amp.add(new T.Mesh(new T.BoxGeometry(.34, .045, .40), new T.MeshStandardMaterial({ color: 0x858b93, metalness: .65, roughness: .38 })));
+    for (let i = 0; i < 9; i++) { const fin = new T.Mesh(new T.BoxGeometry(.008, .015, .37), satin); fin.position.set(-.145 + i * .036, .029, 0); amp.add(fin); }
+    amp.position.set(.35, .53, -1.30); g.add(amp);
+    [[.20, -1.48], [.50, -1.48], [.20, -1.12], [.50, -1.12]].forEach(([x, z]) => {
+      const screw = new T.Mesh(new T.CylinderGeometry(.008, .008, .008, 8), chrome); screw.position.set(x, .51, z); g.add(screw);
+    });
+    const cable = new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3([
+      new T.Vector3(.49, .515, -1.12), new T.Vector3(.57, .49, -1.06), new T.Vector3(.57, .49, -.9), new T.Vector3(-.28, .49, -.9), new T.Vector3(-.28, .55, -1.06)
+    ]), 28, .006, 6), new T.MeshStandardMaterial({ color: 0x6d1c15, roughness: .8 }));
+    g.add(cable);
     parts.audio = {
       group: g,
-      update: (dt, now) => {
-        const b = 1 + Math.max(0, Math.sin(now / 95)) * 0.06;
-        subCone.scale.setScalar(b); speakers.forEach(s => s.scale.setScalar(1 + (b - 1) * 0.6));
+      show() { mounts.forEach(m => m.visible = true); if (rearMesh && openGeometry) rearMesh.geometry = openGeometry;  },
+      hide() { mounts.forEach(m => m.visible = false); if (rearMesh) rearMesh.geometry = closedGeometry; hatch.rotation.x = 0; hatch.userData.open = 0;  },
+      update(dt, now) {
+      protectionFocus += (((current === 'ppf' || current === 'coating') ? 1 : 0) - protectionFocus) * Math.min(1, dt * 5);
+      skin.forEach((m, i) => {
+        const active = protectionFocus > .002;
+        if (m.transparent !== (active || skinState[i].transparent)) { m.transparent = active || skinState[i].transparent; m.needsUpdate = true; }
+        m.opacity = skinState[i].opacity * (1 - protectionFocus * .64);
+        m.depthWrite = active ? false : skinState[i].depthWrite;
+      });
+        hatch.userData.open += (1 - hatch.userData.open) * Math.min(1, dt * 4);
+        hatch.rotation.x = hatch.userData.open * 1.10;
+        // Cone excursion only, never scale the enclosure or its fitted position.
+        const excursion = Math.sin(now / 95) * .0015;
+        subCone.position.z = -1.627 + excursion;
+        speakers.forEach(cone => cone.position.z = .017 + excursion);
       }
     };
   }
@@ -298,6 +358,21 @@ export function buildParts(T, carRoot) {
     return { p: hit.point.clone().applyMatrix4(inv), n };
   }
 
+  // Small shop emblem, seated on the bonnet like a manufacturer badge.
+  if (logoTex) {
+    const anchor = sampleTop(0, 2.05);
+    if (anchor) {
+      const badge = new T.Mesh(new T.PlaneGeometry(.22, .11), new T.MeshBasicMaterial({ map: logoTex, transparent: true, depthWrite: false, toneMapped: false }));
+      badge.name = 'madhuban-bonnet-badge';
+      badge.position.copy(anchor.p).addScaledVector(anchor.n, .009);
+      badge.lookAt(badge.position.clone().add(anchor.n)); carRoot.add(badge);
+    }
+  }
+  // Ghost only the painted skin, leaving the fitted product easy to read.
+  const skin = [...new Set(bodyMeshes.map(m => m.material).filter(m => /^Paint 1/.test(m.name)))];
+  const skinState = skin.map(m => ({ opacity: m.opacity, transparent: m.transparent, depthWrite: m.depthWrite }));
+  let protectionFocus = 0;
+
   /* ---------- 8. PPF: stone chips bounce off the film ---------- */
   {
     const g = group('ppf');
@@ -306,13 +381,21 @@ export function buildParts(T, carRoot) {
       const s2 = sampleTop(-0.7 + Math.random() * 1.4, 1.55 + Math.random() * 0.75);
       if (s2) hits.push(s2);
     }
-    // a faint film sheen over the hood: small glossy quads on sampled points
-    const sheenMat = new T.MeshBasicMaterial({ color: 0x9fd8ff, transparent: true, opacity: 0.0, blending: T.AdditiveBlending, depthWrite: false });
-    const sheen = new T.Group(); g.add(sheen);
-    hits.forEach(h => {
-      const q = new T.Mesh(new T.CircleGeometry(0.16, 20), sheenMat);
-      q.position.copy(h.p).addScaledVector(h.n, 0.004); q.lookAt(q.position.clone().add(h.n)); sheen.add(q);
-    });
+    // A single fitted film surface, sampled from the bonnet geometry.
+    const sheenMat = new T.MeshBasicMaterial({ color: 0x71d4ff, transparent: true, opacity: .16, depthWrite: false, side: T.DoubleSide });
+    const points = [], indices = [], rows = 13, cols = 11;
+    for (let row = 0; row < rows; row++) for (let col = 0; col < cols; col++) {
+      const h = sampleTop(-.65 + col * .13, 1.15 + row * .09);
+      points.push(h ? h.p.clone().addScaledVector(h.n, .014) : null);
+    }
+    for (let row = 0; row < rows - 1; row++) for (let col = 0; col < cols - 1; col++) {
+      const a = row * cols + col, b = a + 1, c = a + cols, d = c + 1;
+      if ([a,b,c,d].every(i => points[i])) indices.push(a,c,b,b,c,d);
+    }
+    const filmGeo = new T.BufferGeometry();
+    filmGeo.setAttribute('position', new T.Float32BufferAttribute(points.flatMap(p => p ? [p.x,p.y,p.z] : [0,0,0]), 3));
+    filmGeo.setIndex(indices); filmGeo.computeVertexNormals();
+    const fittedFilm = new T.Mesh(filmGeo, sheenMat); fittedFilm.name = 'ppf-fitted-layer'; g.add(fittedFilm);
     const stoneGeo = new T.IcosahedronGeometry(0.018, 0);
     const stoneMat = new T.MeshStandardMaterial({ color: 0x8a8378, roughness: 1 });
     const sparkMat = new T.MeshBasicMaterial({ color: 0xfff6c8, transparent: true, toneMapped: false });
@@ -324,7 +407,7 @@ export function buildParts(T, carRoot) {
     }
     parts.ppf = {
       group: g,
-      show: () => { sheenMat.opacity = 0.05; },
+      show: () => { sheenMat.opacity = 0.16; },
       update: (dt) => {
         stones.forEach(o => {
           o.t += dt; const cyc = 1.6; if (o.t > cyc) { o.t -= cyc; o.h = hits[Math.floor(Math.random() * hits.length)]; }
@@ -339,7 +422,7 @@ export function buildParts(T, carRoot) {
           } else { o.st.visible = false; o.sp.visible = false; }
           o.st.rotation.x += dt * 9; o.st.rotation.y += dt * 7;
         });
-        sheenMat.opacity = 0.05 + Math.sin(performance.now() / 500) * 0.03;
+        sheenMat.opacity = 0.16 + Math.sin(performance.now() / 700) * 0.035;
       }
     };
   }
@@ -348,16 +431,36 @@ export function buildParts(T, carRoot) {
   {
     const g = group('coating');
     const beadGeo = new T.SphereGeometry(1, 14, 10);
-    const beadMat = new T.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.02, metalness: 0, transmission: 0.9, thickness: 0.01, ior: 1.33, transparent: true, opacity: 0.85, clearcoat: 1 });
+    const beadMat = new T.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.02, metalness: 0, transmission: 0, thickness: 0.01, ior: 1.33, transparent: true, opacity: 0.85, clearcoat: 1 });
     const beads = [];
-    for (let i = 0; i < 220; i++) {
+    for (let i = 0; i < 90; i++) {
       const z = -1.6 + Math.random() * 3.9, x = -0.9 + Math.random() * 1.8;
       const h = sampleTop(x, z); if (!h || h.n.y < 0.55) continue;
       const b = new T.Mesh(beadGeo, beadMat);
       const r = 0.006 + Math.random() * 0.012;
       b.scale.set(r, r * 0.6, r); b.position.copy(h.p).addScaledVector(h.n, r * 0.45);
-      g.add(b); beads.push({ b, base: b.position.clone(), n: h.n, r, slide: Math.random() < 0.3 ? 0 : -1, v: 0 });
+      beads.push({ b, base: b.position.clone(), n: h.n, r, slide: Math.random() < 0.3 ? 0 : -1, v: 0 });
     }
+    // All water beads share one GPU draw instead of one draw per bead.
+    const beadLayer = new T.InstancedMesh(beadGeo, beadMat, beads.length);
+    beadLayer.frustumCulled = false; g.add(beadLayer);
+    function syncBeads() {
+      beads.forEach(({b}, i) => { b.updateMatrix(); beadLayer.setMatrixAt(i, b.matrix); });
+      beadLayer.instanceMatrix.needsUpdate = true;
+    }
+    syncBeads();
+    // A travelling highlight shows where the coating is applied.
+    const coatMat = new T.MeshBasicMaterial({ color: 0x86e6ff, transparent: true, opacity: .4, depthWrite: false, blending: T.AdditiveBlending });
+    const coatPads = [];
+    const coatPose = new T.Object3D();
+    for (let z = .5; z < 2.3; z += .13) for (let x = -.65; x < .7; x += .13) {
+      const h = sampleTop(x, z); if (!h || h.n.y < .4) continue;
+      const position = h.p.clone().addScaledVector(h.n, .012);
+      coatPose.position.copy(position); coatPose.lookAt(position.clone().add(h.n));
+      coatPads.push({ position, quaternion: coatPose.quaternion.clone(), z });
+    }
+    const coatLayer = new T.InstancedMesh(new T.CircleGeometry(.09, 8), coatMat, coatPads.length);
+    coatLayer.frustumCulled = false; g.add(coatLayer);
     const paints = bodyMeshes.map(m => m.material).filter((m, i, a) => a.indexOf(m) === i && /^Paint 1/.test(m.name));
     const orig = paints.map(m => ({ r: m.roughness, c: m.clearcoatRoughness }));
     parts.coating = {
@@ -365,6 +468,12 @@ export function buildParts(T, carRoot) {
       show: () => paints.forEach(m => { m.roughness = 0.12; if ('clearcoatRoughness' in m) m.clearcoatRoughness = 0.0; }),
       hide: () => paints.forEach((m, i) => { m.roughness = orig[i].r; if ('clearcoatRoughness' in m) m.clearcoatRoughness = orig[i].c; }),
       update: (dt) => {
+        const sweep = (performance.now() % 3600) / 3600 * 2.6 + .2;
+        coatPads.forEach(({position,quaternion,z}, i) => {
+          coatPose.position.copy(position); coatPose.quaternion.copy(quaternion);
+          coatPose.scale.setScalar(Math.max(.001, 1 - Math.abs(z - sweep) / .35));
+          coatPose.updateMatrix(); coatLayer.setMatrixAt(i, coatPose.matrix);
+        }); coatLayer.instanceMatrix.needsUpdate = true;
         beads.forEach(o => {
           if (o.slide < 0) return;
           o.slide += dt; o.v = Math.min(0.5, o.v + dt * 0.4);
@@ -373,6 +482,7 @@ export function buildParts(T, carRoot) {
           o.b.position.y -= o.v * dt * 0.4;
           if (o.slide > 2.2) { o.slide = 0; o.v = 0; o.b.position.copy(o.base); }
         });
+        syncBeads();
       }
     };
   }
@@ -380,14 +490,18 @@ export function buildParts(T, carRoot) {
   /* ---------- door opening (for seats / audio / mats) ---------- */
   const doorL = byName.BodyDoorLColor1;
   const doorBase = doorL ? doorL.quaternion.clone() : null;
+  const doorR = byName.BodyDoorRColor1;
+  const doorRBase = doorR ? doorR.quaternion.clone() : null;
+  let doorRT = 0;
   let doorT = 0, doorTarget = 0;
   // roof + glass fade for cabin views
   const collect = names => { const out = []; names.forEach(n => { const o = byName[n]; if (o) o.traverse(m => { if (m.isMesh) out.push(m); }); }); return out; };
   const HIDE = {
     roof: collect(['BodyRoofPanel', 'InteriorRearHatch', 'BodyRearwindow', 'InteriorCage', 'InteriorPillar', 'BodyWindowsRearSides']),
+    bootTrim: collect(['Engine', 'InteriorRearPanels', 'InteriorCage', 'InteriorPillar']),
     glass: collect(['BodyWindshield', 'BodyWindshieldWipers', 'BodyWindshieldWipersBase'])
   };
-  const HIDE_FOR = { dashcam: ['glass'], screen: ['roof', 'glass'], audio: ['roof'], seats: ['roof', 'glass'], mats: ['roof', 'glass'] };
+  const HIDE_FOR = { dashcam: ['glass'], screen: ['roof', 'glass'], audio: ['bootTrim'], seats: ['roof', 'glass'], mats: ['roof', 'glass'] };
 
   /* ---------- public API ---------- */
   let current = null;
@@ -397,19 +511,31 @@ export function buildParts(T, carRoot) {
       if (current && parts[current]) { const p = parts[current]; p.group.visible = false; p.hide && p.hide(); }
       current = key;
       doorTarget = OPEN_DOOR[key] ? 1 : 0;
-      Object.keys(HIDE).forEach(h => HIDE[h].forEach(m => { m.visible = !(HIDE_FOR[key] || []).includes(h); }));
+      const hidden = new Set((HIDE_FOR[key] || []).flatMap(h => HIDE[h]));
+      new Set(Object.values(HIDE).flat()).forEach(m => { m.visible = !hidden.has(m); });
       if (key && parts[key]) {
         const p = parts[key]; p.group.visible = true; p.group.userData.t = 0; p.show && p.show();
       }
     },
     toggleDoor() { doorTarget = doorTarget > 0.5 ? 0 : 1; return doorTarget > 0.5; },
     update(dt, now) {
+      protectionFocus += (((current === 'ppf' || current === 'coating') ? 1 : 0) - protectionFocus) * Math.min(1, dt * 5);
+      skin.forEach((m, i) => {
+        const active = protectionFocus > .002;
+        if (m.transparent !== (active || skinState[i].transparent)) { m.transparent = active || skinState[i].transparent; m.needsUpdate = true; }
+        m.opacity = skinState[i].opacity * (1 - protectionFocus * .64);
+        m.depthWrite = active ? false : skinState[i].depthWrite;
+      });
       if (current && parts[current]) {
         const p = parts[current], gr = p.group;
         gr.userData.t = Math.min(1, gr.userData.t + dt * 2.2);
         const e = 1 - Math.pow(1 - gr.userData.t, 3);
-        gr.scale.setScalar(0.001 + e * 0.999);
+        gr.scale.setScalar(current === 'audio' ? 1 : 0.001 + e * 0.999);
         p.update && p.update(dt, now);
+      }
+      if (doorR && doorRBase) {
+        doorRT += ((current === 'audio' ? 1 : 0) - doorRT) * Math.min(1, dt * 4);
+        doorR.quaternion.copy(doorRBase).multiply(new T.Quaternion().setFromAxisAngle(DOOR_AXIS, -doorRT * DOOR_ANGLE));
       }
       if (doorL && doorBase) {
         doorT += (doorTarget - doorT) * Math.min(1, dt * 4);
