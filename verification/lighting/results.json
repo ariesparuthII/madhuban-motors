@@ -1,0 +1,38 @@
+[
+  {
+    "width": 390,
+    "version": "before",
+    "errors": [],
+    "ready": true,
+    "chapters": 1,
+    "builder": false,
+    "coatingDive": false
+  },
+  {
+    "width": 390,
+    "version": "after",
+    "errors": [],
+    "ready": true,
+    "chapters": 12,
+    "builder": true,
+    "coatingDive": true
+  },
+  {
+    "width": 1280,
+    "version": "before",
+    "errors": [],
+    "ready": true,
+    "chapters": 1,
+    "builder": false,
+    "coatingDive": false
+  },
+  {
+    "width": 1280,
+    "version": "after",
+    "errors": [],
+    "ready": true,
+    "chapters": 12,
+    "builder": true,
+    "coatingDive": true
+  }
+]

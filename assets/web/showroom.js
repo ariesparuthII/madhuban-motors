@@ -156,7 +156,7 @@ async function boot(stage, ctx) {
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, lightProfile ? 1 : small ? 1.25 : 1.6));
   renderer.outputColorSpace = T.SRGBColorSpace;
   renderer.toneMapping = T.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.0;
+  renderer.toneMappingExposure = 1.06;
   renderer.shadowMap.enabled = !lightProfile;
   stage.prepend(renderer.domElement);
 
@@ -170,16 +170,16 @@ async function boot(stage, ctx) {
   envScene.background = new T.Color(0x050505);
   const bright = c => new T.MeshBasicMaterial({ color: c, side: T.DoubleSide });
   for (let i = -2; i <= 2; i++) {                       // overhead bars
-    const m = new T.Mesh(new T.PlaneGeometry(0.35, 9), bright(new T.Color(1, 1, 1).multiplyScalar(4)));
+    const m = new T.Mesh(new T.PlaneGeometry(0.65, 7.5), bright(new T.Color(1, 1, 1).multiplyScalar(2.7)));
     m.rotation.x = Math.PI / 2; m.position.set(i * 1.1, 4.5, 0); envScene.add(m);
   }
-  const sideL = new T.Mesh(new T.PlaneGeometry(6, 1.4), bright(new T.Color(1, 0.96, 0.9).multiplyScalar(1.6)));
+  const sideL = new T.Mesh(new T.PlaneGeometry(6, 2.2), bright(new T.Color(1, 0.97, 0.93).multiplyScalar(2.0)));
   sideL.position.set(-6, 1.6, 0); sideL.rotation.y = Math.PI / 2; envScene.add(sideL);
-  const sideR = sideL.clone(); sideR.position.x = 6; sideR.rotation.y = -Math.PI / 2; envScene.add(sideR);
-  const redStrip = new T.Mesh(new T.PlaneGeometry(10, 0.5), bright(new T.Color(0.85, 0.16, 0.11).multiplyScalar(3)));
+  const sideR = sideL.clone(); sideR.material = bright(new T.Color(0.86, 0.93, 1).multiplyScalar(1.6)); sideR.position.x = 6; sideR.rotation.y = -Math.PI / 2; envScene.add(sideR);
+  const redStrip = new T.Mesh(new T.PlaneGeometry(10, 0.5), bright(new T.Color(0.5, 0.075, 0.045).multiplyScalar(1.2)));
   redStrip.position.set(0, 1.0, -7); envScene.add(redStrip);
   const pmrem = new T.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(envScene, 0.02).texture;
+  scene.environment = pmrem.fromScene(envScene, 0.08).texture;
   scene.environmentIntensity = 0;   // ramps up in the intro
 
   /* ---------- visible light rig (matches the env bars) ---------- */
@@ -193,14 +193,14 @@ async function boot(stage, ctx) {
     g.position.set(i * 1.1, 4.5, 0); scene.add(g); bars.push(tube);
     tube.material.color.setScalar(0);
   }
-  const key = new T.DirectionalLight(0xffffff, 0);
-  key.position.set(0.5, 8, 1); key.castShadow = true;
+  const key = new T.DirectionalLight(0xfff4e6, 0);
+  key.position.set(-3, 7, 4); key.castShadow = true;
   key.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048);
   Object.assign(key.shadow.camera, { left: -4, right: 4, top: 4, bottom: -4, near: 1, far: 15 });
   key.shadow.bias = -0.0004; key.shadow.radius = 4;
   scene.add(key);
-  const rim = new T.PointLight(0xda291c, 0, 16, 1.6); rim.position.set(0, 1.3, -5); scene.add(rim);
-  const fill = new T.HemisphereLight(0x9aa4b8, 0x0a0606, 0); scene.add(fill);
+  const rim = new T.DirectionalLight(0xc9deff, 0); rim.position.set(4, 4, -4); scene.add(rim);
+  const fill = new T.HemisphereLight(0xb4bfce, 0x18130f, 0); scene.add(fill);
   const cabin = new T.PointLight(0xfff1dc, 0, 2.2, 1.5); cabin.position.set(0, 1.0, 0.5); scene.add(cabin);
 
   /* ---------- floor ---------- */
@@ -212,7 +212,7 @@ async function boot(stage, ctx) {
     reflector.rotation.x = -Math.PI / 2; reflector.position.y = -0.165; scene.add(reflector);
   }
   const floor = new T.Mesh(new T.CircleGeometry(14, 64), new T.MeshStandardMaterial({
-    color: 0x0b0b0c, roughness: 0.55, metalness: 0.2, transparent: !!reflector, opacity: reflector ? 0.86 : 1
+    color: 0x0b0b0c, roughness: 0.68, metalness: 0.12, transparent: !!reflector, opacity: reflector ? 0.93 : 1
   }));
   floor.rotation.x = -Math.PI / 2; floor.position.y = -0.16; floor.receiveShadow = true; scene.add(floor);
   // turntable ring
@@ -255,7 +255,7 @@ async function boot(stage, ctx) {
     if (m.name === 'Brakelight') tailMat = m;
     if (m.envMapIntensity !== undefined) m.envMapIntensity = 1;
   });
-  paintMats.forEach(m => { m.color.setHex(PAINTS.red); m.metalness = 0.6; m.roughness = 0.28; if ('clearcoat' in m) { m.clearcoat = 1; m.clearcoatRoughness = 0.05; } });
+  paintMats.forEach(m => { m.color.setHex(PAINTS.red); m.metalness = 0.6; m.roughness = 0.32; if ('clearcoat' in m) { m.clearcoat = 1; m.clearcoatRoughness = 0.1; } });
   if (headMat) { headMat.emissive = new T.Color(0xeaf2ff); headMat.emissiveIntensity = 0; }
   if (tailMat) { tailMat.emissive = new T.Color(0xff1a0a); tailMat.emissiveIntensity = 0; }
   const parts = buildParts(T, car);
@@ -266,7 +266,7 @@ async function boot(stage, ctx) {
   if (!lightProfile) {
     composer = new T.EffectComposer(renderer);
     composer.addPass(new T.RenderPass(scene, camera));
-    composer.addPass(new T.UnrealBloomPass(new T.Vector2(256, 256), small ? 0.35 : 0.5, 0.5, 0.9));
+    composer.addPass(new T.UnrealBloomPass(new T.Vector2(256, 256), small ? 0.2 : 0.3, 0.4, 1.05));
     composer.addPass(new T.OutputPass());
   }
 
@@ -385,18 +385,18 @@ async function boot(stage, ctx) {
       const dt = Math.min((now - last) / 1000, 0.05); last = now;
       const it = clamp((now - t0) / 1000 / INTRO);
 
-      // intro: bars switch on one by one with a flicker, env + key light ramp
+      // Intro: soft sequential light ramp, without random flicker.
       bars.forEach((b, i) => {
         const on = clamp((it * 1.4 - i * 0.12) * 4);
-        const flick = on > 0 && on < 1 ? (Math.random() > 0.5 ? 1 : 0.2) : on;
-        b.material.color.setScalar(3 * flick * (1 - dark * 0.85));
+        const flick = smooth(on);
+        b.material.color.setScalar(2.4 * flick * (1 - dark * 0.85));
       });
       const lightsOn = smooth(clamp(it * 1.2 - 0.15));
-      scene.environmentIntensity = lightsOn * (1 - dark * 0.8);
-      key.intensity = 2.2 * lightsOn * (1 - dark * 0.9);
-      fill.intensity = 0.35 * lightsOn;
-      rim.intensity = 30 * smooth(clamp(it * 1.5 - 0.6));
-      ring.material.opacity = 0.28 * smooth(clamp(it * 2 - 1)) * (1 - inside);
+      scene.environmentIntensity = 1.12 * lightsOn * (1 - dark * 0.8);
+      key.intensity = 2.5 * lightsOn * (1 - dark * 0.9);
+      fill.intensity = 0.55 * lightsOn;
+      rim.intensity = 0.85 * smooth(clamp(it * 1.5 - 0.6)) * (1 - inside * 0.85) * (1 - dark * 0.8);
+      ring.material.opacity = 0.16 * smooth(clamp(it * 2 - 1)) * (1 - inside);
       if (!reduced) { const a = dGeo.attributes.position.array; for (let i = 0; i < DUST; i++) { a[i * 3 + 1] += dt * 0.05 * (0.5 + (dSeed[i] % 1)); a[i * 3] += Math.sin(now / 3000 + dSeed[i]) * dt * 0.03; if (a[i * 3 + 1] > 3) a[i * 3 + 1] = 0; } dGeo.attributes.position.needsUpdate = true; }
       board.setPower(smooth(clamp(it * 1.6 - 0.7)) * (1 - inside * 0.7));
 
@@ -409,7 +409,7 @@ async function boot(stage, ctx) {
       const targetFov = lerp(A.fov, B.fov, k);
       const near = Math.round(f);
       const S = (ctx.keys[near] === 'car' && previewKey && SHOTS[previewKey]) || SHOTS[ctx.keys[near]] || SHOTS.hero;
-      dust.material.opacity += ((S.part ? 0 : 0.55 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
+      dust.material.opacity += ((S.part ? 0 : 0.2 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
       dark += ((S.dark ? 1 : 0) - dark) * Math.min(1, dt * 3);
       inside += ((S.inside ? 1 : 0) - inside) * Math.min(1, dt * 3);
       cabin.intensity = 1.1 * inside + (S.part === 'seats' || S.part === 'mats' || S.part === 'audio' ? 0.45 : 0);
