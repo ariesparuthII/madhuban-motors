@@ -1,0 +1,16 @@
+[
+  {
+    "width": 390,
+    "source": "http://localhost:8000/assets/web/showroom-first-mobile.webp",
+    "visible": "1",
+    "h1": "मधुबनMadhuban Motors",
+    "no3DOnSaveData": true
+  },
+  {
+    "width": 1280,
+    "source": "http://localhost:8000/assets/web/showroom-first-desktop.webp",
+    "visible": "1",
+    "h1": "मधुबनMadhuban Motors",
+    "no3DOnSaveData": true
+  }
+]

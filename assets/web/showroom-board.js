@@ -3,7 +3,6 @@
    studio), over a warm-lit shop opening drawn on a canvas. */
 
 export async function buildShopBoard(T, logoImg, base = 'assets/web/') {
-  try { await Promise.all([document.fonts.load('400 120px "Rozha One"'), document.fonts.load('700 60px "Mukta"')]); } catch (e) {}
   const SERIF = '"Rozha One", Georgia, serif', SANS = '"Mukta", Arial, sans-serif';
   const group = new T.Group();
   const mats = [];

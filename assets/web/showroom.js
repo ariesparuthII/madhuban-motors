@@ -146,8 +146,15 @@ function init() {
 async function boot(stage, ctx) {
   const T = await import('../vendor/three/three-bundle.min.js');
   const small = matchMedia('(max-width: 900px)').matches;
+  // Begin network work before generating the studio environment.
+  const modelLoader = new T.GLTFLoader(); modelLoader.setMeshoptDecoder(T.MeshoptDecoder);
+  const modelReady = modelLoader.loadAsync(stage.dataset.model || 'assets/3d/concept-car.glb');
+  modelReady.catch(() => {});
+  const logoReady = new T.TextureLoader().loadAsync('assets/web/logo.webp').catch(() => null);
+  const boardReady = buildShopBoard(T, null);
+
   // Opt-in exploration profile. Default rendering stays unchanged.
-  const lightProfile = new URLSearchParams(location.search).get('quality') === 'light';
+  const lightProfile = new URLSearchParams(location.search).get('quality') === 'light' || (small && new URLSearchParams(location.search).get('quality') !== 'cinematic');
   ROOT.dataset.quality = lightProfile ? 'light' : 'cinematic';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bar = stage.querySelector('.sr-loader i');
@@ -228,12 +235,8 @@ async function boot(stage, ctx) {
   scene.add(dust);
 
   /* ---------- back wall sign: the MM logo ---------- */
-  const modelLoader = new T.GLTFLoader(); modelLoader.setMeshoptDecoder(T.MeshoptDecoder);
-  const modelReady = modelLoader.loadAsync(stage.dataset.model || 'assets/3d/concept-car.glb');
-  modelReady.catch(() => {}); // The outer boot handler reports load failure when awaited.
-  const logoTex = await new Promise(res => new T.TextureLoader().load(stage.dataset.logo || 'assets/web/logo-2x.webp', t => { t.colorSpace = T.SRGBColorSpace; res(t); }, undefined, () => res(null)));
-  // the real shopfront as the back wall, so people recognise the shop
-  const board = await buildShopBoard(T, logoTex && logoTex.image);
+  const [board, logoTex] = await Promise.all([boardReady, logoReady]);
+  if (logoTex) logoTex.colorSpace = T.SRGBColorSpace;
   {
     const hc = SHOTS.hero.cam, dx = -hc[0], dz = -hc[2], len = Math.hypot(dx, dz);
     const bx = dx / len * 13, bz = dz / len * 13;
@@ -280,7 +283,7 @@ async function boot(stage, ctx) {
 
   /* ---------- intro: studio powers on ---------- */
   const t0 = performance.now();
-  const INTRO = reduced ? 0.01 : 3.2;
+  const INTRO = 0.01; // Show the fully lit showroom immediately.
 
   /* ---------- state ---------- */
   let visible = true, running = false, last = performance.now();
@@ -288,7 +291,7 @@ async function boot(stage, ctx) {
   let paintFrom = null, paintTo = null, paintT = 1;
   let currentPart = undefined;
   let diveState = null; let previewKey = null;               // {key, t, target, done}
-  const camPos = new T.Vector3(), camLook = new T.Vector3(), tA = new T.Vector3(), tB = new T.Vector3(), lA = new T.Vector3(), lB = new T.Vector3();
+  const camPos = new T.Vector3(...SHOTS.hero.cam), camLook = new T.Vector3(...SHOTS.hero.look), tA = new T.Vector3(), tB = new T.Vector3(), lA = new T.Vector3(), lB = new T.Vector3();
   let curRot = SHOTS.hero.rot, curFov = 30, dark = 0, inside = 0;
   let dragRot = 0, dragVel = 0, dragging = false, lastX = 0, offX = 0, offY = 0, offSign = null;
   // measure which way a view offset moves the picture on this device
@@ -380,6 +383,8 @@ async function boot(stage, ctx) {
     return { A, B, k: smooth(clamp((frac - 0.15) / 0.7)), frac };
   }
 
+  let markFirstFrame;
+  const firstFrame = new Promise(resolve => { markFirstFrame = resolve; });
   function loop() {
     if (running) return; running = true; last = performance.now();
     const tick = now => {
@@ -509,6 +514,7 @@ async function boot(stage, ctx) {
       if (paintT < 1 && paintTo) { paintT = Math.min(1, paintT + dt * 2.5); paintMats.forEach(m => m.color.copy(paintFrom).lerp(paintTo, paintT)); }
       if (reflector) reflector.visible = inside < 0.5;
       if (composer) composer.render(dt); else renderer.render(scene, camera);
+      if (markFirstFrame) { markFirstFrame(); markFirstFrame = null; }
       requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -525,6 +531,7 @@ async function boot(stage, ctx) {
     diveOut() { if (diveState) { diveState.out = true; diveState.t = 0; } },
     preview(key) { previewKey = key; }
   };
+  await firstFrame;
   return api;
 }
 

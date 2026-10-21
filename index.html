@@ -1050,8 +1050,11 @@
 <!-- 3D SHOWROOM (hero + accessory chapters on one sticky stage) -->
 <section id="showroom" class="showroom" aria-label="Madhuban Motors 3D showroom">
   <div class="sr-sticky">
-    <div class="sr-stage" data-model="assets/3d/concept-car.glb" data-logo="assets/web/logo-2x.webp">
-      <div class="sr-poster" aria-hidden="true"></div>
+    <div class="sr-stage" data-model="assets/3d/concept-car.glb">
+      <picture class="sr-poster" aria-hidden="true">
+        <source media="(max-width:900px)" srcset="assets/web/showroom-first-mobile.webp">
+        <img src="assets/web/showroom-first-desktop.webp" width="1280" height="800" alt="" fetchpriority="high" decoding="async">
+      </picture>
       <div class="sr-loader" aria-hidden="true"><i></i></div>
     </div>
     <div class="sr-ceiling" aria-hidden="true">
