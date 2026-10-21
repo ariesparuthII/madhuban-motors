@@ -1,0 +1,581 @@
+{
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "chapters": [
+        {
+          "key": "hero",
+          "active": "hero",
+          "width": 390,
+          "panel": {
+            "top": 431.609375,
+            "bottom": 760,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 430.391px)"
+        },
+        {
+          "key": "legacy",
+          "active": "legacy",
+          "width": 390,
+          "panel": {
+            "top": 405.46875,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 456.531px)"
+        },
+        {
+          "key": "screen",
+          "active": "screen",
+          "width": 390,
+          "panel": {
+            "top": 539.3125,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 362.92px)"
+        },
+        {
+          "key": "dashcam",
+          "active": "dashcam",
+          "width": 390,
+          "panel": {
+            "top": 487.3125,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 374.688px)"
+        },
+        {
+          "key": "audio",
+          "active": "audio",
+          "width": 390,
+          "panel": {
+            "top": 515.390625,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 362.92px)"
+        },
+        {
+          "key": "seats",
+          "active": "seats",
+          "width": 390,
+          "panel": {
+            "top": 487.3125,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 374.688px)"
+        },
+        {
+          "key": "mats",
+          "active": "mats",
+          "width": 390,
+          "panel": {
+            "top": 539.3125,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 362.92px)"
+        },
+        {
+          "key": "lights",
+          "active": "lights",
+          "width": 390,
+          "panel": {
+            "top": 539.3125,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 362.92px)"
+        },
+        {
+          "key": "ppf",
+          "active": "ppf",
+          "width": 390,
+          "panel": {
+            "top": 498.0625,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 363.938px)"
+        },
+        {
+          "key": "coating",
+          "active": "coating",
+          "width": 390,
+          "panel": {
+            "top": 487.3125,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 374.688px)"
+        },
+        {
+          "key": "film",
+          "active": "film",
+          "width": 390,
+          "panel": {
+            "top": 573.984375,
+            "bottom": 748,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 362.92px)"
+        },
+        {
+          "key": "car",
+          "active": "car",
+          "width": 390,
+          "panel": {
+            "top": 380,
+            "bottom": 906.828125,
+            "left": 20,
+            "right": 370
+          },
+          "canvasClip": "inset(70px 0px 482px)"
+        }
+      ],
+      "dives": [
+        {
+          "key": "dashcam",
+          "title": "Inside the dashcam",
+          "caption": "Normal evening on GT Road. The dashcam records every second.",
+          "canvas": 677,
+          "focus": "sr-dive__close",
+          "closed": true
+        },
+        {
+          "key": "seats",
+          "title": "Why seat covers",
+          "caption": "Factory fabric soaks up everything.",
+          "canvas": 677,
+          "focus": "sr-dive__close",
+          "closed": true
+        },
+        {
+          "key": "mats",
+          "title": "Why proper mats",
+          "caption": "Monsoon. Mud and water come in on every shoe.",
+          "canvas": 677,
+          "focus": "sr-dive__close",
+          "closed": true
+        },
+        {
+          "key": "ppf",
+          "title": "Inside the paint",
+          "caption": "Your paint is thinner than a sheet of paper.",
+          "canvas": 677,
+          "focus": "sr-dive__close",
+          "closed": true
+        },
+        {
+          "key": "coating",
+          "title": "Why ceramic coating",
+          "caption": "Rain on plain paint spreads out and dries in dirty spots.",
+          "canvas": 669,
+          "focus": "sr-dive__close",
+          "closed": true
+        }
+      ],
+      "chips": [
+        {
+          "key": "screen",
+          "pressed": "true",
+          "total": "₹8,000",
+          "preview": "screen",
+          "part": "screen"
+        },
+        {
+          "key": "dashcam",
+          "pressed": "true",
+          "total": "₹10,000",
+          "preview": "dashcam",
+          "part": "dashcam"
+        },
+        {
+          "key": "audio",
+          "pressed": "true",
+          "total": "₹15,000",
+          "preview": "audio",
+          "part": "audio"
+        },
+        {
+          "key": "seats",
+          "pressed": "true",
+          "total": "₹17,500",
+          "preview": "seats",
+          "part": "seats"
+        },
+        {
+          "key": "mats",
+          "pressed": "true",
+          "total": "₹19,300",
+          "preview": "mats",
+          "part": "mats"
+        },
+        {
+          "key": "film",
+          "pressed": "true",
+          "total": "₹23,300",
+          "preview": "film",
+          "part": "film"
+        },
+        {
+          "key": "lights",
+          "pressed": "true",
+          "total": "₹23,300 +",
+          "preview": "lights",
+          "part": "lights"
+        },
+        {
+          "key": "ppf",
+          "pressed": "true",
+          "total": "₹23,300 +",
+          "preview": "ppf",
+          "part": "ppf"
+        },
+        {
+          "key": "coating",
+          "pressed": "true",
+          "total": "₹23,300 +",
+          "preview": "coating",
+          "part": "coating"
+        }
+      ],
+      "hotspots": {
+        "paint": {
+          "x": 180,
+          "y": 225,
+          "clicked": true
+        },
+        "inside": {
+          "x": 155,
+          "y": 230,
+          "clicked": true
+        },
+        "door": {
+          "x": 220,
+          "y": 230,
+          "clicked": true
+        },
+        "horn": {
+          "x": 80,
+          "y": 245,
+          "clicked": true
+        },
+        "wheels": {
+          "x": 300,
+          "y": 250,
+          "clicked": true
+        }
+      },
+      "builderUrl": "https://wa.me/919718373751?text=Hi%2C%20I%20want%20these%20for%20my%20car%3A%20Android%20screen%2C%20Dashcam%2C%20Sound%20system%2C%20Seat%20covers%2C%207D%20mats%2C%20Sun%20film%2C%20LED%20lights%2C%20PPF%2C%20Ceramic%20coating.%20Starting%20total%20on%20the%20website%3A%20%E2%82%B923%2C300%20%2B.%20My%20car%3A%20Hyundai%20Creta%202023.%20(From%20the%203D%20showroom)%0A%0A%5BSource%3A%20ORG%5D",
+      "storage": {},
+      "remainingPreview": "ppf"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "chapters": [
+        {
+          "key": "hero",
+          "active": "hero",
+          "width": 1280,
+          "panel": {
+            "top": 166.90625,
+            "bottom": 736,
+            "left": 76.796875,
+            "right": 539.625
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "legacy",
+          "active": "legacy",
+          "width": 1280,
+          "panel": {
+            "top": 190.640625,
+            "bottom": 639.34375,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "screen",
+          "active": "screen",
+          "width": 1280,
+          "panel": {
+            "top": 240.28125,
+            "bottom": 589.703125,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "dashcam",
+          "active": "dashcam",
+          "width": 1280,
+          "panel": {
+            "top": 270.3125,
+            "bottom": 559.6875,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "audio",
+          "active": "audio",
+          "width": 1280,
+          "panel": {
+            "top": 257.109375,
+            "bottom": 572.875,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "seats",
+          "active": "seats",
+          "width": 1280,
+          "panel": {
+            "top": 270.3125,
+            "bottom": 559.6875,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "mats",
+          "active": "mats",
+          "width": 1280,
+          "panel": {
+            "top": 270.3125,
+            "bottom": 559.6875,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "lights",
+          "active": "lights",
+          "width": 1280,
+          "panel": {
+            "top": 270.3125,
+            "bottom": 559.6875,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "ppf",
+          "active": "ppf",
+          "width": 1280,
+          "panel": {
+            "top": 257.109375,
+            "bottom": 572.875,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "coating",
+          "active": "coating",
+          "width": 1280,
+          "panel": {
+            "top": 270.3125,
+            "bottom": 559.6875,
+            "left": 76.796875,
+            "right": 546.796875
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "film",
+          "active": "film",
+          "width": 1280,
+          "panel": {
+            "top": 270.3125,
+            "bottom": 559.6875,
+            "left": 630.8125,
+            "right": 1100.8125
+          },
+          "canvasClip": ""
+        },
+        {
+          "key": "car",
+          "active": "car",
+          "width": 1280,
+          "panel": {
+            "top": 110,
+            "bottom": 771.75,
+            "left": 76.796875,
+            "right": 596.796875
+          },
+          "canvasClip": ""
+        }
+      ],
+      "dives": [
+        {
+          "key": "dashcam",
+          "title": "Inside the dashcam",
+          "caption": "Normal evening on GT Road. The dashcam records every second.",
+          "canvas": 616,
+          "focus": "sr-dive__close",
+          "closed": true
+        },
+        {
+          "key": "seats",
+          "title": "Why seat covers",
+          "caption": "Factory fabric soaks up everything.",
+          "canvas": 616,
+          "focus": "sr-dive__close",
+          "closed": true
+        },
+        {
+          "key": "mats",
+          "title": "Why proper mats",
+          "caption": "Monsoon. Mud and water come in on every shoe.",
+          "canvas": 616,
+          "focus": "sr-dive__close",
+          "closed": true
+        },
+        {
+          "key": "ppf",
+          "title": "Inside the paint",
+          "caption": "Your paint is thinner than a sheet of paper.",
+          "canvas": 616,
+          "focus": "sr-dive__close",
+          "closed": true
+        },
+        {
+          "key": "coating",
+          "title": "Why ceramic coating",
+          "caption": "Rain on plain paint spreads out and dries in dirty spots.",
+          "canvas": 616,
+          "focus": "sr-dive__close",
+          "closed": true
+        }
+      ],
+      "chips": [
+        {
+          "key": "screen",
+          "pressed": "true",
+          "total": "₹8,000",
+          "preview": "screen",
+          "part": "screen"
+        },
+        {
+          "key": "dashcam",
+          "pressed": "true",
+          "total": "₹10,000",
+          "preview": "dashcam",
+          "part": "dashcam"
+        },
+        {
+          "key": "audio",
+          "pressed": "true",
+          "total": "₹15,000",
+          "preview": "audio",
+          "part": "audio"
+        },
+        {
+          "key": "seats",
+          "pressed": "true",
+          "total": "₹17,500",
+          "preview": "seats",
+          "part": "seats"
+        },
+        {
+          "key": "mats",
+          "pressed": "true",
+          "total": "₹19,300",
+          "preview": "mats",
+          "part": "mats"
+        },
+        {
+          "key": "film",
+          "pressed": "true",
+          "total": "₹23,300",
+          "preview": "film",
+          "part": "film"
+        },
+        {
+          "key": "lights",
+          "pressed": "true",
+          "total": "₹23,300 +",
+          "preview": "lights",
+          "part": "lights"
+        },
+        {
+          "key": "ppf",
+          "pressed": "true",
+          "total": "₹23,300 +",
+          "preview": "ppf",
+          "part": "ppf"
+        },
+        {
+          "key": "coating",
+          "pressed": "true",
+          "total": "₹23,300 +",
+          "preview": "coating",
+          "part": "coating"
+        }
+      ],
+      "hotspots": {
+        "paint": {
+          "x": 900,
+          "y": 355,
+          "clicked": true
+        },
+        "inside": {
+          "x": 850,
+          "y": 360,
+          "clicked": true
+        },
+        "door": {
+          "x": 990,
+          "y": 360,
+          "clicked": true
+        },
+        "horn": {
+          "x": 660,
+          "y": 395,
+          "clicked": true
+        },
+        "wheels": {
+          "x": 1130,
+          "y": 410,
+          "clicked": true
+        }
+      },
+      "builderUrl": "https://wa.me/919718373751?text=Hi%2C%20I%20want%20these%20for%20my%20car%3A%20Android%20screen%2C%20Dashcam%2C%20Sound%20system%2C%20Seat%20covers%2C%207D%20mats%2C%20Sun%20film%2C%20LED%20lights%2C%20PPF%2C%20Ceramic%20coating.%20Starting%20total%20on%20the%20website%3A%20%E2%82%B923%2C300%20%2B.%20My%20car%3A%20Hyundai%20Creta%202023.%20(From%20the%203D%20showroom)%0A%0A%5BSource%3A%20ORG%5D",
+      "storage": {},
+      "remainingPreview": "ppf"
+    }
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "failedLocal": []
+}

@@ -1,0 +1,94 @@
+[
+  {
+    "width": 390,
+    "errors": [],
+    "shots": [
+      {
+        "chapter": "hero",
+        "floater": "none",
+        "overflow": 390
+      },
+      {
+        "chapter": "car",
+        "floater": "none",
+        "overflow": 390
+      }
+    ],
+    "hits": {
+      "inside": {
+        "x": 165,
+        "y": 264
+      },
+      "paint": {
+        "x": 213,
+        "y": 264
+      },
+      "door": {
+        "x": 229,
+        "y": 264
+      },
+      "horn": {
+        "x": 85,
+        "y": 280
+      },
+      "wheels": {
+        "x": 141,
+        "y": 288
+      }
+    },
+    "actions": [
+      "door",
+      "horn",
+      "wheels",
+      "paint",
+      "inside"
+    ],
+    "insideChapter": "screen"
+  },
+  {
+    "width": 1280,
+    "errors": [],
+    "shots": [
+      {
+        "chapter": "hero",
+        "floater": "none",
+        "overflow": 1280
+      },
+      {
+        "chapter": "car",
+        "floater": "none",
+        "overflow": 1280
+      }
+    ],
+    "hits": {
+      "inside": {
+        "x": 853,
+        "y": 360
+      },
+      "paint": {
+        "x": 941,
+        "y": 360
+      },
+      "door": {
+        "x": 989,
+        "y": 360
+      },
+      "horn": {
+        "x": 669,
+        "y": 392
+      },
+      "wheels": {
+        "x": 1133,
+        "y": 408
+      }
+    },
+    "actions": [
+      "door",
+      "horn",
+      "wheels",
+      "paint",
+      "inside"
+    ],
+    "insideChapter": "screen"
+  }
+]
