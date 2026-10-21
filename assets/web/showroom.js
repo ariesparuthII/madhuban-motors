@@ -1,6 +1,6 @@
 /* Madhuban Motors cinematic showroom.
    One sticky WebGL stage; chapters scroll over it and drive the camera.
-   - Studio rig: overhead light bars that also live in the environment map,
+   - Studio rig: overhead LED tubes (car) + a sign tube (board) that also live in the environment map,
      so the reflections on the paint match the lights you see.
    - Wet floor (desktop), bloom, and the real shopfront board as the back wall.
    - Each accessory chapter shows the real part in place; dashcam, seats and
@@ -193,9 +193,9 @@ async function boot(stage, ctx) {
   const envScene = new T.Scene();
   envScene.background = new T.Color(0x050505);
   const bright = c => new T.MeshBasicMaterial({ color: c, side: T.DoubleSide });
-  for (let i = -2; i <= 2; i++) {                       // overhead bars
-    const m = new T.Mesh(new T.PlaneGeometry(0.65, 7.5), bright(new T.Color(1, 1, 1).multiplyScalar(2.7)));
-    m.rotation.x = Math.PI / 2; m.position.set(i * 1.1, 4.5, 0); envScene.add(m);
+  for (const x of [-1.25, 0, 1.25]) {                   // overhead LED tubes
+    const m = new T.Mesh(new T.PlaneGeometry(0.8, 7.5), bright(new T.Color(1, 1, 1).multiplyScalar(3.2)));
+    m.rotation.x = Math.PI / 2; m.position.set(x, 4.6, 0); envScene.add(m);
   }
   const sideL = new T.Mesh(new T.PlaneGeometry(6, 2.2), bright(new T.Color(1, 0.97, 0.93).multiplyScalar(2.0)));
   sideL.position.set(-6, 1.6, 0); sideL.rotation.y = Math.PI / 2; envScene.add(sideL);
@@ -206,16 +206,41 @@ async function boot(stage, ctx) {
   scene.environment = pmrem.fromScene(envScene, 0.08).texture;
   scene.environmentIntensity = 0;   // ramps up in the intro
 
-  /* ---------- visible light rig (matches the env bars) ---------- */
-  const barMat = new T.MeshBasicMaterial({ color: new T.Color(1, 1, 1).multiplyScalar(3), toneMapped: false });
-  const bars = [];
-  for (let i = -2; i <= 2; i++) {
+  /* ---------- visible light rig: thick designer LED tubes ---------- */
+  // Soft glow sprite texture shared by every tube (drawn once on a canvas).
+  const glowTex = (() => {
+    const c = document.createElement('canvas'); c.width = 256; c.height = 64;
+    const g = c.getContext('2d'), gr = g.createLinearGradient(0, 0, 0, 64);
+    gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 256, 64);
+    const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t;
+  })();
+  const capMat = new T.MeshStandardMaterial({ color: 0x1a1a1c, roughness: .35, metalness: .9 });
+  const wireMat = new T.MeshBasicMaterial({ color: 0x0c0c0c });
+  function ledTube(len, r) {
     const g = new T.Group();
-    const housing = new T.Mesh(new T.BoxGeometry(0.16, 0.06, 3.6), new T.MeshStandardMaterial({ color: 0x111111, roughness: .4, metalness: .8 }));
-    const tube = new T.Mesh(new T.BoxGeometry(0.1, 0.012, 3.4), barMat.clone());
-    tube.position.y = -0.035; g.add(housing, tube);
-    g.position.set(i * 1.1, 4.5, 0); scene.add(g); bars.push(tube);
-    tube.material.color.setScalar(0);
+    const tube = new T.Mesh(new T.CylinderGeometry(r, r, len, 20, 1, true), new T.MeshBasicMaterial({ color: 0x000000, toneMapped: false }));
+    tube.rotation.z = Math.PI / 2; g.add(tube);
+    for (const sx of [-1, 1]) {                       // machined end caps
+      const cap = new T.Mesh(new T.CylinderGeometry(r * 1.35, r * 1.35, 0.07, 20), capMat);
+      cap.rotation.z = Math.PI / 2; cap.position.x = sx * (len / 2 + 0.03); g.add(cap);
+      const wire = new T.Mesh(new T.CylinderGeometry(0.004, 0.004, 2.2, 4), wireMat);
+      wire.position.set(sx * (len / 2 - 0.25), 1.1, 0); g.add(wire);
+    }
+    const halo = new T.Mesh(new T.PlaneGeometry(len * 1.06, r * 9), new T.MeshBasicMaterial({ map: glowTex, color: 0x000000, transparent: true, depthWrite: false, blending: T.AdditiveBlending, toneMapped: false }));
+    halo.rotation.x = Math.PI / 2; halo.position.y = -r * 1.2; // flat glow under the tube
+    g.add(halo); g.userData = { tube, halo }; return g;
+  }
+  const setTube = (g, v, warm) => {
+    const c = warm ? [1, .93, .82] : [1, 1, 1];
+    g.userData.tube.material.color.setRGB(c[0] * 4 * v, c[1] * 4 * v, c[2] * 4 * v);
+    g.userData.halo.material.color.setRGB(c[0] * .55 * v, c[1] * .55 * v, c[2] * .55 * v);
+  };
+  // Over the car: three long tubes running nose to tail, like a detailing bay.
+  const bars = [];
+  for (const x of [-1.25, 0, 1.25]) {
+    const g = ledTube(4.4, 0.045);
+    g.rotation.y = Math.PI / 2; g.position.set(x, 4.6, 0); scene.add(g); bars.push(g);
   }
   const key = new T.DirectionalLight(0xfff4e6, 0);
   key.position.set(-3, 7, 4); key.castShadow = true;
@@ -261,6 +286,20 @@ async function boot(stage, ctx) {
     board.group.rotation.y = Math.atan2(hc[0] - bx, hc[2] - bz);
   }
   board.setPower(0); scene.add(board.group);
+  // Over the shop board: one long warm tube, the sign light.
+  const signTube = ledTube(8.4, 0.075);
+  signTube.position.set(0, 5.95, 0.55); board.group.add(signTube);
+  // Light wash falling from the tube onto the board face.
+  const washTex = (() => {
+    const c = document.createElement('canvas'); c.width = 256; c.height = 128;
+    const g = c.getContext('2d');
+    const gr = g.createRadialGradient(128, 0, 4, 128, 0, 150);
+    gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.45, 'rgba(255,255,255,.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 256, 128);
+    const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t;
+  })();
+  const wash = new T.Mesh(new T.PlaneGeometry(8.8, 3.2), new T.MeshBasicMaterial({ map: washTex, color: 0x000000, transparent: true, depthWrite: false, blending: T.AdditiveBlending, toneMapped: false }));
+  wash.position.set(0, 4.3, 0.12); board.group.add(wash);
   const sign = null;
 
   /* ---------- car ---------- */
@@ -436,19 +475,25 @@ async function boot(stage, ctx) {
       const it = clamp((now - t0) / 1000 / INTRO);
 
       // Intro: soft sequential light ramp, without random flicker.
+      // Lights follow the story: the board is lit first, then the car as you scroll.
+      const fNow = ctx.getF();
+      const onCar = smooth(clamp(fNow * 1.4));
       bars.forEach((b, i) => {
-        const on = clamp((it * 1.4 - i * 0.12) * 4);
-        const flick = smooth(on);
-        b.material.color.setScalar(2.4 * flick * (1 - dark * 0.85));
+        const flick = smooth(clamp((it * 1.4 - 0.5 - i * 0.12) * 4));
+        const v = flick * onCar * (1 - dark * 0.85);
+        b.visible = v > 0.02; setTube(b, v, false);
       });
+      const signV = smooth(clamp(it * 1.6 - 0.4)) * (1 - onCar * 0.75) * (1 - inside);
+      setTube(signTube, signV, true);
+      wash.material.color.setRGB(.2 * signV, .17 * signV, .13 * signV);
       const lightsOn = smooth(clamp(it * 1.2 - 0.15));
       scene.environmentIntensity = 1.12 * lightsOn * (1 - dark * 0.8);
-      key.intensity = 2.5 * lightsOn * (1 - dark * 0.9);
+      key.intensity = 2.5 * lightsOn * (1 - dark * 0.9) * (0.8 + 0.3 * onCar);
       fill.intensity = 0.55 * lightsOn;
       rim.intensity = 0.85 * smooth(clamp(it * 1.5 - 0.6)) * (1 - inside * 0.85) * (1 - dark * 0.8);
       ring.material.opacity = 0.16 * smooth(clamp(it * 2 - 1)) * (1 - inside);
       if (!reduced) { const a = dGeo.attributes.position.array; for (let i = 0; i < DUST; i++) { a[i * 3 + 1] += dt * 0.05 * (0.5 + (dSeed[i] % 1)); a[i * 3] += Math.sin(now / 3000 + dSeed[i]) * dt * 0.03; if (a[i * 3 + 1] > 3) a[i * 3 + 1] = 0; } dGeo.attributes.position.needsUpdate = true; }
-      board.setPower(smooth(clamp(it * 1.6 - 0.7)) * (1 - inside * 0.7));
+      board.setPower(smooth(clamp(it * 1.6 - 0.7)) * (1 - inside * 0.7) * (1 - onCar * 0.4));
 
       // scroll-driven shot
       const f = ctx.getF();
