@@ -2,7 +2,7 @@
   {
     "width": 390,
     "key": "ppf",
-    "opacity": 0.3600040371738641
+    "opacity": 0.3600000000071044
   },
   {
     "width": 390,
@@ -12,7 +12,52 @@
   {
     "width": 390,
     "key": "film",
-    "opacity": 0.9999999541157351
+    "opacity": 0.9999999667405666
+  },
+  {
+    "width": 390,
+    "builder": "screen",
+    "visible": true
+  },
+  {
+    "width": 390,
+    "builder": "dashcam",
+    "visible": true
+  },
+  {
+    "width": 390,
+    "builder": "audio",
+    "visible": true
+  },
+  {
+    "width": 390,
+    "builder": "seats",
+    "visible": true
+  },
+  {
+    "width": 390,
+    "builder": "mats",
+    "visible": true
+  },
+  {
+    "width": 390,
+    "builder": "film",
+    "visible": true
+  },
+  {
+    "width": 390,
+    "builder": "lights",
+    "visible": true
+  },
+  {
+    "width": 390,
+    "builder": "ppf",
+    "visible": true
+  },
+  {
+    "width": 390,
+    "builder": "coating",
+    "visible": true
   },
   {
     "width": 390,
@@ -30,7 +75,7 @@
   {
     "width": 1280,
     "key": "ppf",
-    "opacity": 0.3600149084173153
+    "opacity": 0.36000000203530735
   },
   {
     "width": 1280,
@@ -40,7 +85,52 @@
   {
     "width": 1280,
     "key": "film",
-    "opacity": 0.9999999761894938
+    "opacity": 0.9999999990483969
+  },
+  {
+    "width": 1280,
+    "builder": "screen",
+    "visible": true
+  },
+  {
+    "width": 1280,
+    "builder": "dashcam",
+    "visible": true
+  },
+  {
+    "width": 1280,
+    "builder": "audio",
+    "visible": true
+  },
+  {
+    "width": 1280,
+    "builder": "seats",
+    "visible": true
+  },
+  {
+    "width": 1280,
+    "builder": "mats",
+    "visible": true
+  },
+  {
+    "width": 1280,
+    "builder": "film",
+    "visible": true
+  },
+  {
+    "width": 1280,
+    "builder": "lights",
+    "visible": true
+  },
+  {
+    "width": 1280,
+    "builder": "ppf",
+    "visible": true
+  },
+  {
+    "width": 1280,
+    "builder": "coating",
+    "visible": true
   },
   {
     "width": 1280,

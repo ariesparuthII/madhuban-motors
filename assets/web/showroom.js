@@ -6,8 +6,8 @@
    - Each accessory chapter shows the real part in place; dashcam, seats and
      mats can "go inside" to a short explainer. */
 
-import { buildParts } from './studio3d-parts.js';
-import { createDivePlayer } from './showroom-dive.js';
+import { buildParts } from './studio3d-parts.js?v=perf3';
+
 import { buildShopBoard } from './showroom-board.js';
 
 const ROOT = document.getElementById('showroom');
@@ -68,15 +68,18 @@ function init() {
 
   // Dive overlay
   const diveEl = ROOT.querySelector('.sr-dive');
-  const dive = createDivePlayer(diveEl);
+  let dive = null, diveReady = null;
+  const loadDive = () => diveReady || (diveReady = import('./showroom-dive.js').then(({createDivePlayer}) => (dive = createDivePlayer(diveEl))));
   let engine = null;
   let diveTrigger = null, divePending = false;
-  const closeDive = () => { divePending = false; dive.close(); engine && engine.diveOut(); document.body.classList.remove('sr-diving'); diveTrigger && diveTrigger.focus({ preventScroll: true }); };
+  const closeDive = () => { divePending = false; dive && dive.close(); engine && engine.diveOut(); document.body.classList.remove('sr-diving'); diveTrigger && diveTrigger.focus({ preventScroll: true }); };
   diveEl.querySelector('.sr-dive__close').addEventListener('click', closeDive);
-  addEventListener('keydown', e => { if (e.key === 'Escape' && (dive.active || divePending)) closeDive(); });
-  ROOT.querySelectorAll('[data-dive]').forEach(btn => btn.addEventListener('click', () => {
+  addEventListener('keydown', e => { if (e.key === 'Escape' && ((dive && dive.active) || divePending)) closeDive(); });
+  ROOT.querySelectorAll('[data-dive]').forEach(btn => btn.addEventListener('click', async () => {
     const k = btn.dataset.dive;
     diveTrigger = btn; divePending = true;
+    try { await loadDive(); } catch (e) { divePending = false; return; }
+    if (!divePending) return;
     track('showroom_dive', { item: k });
     const go = () => { if (!divePending) return; divePending = false; document.body.classList.add('sr-diving'); dive.open(k); diveEl.querySelector('.sr-dive__close').focus(); };
     if (engine) { engine.diveIn(k, go); setTimeout(go, 900); } else go();
@@ -98,6 +101,7 @@ function init() {
     rail.querySelectorAll('button').forEach((b, i) => b.classList.toggle('is-on', i === idx));
     chapters.forEach((ch, i) => ch.classList.toggle('is-on', i === idx));
     ROOT.dataset.chapter = keys[idx];
+    engine && engine.prepare(keys[Math.min(idx + 1, keys.length - 1)]);
     const bounds = ROOT.getBoundingClientRect();
     document.body.classList.toggle('sr-viewing', bounds.top < innerHeight && bounds.bottom > 0);
   }
@@ -144,17 +148,18 @@ function init() {
 }
 
 async function boot(stage, ctx) {
-  const T = await import('../vendor/three/three-bundle.min.js');
+  const cinematic = new URLSearchParams(location.search).get('quality') === 'cinematic';
+  const T = await import(cinematic ? '../vendor/three/three-bundle.min.js' : '../vendor/three/showroom-core.min.js');
   const small = matchMedia('(max-width: 900px)').matches;
   // Begin network work before generating the studio environment.
   const modelLoader = new T.GLTFLoader(); modelLoader.setMeshoptDecoder(T.MeshoptDecoder);
-  const modelReady = modelLoader.loadAsync(stage.dataset.model || 'assets/3d/concept-car.glb');
+  const modelReady = modelLoader.loadAsync(stage.dataset.model || 'assets/3d/concept-car-fast.glb');
   modelReady.catch(() => {});
   const logoReady = new T.TextureLoader().loadAsync('assets/web/logo.webp').catch(() => null);
   const boardReady = buildShopBoard(T, null);
 
   // Opt-in exploration profile. Default rendering stays unchanged.
-  const lightProfile = new URLSearchParams(location.search).get('quality') === 'light' || (small && new URLSearchParams(location.search).get('quality') !== 'cinematic');
+  const lightProfile = new URLSearchParams(location.search).get('quality') !== 'cinematic';
   ROOT.dataset.quality = lightProfile ? 'light' : 'cinematic';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bar = stage.querySelector('.sr-loader i');
@@ -249,11 +254,33 @@ async function boot(stage, ctx) {
   /* ---------- car ---------- */
   const gltf = await modelReady;
   const car = new T.Group(); car.add(gltf.scene); scene.add(car);
+  const hiddenCabin = [];
+  const fastMaterials = new Map();
   const paintMats = []; let headMat = null, tailMat = null;
   gltf.scene.traverse(o => {
     if (!o.isMesh) return;
-    o.castShadow = true;
-    const m = o.material; if (!m) return;
+    o.castShadow = !lightProfile;
+    let parent = o;
+    while (parent && parent !== gltf.scene) {
+      if (/Interior|Engine/.test(parent.name)) { hiddenCabin.push({mesh:o,visible:o.visible}); o.visible = false; break; }
+      parent = parent.parent;
+    }
+    let m = o.material; if (!m) return;
+    if (lightProfile && m.isMeshPhysicalMaterial) {
+      if (!fastMaterials.has(m)) {
+        const fast = new T.MeshStandardMaterial();
+        for (const key of ['name','map','normalMap','roughnessMap','metalnessMap','aoMap','emissiveMap','roughness','metalness','transparent','opacity','side','depthWrite','alphaTest','envMapIntensity']) {
+          if (m[key] !== undefined) fast[key] = m[key];
+        }
+        fast.color.copy(m.color); fast.emissive.copy(m.emissive); fast.normalScale.copy(m.normalScale);
+        if (m.transmission > 0) { fast.transparent = true; fast.opacity = .22; fast.depthWrite = false; }
+        fastMaterials.set(m, fast);
+      }
+      o.material = m = fastMaterials.get(m);
+    }
+    // Refraction renders the whole scene a second time. Tinted transparency
+    // keeps the cabin visible without that extra full-car pass.
+    if (m.transmission > 0) { m.transmission = 0; m.transparent = true; m.opacity = .22; m.depthWrite = false; }
     if (/^Paint 1/.test(m.name)) paintMats.push(m);
     if (m.name === 'Headlight') headMat = m;
     if (m.name === 'Brakelight') tailMat = m;
@@ -383,6 +410,12 @@ async function boot(stage, ctx) {
     return { A, B, k: smooth(clamp((frac - 0.15) / 0.7)), frac };
   }
 
+  let lastInteraction = performance.now();
+  const wake = () => { lastInteraction = performance.now(); };
+  addEventListener('scroll', wake, {passive:true});
+  stage.addEventListener('pointerdown', wake, {passive:true});
+  stage.addEventListener('pointermove', wake, {passive:true});
+  let lastDraw = 0;
   let markFirstFrame;
   const firstFrame = new Promise(resolve => { markFirstFrame = resolve; });
   function loop() {
@@ -394,6 +427,8 @@ async function boot(stage, ctx) {
       if (++qualityFrames === 150 && frameCost > 28 && renderer.getPixelRatio() > 1) {
         renderer.setPixelRatio(1); if (composer) composer.setPixelRatio(1); resize();
       }
+      if (!dragging && now - lastInteraction > 700 && now - lastDraw < 32) { requestAnimationFrame(tick); return; }
+      lastDraw = now;
       const dt = Math.min((now - last) / 1000, 0.05); last = now;
       const it = clamp((now - t0) / 1000 / INTRO);
 
@@ -501,7 +536,12 @@ async function boot(stage, ctx) {
 
       // parts follow the nearest chapter
       const want = S.part || null;
-      if (want !== currentPart) { parts.show(want); currentPart = want; }
+      if (want !== currentPart) {
+        if (want) hiddenCabin.forEach(({mesh,visible}) => { mesh.visible = visible; });
+        parts.show(want);
+        if (!want) hiddenCabin.forEach(({mesh}) => { mesh.visible = false; });
+        currentPart = want;
+      }
       parts.update(dt, reduced ? 0 : now);
 
       // lights chapter: headlights blaze, tail lights glow
@@ -519,9 +559,41 @@ async function boot(stage, ctx) {
     };
     requestAnimationFrame(tick);
   }
+  // Let browsers compile GPU programs in parallel before the first draw.
+  // The board-and-car still remains visible throughout this work.
+  camera.position.copy(camPos); camera.lookAt(camLook);
+  if (renderer.compileAsync) {
+    scene.updateMatrixWorld(true);
+    const opening = scene.clone(false);
+    const programs = new Map();
+    scene.traverseVisible(o => {
+      if (!(o.isMesh || o.isPoints || o.isLight)) return;
+      const item = o.clone(false); item.matrixAutoUpdate = false; item.matrix.copy(o.matrixWorld);
+      if (o.isLight) opening.add(item);
+      else {
+        const key = o.material.uuid + ':' + Object.keys(o.geometry.attributes).sort().join(',') + ':' + !!o.isPoints;
+        if (!programs.has(key)) programs.set(key, item);
+      }
+    });
+    // Compile one material at a time, yielding so scrolling and buttons work
+    // even on browsers without parallel shader compilation.
+    for (const item of programs.values()) {
+      opening.add(item); await renderer.compileAsync(opening, camera); opening.remove(item);
+      await new Promise(resolve => setTimeout(resolve, 0));
+    }
+  }
   loop();
 
+  const prepared = new Set();
   const api = {
+    prepare(key) {
+      const part = SHOTS[key] && SHOTS[key].part;
+      if (!part || prepared.has(part)) return;
+      prepared.add(part);
+      const run = () => parts.prepare(part);
+      if ('requestIdleCallback' in window) requestIdleCallback(run, {timeout:1500});
+      else setTimeout(run, 120);
+    },
     paint(hex) { const c = new T.Color(hex); paintFrom = paintMats[0] ? paintMats[0].color.clone() : c; paintTo = c; paintT = 0; },
     diveIn(key, cb) {
       const S = SHOTS[key];

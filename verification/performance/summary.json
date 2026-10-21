@@ -1,0 +1,10 @@
+{
+  "assets/3d/concept-car.glb": 2518104,
+  "assets/3d/concept-car-fast.glb": 1629132,
+  "assets/vendor/three/three-bundle.min.js": 838487,
+  "assets/vendor/three/showroom-core.min.js": 709039,
+  "trianglesBefore": 213195,
+  "trianglesAfter": 96211,
+  "firstAccessorySetupBeforeMs": 5208.8,
+  "firstAccessorySetupAfterMs": 26.4
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "mode": "after",
+    "timings": {
+      "start": 6069.200000047684,
+      "imported": 8705,
+      "model": 9825.100000023842,
+      "partsStart": 9825.900000095367,
+      "partsEnd": 9852.300000071526,
+      "contextLost": false,
+      "draws": 86,
+      "triangles": 75461,
+      "frames": 57,
+      "ready": 13355.100000023842
+    },
+    "longTasks": [
+      {
+        "duration": 255,
+        "start": 1440.3000000715256
+      },
+      {
+        "duration": 61,
+        "start": 2245.100000023842
+      },
+      {
+        "duration": 106,
+        "start": 2335.7000000476837
+      },
+      {
+        "duration": 178,
+        "start": 2869.8000000715256
+      },
+      {
+        "duration": 1870,
+        "start": 4132.800000071526
+      },
+      {
+        "duration": 60,
+        "start": 6003.5
+      },
+      {
+        "duration": 442,
+        "start": 8644.900000095367
+      },
+      {
+        "duration": 252,
+        "start": 9454.100000023842
+      },
+      {
+        "duration": 64,
+        "start": 9816.100000023842
+      },
+      {
+        "duration": 3216,
+        "start": 9883.900000095367
+      },
+      {
+        "duration": 141,
+        "start": 13457.600000023842
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/vendor/three/showroom-core.min.js",
+        "duration": 2333,
+        "bytes": 709039
+      },
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car-fast.glb",
+        "duration": 675.8999999761581,
+        "bytes": 1629132
+      },
+      {
+        "url": "http://localhost:8000/assets/web/board-day.webp",
+        "duration": 308.5,
+        "bytes": 75416
+      },
+      {
+        "url": "http://localhost:8000/assets/web/board-night.webp",
+        "duration": 315.1999999284744,
+        "bytes": 106294
+      }
+    ],
+    "errors": []
+  }
+]

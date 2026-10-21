@@ -1,0 +1,125 @@
+[
+  {
+    "mode": "after",
+    "timings": {
+      "start": 6275.800000071526,
+      "imported": 7396.100000023842,
+      "model": 8987.400000095367,
+      "partsStart": 8987.900000095367,
+      "partsEnd": 9069.5,
+      "draws": 132,
+      "triangles": 100143,
+      "frames": 637,
+      "ready": 19621.800000071526
+    },
+    "longTasks": [
+      {
+        "duration": 327,
+        "start": 1820.6000000238419
+      },
+      {
+        "duration": 145,
+        "start": 2371.9000000953674
+      },
+      {
+        "duration": 57,
+        "start": 3483.5
+      },
+      {
+        "duration": 139,
+        "start": 3899.3000000715256
+      },
+      {
+        "duration": 117,
+        "start": 4090.2000000476837
+      },
+      {
+        "duration": 97,
+        "start": 4366.400000095367
+      },
+      {
+        "duration": 93,
+        "start": 4519.100000023842
+      },
+      {
+        "duration": 146,
+        "start": 4619.800000071526
+      },
+      {
+        "duration": 111,
+        "start": 4769.600000023842
+      },
+      {
+        "duration": 192,
+        "start": 6061.600000023842
+      },
+      {
+        "duration": 513,
+        "start": 7347.800000071526
+      },
+      {
+        "duration": 335,
+        "start": 8113.300000071526
+      },
+      {
+        "duration": 105,
+        "start": 8980.200000047684
+      },
+      {
+        "duration": 10676,
+        "start": 9085.5
+      },
+      {
+        "duration": 66,
+        "start": 19771.900000095367
+      },
+      {
+        "duration": 54,
+        "start": 19853.100000023842
+      },
+      {
+        "duration": 88,
+        "start": 24440.400000095367
+      },
+      {
+        "duration": 58,
+        "start": 27182.700000047684
+      },
+      {
+        "duration": 63,
+        "start": 27702.600000023842
+      },
+      {
+        "duration": 61,
+        "start": 29293.800000071526
+      },
+      {
+        "duration": 50,
+        "start": 29901.300000071526
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/vendor/three/three-bundle.min.js",
+        "duration": 731.1000000238419,
+        "bytes": 838487
+      },
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car-fast.glb",
+        "duration": 696.1000000238419,
+        "bytes": 1629132
+      },
+      {
+        "url": "http://localhost:8000/assets/web/board-day.webp",
+        "duration": 197.5,
+        "bytes": 75416
+      },
+      {
+        "url": "http://localhost:8000/assets/web/board-night.webp",
+        "duration": 242.5,
+        "bytes": 106294
+      }
+    ],
+    "errors": []
+  }
+]

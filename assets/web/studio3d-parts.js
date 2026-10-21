@@ -5,6 +5,7 @@
    changes. */
 
 export function buildParts(T, carRoot, logoTex) {
+  const builders = {};
   const parts = {};          // key -> { group, onShow(t), onHide() }
   const tweens = [];         // per-frame easing jobs
   const byName = {};
@@ -33,6 +34,7 @@ export function buildParts(T, carRoot, logoTex) {
   }
 
   /* ---------- 1. Dashcam behind the mirror ---------- */
+  builders.dashcam = () => {
   {
     const g = group('dashcam');
     // rear-view mirror
@@ -81,7 +83,10 @@ export function buildParts(T, carRoot, logoTex) {
     } };
   }
 
+  };
+
   /* ---------- 2. Floating Android screen ---------- */
+  builders.screen = () => {
   let screenTex;
   {
     const g = group('screen');
@@ -151,7 +156,10 @@ export function buildParts(T, carRoot, logoTex) {
     });
   }
 
+  };
+
   /* ---------- 3. Audio: fitted doors and an opening, lined boot ---------- */
+  builders.audio = () => {
   {
     const g = group('audio');
     g.position.y = .16; // Raised, lined false floor clears the concept car's rear sill.
@@ -249,13 +257,6 @@ export function buildParts(T, carRoot, logoTex) {
       show() { mounts.forEach(m => m.visible = true); if (rearMesh && openGeometry) rearMesh.geometry = openGeometry;  },
       hide() { mounts.forEach(m => m.visible = false); if (rearMesh) rearMesh.geometry = closedGeometry; hatch.rotation.x = 0; hatch.userData.open = 0;  },
       update(dt, now) {
-      protectionFocus += (((current === 'ppf' || current === 'coating') ? 1 : 0) - protectionFocus) * Math.min(1, dt * 5);
-      skin.forEach((m, i) => {
-        const active = protectionFocus > .002;
-        if (m.transparent !== (active || skinState[i].transparent)) { m.transparent = active || skinState[i].transparent; m.needsUpdate = true; }
-        m.opacity = skinState[i].opacity * (1 - protectionFocus * .64);
-        m.depthWrite = active ? false : skinState[i].depthWrite;
-      });
         hatch.userData.open += (1 - hatch.userData.open) * Math.min(1, dt * 4);
         hatch.rotation.x = hatch.userData.open * 1.10;
         // Cone excursion only, never scale the enclosure or its fitted position.
@@ -266,7 +267,10 @@ export function buildParts(T, carRoot, logoTex) {
     };
   }
 
+  };
+
   /* ---------- 4. Seat covers: quilted texture swap ---------- */
+  builders.seats = () => {
   const seatMeshes = ['InteriorSeatsColor1'].map(n => byName[n]).filter(Boolean);
   const seatOrig = seatMeshes.map(m => m.material);
   const quiltTex = canvasTex(512, 512, (c, w) => {
@@ -291,7 +295,10 @@ export function buildParts(T, carRoot, logoTex) {
     hide: () => seatMeshes.forEach((m, i) => { m.material = seatOrig[i]; })
   };
 
+  };
+
   /* ---------- 5. Floor mats: 7D mat texture ---------- */
+  builders.mats = () => {
   const matMesh = byName.InteriorFloormats;
   const matOrig = matMesh ? matMesh.material : null;
   const matTex = canvasTex(512, 512, (c, w) => {
@@ -311,7 +318,10 @@ export function buildParts(T, carRoot, logoTex) {
     hide: () => { if (matMesh) matMesh.material = matOrig; }
   };
 
+  };
+
   /* ---------- 6. Lights: beams + fog lamps ---------- */
+  builders.lights = () => {
   {
     const g = group('lights');
     const beamTex = canvasTex(64, 256, (c, w, h) => {
@@ -332,7 +342,10 @@ export function buildParts(T, carRoot, logoTex) {
     parts.lights = { group: g };
   }
 
+  };
+
   /* ---------- 7. Sun film: tint the side and rear glass ---------- */
+  builders.film = () => {
   const filmNames = ['BodyDoorLWindow', 'BodyDoorRWindow', 'BodyWindowsRearSides', 'BodyRearwindow'];
   const filmMeshes = [];
   filmNames.forEach(n => { const o = byName[n]; if (o) o.traverse(m => { if (m.isMesh) filmMeshes.push(m); }); });
@@ -342,6 +355,8 @@ export function buildParts(T, carRoot, logoTex) {
     group: group('film'),
     show: () => filmMeshes.forEach(m => { m.material = filmMat; }),
     hide: () => filmMeshes.forEach((m, i) => { m.material = filmOrig[i]; })
+  };
+
   };
 
   /* ---------- surface sampling: real points on the body via raycasts ---------- */
@@ -374,6 +389,7 @@ export function buildParts(T, carRoot, logoTex) {
   let protectionFocus = 0;
 
   /* ---------- 8. PPF: stone chips bounce off the film ---------- */
+  builders.ppf = () => {
   {
     const g = group('ppf');
     const hits = [];
@@ -427,7 +443,10 @@ export function buildParts(T, carRoot, logoTex) {
     };
   }
 
+  };
+
   /* ---------- 9. Ceramic coating: water beads and extra gloss ---------- */
+  builders.coating = () => {
   {
     const g = group('coating');
     const beadGeo = new T.SphereGeometry(1, 14, 10);
@@ -487,6 +506,8 @@ export function buildParts(T, carRoot, logoTex) {
     };
   }
 
+  };
+
   /* ---------- door opening (for seats / audio / mats) ---------- */
   const doorL = byName.BodyDoorLColor1;
   const doorBase = doorL ? doorL.quaternion.clone() : null;
@@ -506,9 +527,16 @@ export function buildParts(T, carRoot, logoTex) {
   /* ---------- public API ---------- */
   let current = null;
   const OPEN_DOOR = { seats: 1, audio: 1, mats: 1 };
+  function prepare(key) {
+    if (key && !parts[key] && builders[key]) {
+      carRoot.updateMatrixWorld(true); inv.copy(carRoot.matrixWorld).invert(); builders[key]();
+    }
+  }
   return {
+    prepare,
     show(key) {
       if (current && parts[current]) { const p = parts[current]; p.group.visible = false; p.hide && p.hide(); }
+      prepare(key);
       current = key;
       doorTarget = OPEN_DOOR[key] ? 1 : 0;
       const hidden = new Set((HIDE_FOR[key] || []).flatMap(h => HIDE[h]));

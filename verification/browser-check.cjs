@@ -5,7 +5,7 @@ for(const [width,height] of [[390,844],[1280,800]]){
  const p=await b.newPage({viewport:{width,height}});p.setDefaultTimeout(20000);
  p.on('pageerror',e=>report.errors.push({width,error:e.message}));p.on('console',m=>{if(m.type()==='error')report.consoleErrors.push({width,error:m.text()})});p.on('response',r=>{if(r.url().startsWith('http://localhost')&&r.status()>=400)report.failedLocal.push(r.url())});
  // Read-only diagnostics are injected into this test response, never into shipped source.
- await p.route('**/assets/web/showroom.js',async route=>{let r=await route.fetch();let s=await r.text();s=s.replace('  const api = {','  window.__sceneCheck = { car, camera, parts, pick, wheels, get previewKey(){return previewKey}, get currentPart(){return currentPart} };\n  const api = {');await route.fulfill({response:r,body:s});});
+ await p.route('**/assets/web/showroom.js*',async route=>{let r=await route.fetch();let s=await r.text();s=s.replace('  const api = {','  window.__sceneCheck = { car, camera, parts, pick, wheels, get previewKey(){return previewKey}, get currentPart(){return currentPart} };\n  const api = {');await route.fulfill({response:r,body:s});});
  await p.goto('http://localhost:8000',{waitUntil:'domcontentloaded'});await p.evaluate(()=>mmSetAnalyticsConsent(false));await p.waitForFunction(()=>document.querySelector('#showroom').classList.contains('is-ready'),{timeout:60000});await p.waitForTimeout(4000);
  const result={width,height,chapters:[],dives:[],chips:[],hotspots:{}};
  const go=async k=>{await p.locator(`[data-ch="${k}"]`).evaluate(e=>window.scrollTo({top:e.getBoundingClientRect().top+scrollY,behavior:'instant'}));await p.waitForTimeout(1600);};

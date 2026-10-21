@@ -90,3 +90,7 @@ Old first-pass files `assets/web/studio3d.js` and `assets/web/studio3d.css` are 
 - Scroll through every showroom chapter, open each "Go inside" explainer, tap every builder chip, click the car's door, headlight, wheel and body.
 - Confirm WhatsApp links include the source tag, and that nothing loads analytics before consent.
 - No console errors. Share before/after screenshots with the owner.
+
+## Performance follow-up (October 2026)
+
+The normal showroom now uses `assets/3d/concept-car-fast.glb`, a simplified derivative of the same credited model with the same named nodes. Keep the original GLB as its source. `showroom-core.min.js` is a smaller export bundle built from the existing vendor code via `showroom-entry.js`. Full effects remain opt-in via `?quality=cinematic`; default rendering avoids refraction, bloom and live floor reflection. Accessory props are lazy factories, and the explainer module imports on first use. Do not eagerly rebuild every accessory before the first frame. Board/car WebP opening stills remain visible until a real first frame renders. Lower-page inline background photos use `data-lazy-bg`. Performance measurements and limits are in `verification/performance/README.md`.

@@ -1,0 +1,77 @@
+[
+  {
+    "mode": "after",
+    "timings": {
+      "start": 4718.700000047684,
+      "imported": 5189.100000023842,
+      "model": 6082,
+      "partsStart": 6082.900000095367,
+      "partsEnd": 6126.300000071526,
+      "draws": 86,
+      "triangles": 75461,
+      "frames": 91,
+      "ready": 11020.900000095367
+    },
+    "longTasks": [
+      {
+        "duration": 243,
+        "start": 2369.2000000476837
+      },
+      {
+        "duration": 99,
+        "start": 3601.2000000476837
+      },
+      {
+        "duration": 274,
+        "start": 4433.900000095367
+      },
+      {
+        "duration": 392,
+        "start": 5134.100000023842
+      },
+      {
+        "duration": 111,
+        "start": 5645.800000071526
+      },
+      {
+        "duration": 120,
+        "start": 6075.200000047684
+      },
+      {
+        "duration": 4751,
+        "start": 6202.200000047684
+      },
+      {
+        "duration": 55,
+        "start": 11480
+      },
+      {
+        "duration": 52,
+        "start": 11804.900000095367
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/vendor/three/three-bundle.min.js",
+        "duration": 349.7000000476837,
+        "bytes": 838487
+      },
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car-fast.glb",
+        "duration": 434.90000009536743,
+        "bytes": 1629132
+      },
+      {
+        "url": "http://localhost:8000/assets/web/board-day.webp",
+        "duration": 86,
+        "bytes": 75416
+      },
+      {
+        "url": "http://localhost:8000/assets/web/board-night.webp",
+        "duration": 101.5,
+        "bytes": 106294
+      }
+    ],
+    "errors": []
+  }
+]

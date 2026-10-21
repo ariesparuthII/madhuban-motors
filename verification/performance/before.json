@@ -1,0 +1,89 @@
+[
+  {
+    "mode": "before",
+    "timings": {
+      "start": 13008.299999952316,
+      "imported": 14217.399999976158,
+      "model": 16364.600000023842,
+      "partsStart": 16366.100000023842,
+      "partsEnd": 21574.899999976158,
+      "draws": 0,
+      "triangles": 0,
+      "frames": 235,
+      "ready": 21760.799999952316
+    },
+    "longTasks": [
+      {
+        "duration": 990,
+        "start": 4111.399999976158
+      },
+      {
+        "duration": 109,
+        "start": 5108.199999928474
+      },
+      {
+        "duration": 275,
+        "start": 5839.899999976158
+      },
+      {
+        "duration": 131,
+        "start": 6307.199999928474
+      },
+      {
+        "duration": 53,
+        "start": 8412.899999976158
+      },
+      {
+        "duration": 52,
+        "start": 9680.699999928474
+      },
+      {
+        "duration": 358,
+        "start": 12619.899999976158
+      },
+      {
+        "duration": 483,
+        "start": 14161.899999976158
+      },
+      {
+        "duration": 320,
+        "start": 15103.899999976158
+      },
+      {
+        "duration": 5275,
+        "start": 16357.199999928474
+      },
+      {
+        "duration": 148,
+        "start": 21632.600000023842
+      },
+      {
+        "duration": 58,
+        "start": 21842.199999928474
+      }
+    ],
+    "resources": [
+      {
+        "url": "http://localhost:8000/assets/vendor/three/three-bundle.min.js",
+        "duration": 797,
+        "bytes": 838487
+      },
+      {
+        "url": "http://localhost:8000/assets/3d/concept-car.glb",
+        "duration": 807.6000000238419,
+        "bytes": 2518104
+      },
+      {
+        "url": "http://localhost:8000/assets/web/board-day.webp",
+        "duration": 261.09999990463257,
+        "bytes": 75416
+      },
+      {
+        "url": "http://localhost:8000/assets/web/board-night.webp",
+        "duration": 428.7000000476837,
+        "bytes": 106294
+      }
+    ],
+    "errors": []
+  }
+]

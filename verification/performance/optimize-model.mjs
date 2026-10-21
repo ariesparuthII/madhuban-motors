@@ -1,0 +1,10 @@
+import {NodeIO} from '@gltf-transform/core';
+import {ALL_EXTENSIONS} from '@gltf-transform/extensions';
+import {weld,simplify,meshopt} from '@gltf-transform/functions';
+import {MeshoptDecoder,MeshoptEncoder,MeshoptSimplifier} from 'meshoptimizer';
+await Promise.all([MeshoptDecoder.ready,MeshoptEncoder.ready,MeshoptSimplifier.ready]);
+const io=new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.decoder':MeshoptDecoder,'meshopt.encoder':MeshoptEncoder});
+const d=await io.read(process.argv[2]);
+const count=()=>d.getRoot().listMeshes().reduce((s,m)=>s+m.listPrimitives().reduce((n,p)=>n+(p.getIndices()?.getCount()||p.getAttribute('POSITION').getCount())/3,0),0);
+const before=count();await d.transform(weld(),simplify({simplifier:MeshoptSimplifier,ratio:.35,error:.001}),meshopt({encoder:MeshoptEncoder,level:'high'}));
+await io.write(process.argv[3],d);console.log(JSON.stringify({before,after:count(),nodes:d.getRoot().listNodes().length}));
