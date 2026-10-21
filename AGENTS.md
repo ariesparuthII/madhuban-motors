@@ -19,6 +19,7 @@ Read this whole file before you touch the repo. It is the brief for madhubanmoto
 ## 2. The owner and how to work with him
 
 - Owner's name is Aries (Aum Brahm Chaitanya). He runs the business remotely from Canada, so the site has to sell on its own and push people to WhatsApp.
+- Reply in English or Roman-script Hinglish, even when the owner speaks Hindi or Punjabi. This is his explicit ongoing preference.
 - He talks in casual Delhi Hinglish. Reply to him in plain, friendly Hinglish when chatting. Site copy stays in simple English (Hindi only for the "मधुबन" wordmark unless he asks).
 - **He hates AI-sounding copy.** No "trusted partner", "we appreciate your support", "look forward to serving you", "elevate", "seamless", "unparalleled". Write like a shop owner talking to a customer.
 - **Never use em dashes (—)** in anything written for him or on the site.
