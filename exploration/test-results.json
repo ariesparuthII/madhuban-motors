@@ -1,0 +1,76 @@
+[
+  {
+    "width": 390,
+    "themeOptions": 3,
+    "typeOptions": 3,
+    "shades": 3,
+    "technologies": 3,
+    "coatingStages": 4,
+    "playPause": true,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "width": 1280,
+    "themeOptions": 3,
+    "typeOptions": 3,
+    "shades": 3,
+    "technologies": 3,
+    "coatingStages": 4,
+    "playPause": true,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "profile": "cinematic",
+    "pixelRatio": 1,
+    "shadows": true,
+    "postprocessing": true,
+    "reflector": false,
+    "geometries": 145,
+    "textures": 32,
+    "coatingDive": true,
+    "filmChip": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "profile": "light",
+    "pixelRatio": 1,
+    "shadows": false,
+    "postprocessing": false,
+    "reflector": false,
+    "geometries": 144,
+    "textures": 17,
+    "coatingDive": true,
+    "filmChip": true,
+    "errors": []
+  },
+  {
+    "width": 1280,
+    "profile": "cinematic",
+    "pixelRatio": 1,
+    "shadows": true,
+    "postprocessing": true,
+    "reflector": true,
+    "geometries": 146,
+    "textures": 34,
+    "coatingDive": true,
+    "filmChip": true,
+    "errors": []
+  },
+  {
+    "width": 1280,
+    "profile": "light",
+    "pixelRatio": 1,
+    "shadows": false,
+    "postprocessing": false,
+    "reflector": false,
+    "geometries": 144,
+    "textures": 17,
+    "coatingDive": true,
+    "filmChip": true,
+    "errors": []
+  }
+]

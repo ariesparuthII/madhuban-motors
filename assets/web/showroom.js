@@ -146,15 +146,18 @@ function init() {
 async function boot(stage, ctx) {
   const T = await import('../vendor/three/three-bundle.min.js');
   const small = matchMedia('(max-width: 900px)').matches;
+  // Opt-in exploration profile. Default rendering stays unchanged.
+  const lightProfile = new URLSearchParams(location.search).get('quality') === 'light';
+  ROOT.dataset.quality = lightProfile ? 'light' : 'cinematic';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bar = stage.querySelector('.sr-loader i');
 
-  const renderer = new T.WebGLRenderer({ antialias: !small, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, small ? 1.25 : 1.6));
+  const renderer = new T.WebGLRenderer({ antialias: !small && !lightProfile, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, lightProfile ? 1 : small ? 1.25 : 1.6));
   renderer.outputColorSpace = T.SRGBColorSpace;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !lightProfile;
   stage.prepend(renderer.domElement);
 
   const scene = new T.Scene();
@@ -202,7 +205,7 @@ async function boot(stage, ctx) {
 
   /* ---------- floor ---------- */
   let reflector = null;
-  if (!small) {
+  if (!small && !lightProfile) {
     reflector = new T.Reflector(new T.CircleGeometry(14, 64), {
       textureWidth: Math.round(innerWidth * 0.5), textureHeight: Math.round(innerHeight * 0.5), color: 0x777777
     });
@@ -217,7 +220,7 @@ async function boot(stage, ctx) {
   ring.rotation.x = -Math.PI / 2; ring.position.y = -0.155; scene.add(ring);
 
   /* ---------- dust in the light: slow ambient motion ---------- */
-  const DUST = small ? 220 : 520;
+  const DUST = lightProfile ? 64 : small ? 220 : 520;
   const dGeo = new T.BufferGeometry(), dPos = new Float32Array(DUST * 3), dSeed = new Float32Array(DUST);
   for (let i = 0; i < DUST; i++) { dPos[i * 3] = (Math.random() - .5) * 9; dPos[i * 3 + 1] = Math.random() * 3; dPos[i * 3 + 2] = (Math.random() - .5) * 9; dSeed[i] = Math.random() * 100; }
   dGeo.setAttribute('position', new T.BufferAttribute(dPos, 3));
@@ -259,15 +262,17 @@ async function boot(stage, ctx) {
 
   /* ---------- post ---------- */
   const camera = new T.PerspectiveCamera(30, 1, 0.02, 60);
-  const composer = new T.EffectComposer(renderer);
-  composer.addPass(new T.RenderPass(scene, camera));
-  const bloom = new T.UnrealBloomPass(new T.Vector2(256, 256), small ? 0.35 : 0.5, 0.5, 0.9);
-  composer.addPass(bloom);
-  composer.addPass(new T.OutputPass());
+  let composer = null;
+  if (!lightProfile) {
+    composer = new T.EffectComposer(renderer);
+    composer.addPass(new T.RenderPass(scene, camera));
+    composer.addPass(new T.UnrealBloomPass(new T.Vector2(256, 256), small ? 0.35 : 0.5, 0.5, 0.9));
+    composer.addPass(new T.OutputPass());
+  }
 
   function resize() {
     const w = stage.clientWidth, h = stage.clientHeight;
-    renderer.setSize(w, h, false); composer.setSize(w, h);
+    renderer.setSize(w, h, false); if (composer) composer.setSize(w, h);
     camera.aspect = w / h; camera.updateProjectionMatrix();
   }
   new ResizeObserver(resize).observe(stage); resize();
@@ -469,7 +474,7 @@ async function boot(stage, ctx) {
 
       if (paintT < 1 && paintTo) { paintT = Math.min(1, paintT + dt * 2.5); paintMats.forEach(m => m.color.copy(paintFrom).lerp(paintTo, paintT)); }
       if (reflector) reflector.visible = inside < 0.5;
-      composer.render(dt);
+      if (composer) composer.render(dt); else renderer.render(scene, camera);
       requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
