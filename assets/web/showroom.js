@@ -6,9 +6,9 @@
    - Each accessory chapter shows the real part in place; dashcam, seats and
      mats can "go inside" to a short explainer. */
 
-import { buildParts } from './studio3d-parts.js?v=finish4';
+import { buildParts } from './studio3d-parts.js?v=space7';
 
-import { buildShopBoard } from './showroom-board.js?v=space6';
+import { buildShopBoard } from './showroom-board.js?v=space7';
 
 const ROOT = document.getElementById('showroom');
 
@@ -207,7 +207,7 @@ async function boot(stage, ctx) {
   const bright = c => new T.MeshBasicMaterial({ color: c, side: T.DoubleSide });
   for (let i = -2; i <= 2; i++) {                       // overhead bars
     const m = new T.Mesh(new T.PlaneGeometry(0.65, 7.5), bright(new T.Color(1, 1, 1).multiplyScalar(2.7)));
-    m.rotation.x = Math.PI / 2; m.position.set(i * 1.1, 4.5, 0); envScene.add(m);
+    m.rotation.x = Math.PI / 2; m.position.set(i * 1.1, 3.75, 0); envScene.add(m);
   }
   const sideL = new T.Mesh(new T.PlaneGeometry(6, 2.2), bright(new T.Color(1, 0.97, 0.93).multiplyScalar(2.0)));
   sideL.position.set(-6, 1.6, 0); sideL.rotation.y = Math.PI / 2; envScene.add(sideL);
@@ -226,7 +226,7 @@ async function boot(stage, ctx) {
     const housing = new T.Mesh(new T.BoxGeometry(0.16, 0.06, 3.6), new T.MeshStandardMaterial({ color: 0x111111, roughness: .4, metalness: .8 }));
     const tube = new T.Mesh(new T.BoxGeometry(0.1, 0.012, 3.4), barMat.clone());
     tube.position.y = -0.035; g.add(housing, tube);
-    g.position.set(i * 1.1, 4.5, 0); scene.add(g); bars.push(tube);
+    g.position.set(i * 1.1, small ? 4.5 : 3.75, 0); scene.add(g); bars.push(tube);
     tube.material.color.setScalar(0);
   }
   const key = new T.DirectionalLight(0xfff4e6, 0);
@@ -251,8 +251,17 @@ async function boot(stage, ctx) {
     color: 0x0b0b0c, roughness: 0.68, metalness: 0.12, transparent: !!reflector, opacity: reflector ? 0.93 : 1
   }));
   floor.rotation.x = -Math.PI / 2; floor.position.y = -0.16; floor.receiveShadow = true; scene.add(floor);
+  // Fade the floor into space: a soft pool of light under the car, no hard disc edge.
+  floor.material.alphaMap = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 256;
+    const g = c.getContext('2d'), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gr.addColorStop(0, '#fff'); gr.addColorStop(.14, '#ddd'); gr.addColorStop(.3, '#444'); gr.addColorStop(.45, '#000'); gr.addColorStop(1, '#000');
+    g.fillStyle = gr; g.fillRect(0, 0, 256, 256); return new T.CanvasTexture(c);
+  })();
+  floor.material.transparent = true; floor.material.depthWrite = false;
+  if (reflector) reflector.visible = false;
   // turntable ring
-  const ring = new T.Mesh(new T.RingGeometry(3.05, 3.08, 128), new T.MeshBasicMaterial({ color: new T.Color(1, .95, 0), toneMapped: false, transparent: true, opacity: 0 }));
+  const ring = new T.Mesh(new T.RingGeometry(2.7, 2.72, 128), new T.MeshBasicMaterial({ color: new T.Color(1, .95, 0), toneMapped: false, transparent: true, opacity: 0 }));
   ring.rotation.x = -Math.PI / 2; ring.position.y = -0.155; scene.add(ring);
 
   /* ---------- dust in the light: slow ambient motion ---------- */
@@ -279,6 +288,20 @@ async function boot(stage, ctx) {
   /* ---------- car ---------- */
   const gltf = await modelReady;
   const car = new T.Group(); car.add(gltf.scene); scene.add(car);
+  // Baked contact shadow: two soft dark ellipses under the body, turning with the car.
+  {
+    const bb = new T.Box3().setFromObject(gltf.scene), sz = bb.getSize(new T.Vector3()), ctr = bb.getCenter(new T.Vector3());
+    const shadowTex = (soft) => {
+      const c = document.createElement('canvas'); c.width = c.height = 256;
+      const g = c.getContext('2d'), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+      gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(soft ? .35 : .55, 'rgba(0,0,0,' + (soft ? .55 : .9) + ')'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 256, 256); const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t;
+    };
+    for (const [scale, soft, op, y] of [[1.0, false, .85, -0.152], [1.55, true, .6, -0.154]]) {
+      const sh = new T.Mesh(new T.PlaneGeometry(sz.x * scale, sz.z * scale * 1.04), new T.MeshBasicMaterial({ map: shadowTex(soft), transparent: true, opacity: op, depthWrite: false, toneMapped: false }));
+      sh.rotation.x = -Math.PI / 2; sh.position.set(ctr.x, y, ctr.z); sh.renderOrder = -1; car.add(sh);
+    }
+  }
   const paintMats = []; let headMat = null, tailMat = null;
   gltf.scene.traverse(o => {
     if (!o.isMesh) return;
@@ -381,6 +404,17 @@ async function boot(stage, ctx) {
       lp.connect(out); out.connect(hornCtx.destination);
     } catch (e) {}
   }
+  // Bass "boom" in the Sound chapter, only when the visitor has turned sound on.
+  let nextBoom = 0;
+  function boom(at) {
+    try {
+      hornCtx = hornCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const t = hornCtx.currentTime + Math.max(0, at), o = hornCtx.createOscillator(), g = hornCtx.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.18);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.5, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.42);
+      o.connect(g); g.connect(hornCtx.destination); o.start(t); o.stop(t + 0.45);
+    } catch (e) {}
+  }
   function act(a) {
     track('showroom_click', { action: a.key });
     if (a.key === 'door') parts.toggleDoor();
@@ -420,7 +454,7 @@ async function boot(stage, ctx) {
     if (ctx.keys[Math.round(f)] === 'car' && previewKey && SHOTS[previewKey]) return { A: SHOTS[previewKey], B: SHOTS[previewKey], k: 0, frac: 0 };
     const i = Math.floor(f), frac = f - i;
     const A = SHOTS[ctx.keys[i]] || SHOTS.hero, B = SHOTS[ctx.keys[Math.min(i + 1, ctx.keys.length - 1)]] || A;
-    return { A, B, k: smooth(clamp((frac - 0.15) / 0.7)), frac };
+    const t = clamp((frac - 0.1) / 0.8); return { A, B, k: t * t * t * (t * (t * 6 - 15) + 10), frac };
   }
 
   let lastInteraction = performance.now();
@@ -460,7 +494,7 @@ async function boot(stage, ctx) {
       key.intensity = 2.5 * lightsOn * (1 - dark * 0.9);
       fill.intensity = 0.55 * lightsOn;
       rim.intensity = 0.85 * smooth(clamp(it * 1.5 - 0.6)) * (1 - inside * 0.85) * (1 - dark * 0.8);
-      ring.material.opacity = 0.16 * smooth(clamp(it * 2 - 1)) * (1 - inside);
+      ring.material.opacity = 0.07 * smooth(clamp(it * 2 - 1)) * (1 - inside);
       if (!reduced) { const a = dGeo.attributes.position.array; for (let i = 0; i < DUST; i++) { a[i * 3 + 1] += dt * 0.05 * (0.5 + (dSeed[i] % 1)); a[i * 3] += Math.sin(now / 3000 + dSeed[i]) * dt * 0.03; if (a[i * 3 + 1] > 3) a[i * 3 + 1] = 0; } dGeo.attributes.position.needsUpdate = true; }
       board.setPower(smooth(clamp(it * 1.6 - 0.7)) * (1 - inside * 0.7));
 
@@ -473,6 +507,7 @@ async function boot(stage, ctx) {
       const targetFov = lerp(A.fov, B.fov, k);
       const near = Math.round(f);
       const S = (ctx.keys[near] === 'car' && previewKey && SHOTS[previewKey]) || SHOTS[ctx.keys[near]] || SHOTS.hero;
+      if (S.part) ring.material.opacity = 0;
       dust.material.opacity += ((S.part ? 0 : 0.2 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
       dark += ((S.dark ? 1 : 0) - dark) * Math.min(1, dt * 3);
       inside += ((S.inside ? 1 : 0) - inside) * Math.min(1, dt * 3);
@@ -500,7 +535,7 @@ async function boot(stage, ctx) {
         if (diveState.out && diveState.t >= 1) diveState = null;
       }
 
-      const ease = reduced ? 1 : 1 - Math.pow(0.004, dt);
+      const ease = reduced ? 1 : 1 - Math.pow(0.02, dt);   // softer glide between chapters
       camPos.lerp(tA, ease); camLook.lerp(lA, ease);
       curRot += (targetRot - curRot) * ease;
       curFov += (targetFov - curFov) * ease;
@@ -564,6 +599,10 @@ async function boot(stage, ctx) {
       const want = S.part || null;
       if (want !== currentPart) { parts.show(want); currentPart = want; }
       parts.update(dt, reduced ? 0 : now);
+      if (S.part === 'audio' && !reduced && document.getElementById('mmSound')?.getAttribute('aria-pressed') === 'true') {
+        const beatAt = Math.ceil(now / 500) * 500;           // same 120 BPM grid as the cones
+        if (beatAt !== nextBoom && beatAt - now < 120) { nextBoom = beatAt; boom((beatAt - now) / 1000); }
+      }
 
       // lights chapter: headlights blaze, tail lights glow
       const lt = S.part === 'lights' ? 1 : 0;

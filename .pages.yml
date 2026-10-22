@@ -2,8 +2,8 @@
 # and add shop photos or short videos from your phone. Each save commits to
 # the repo; GitHub Pages republishes the site a minute later.
 media:
-  input: assets/gallery
-  output: assets/gallery
+  input: assets/gallery/inbox
+  output: assets/gallery/inbox
   categories: [image, video]
 
 content:

@@ -232,10 +232,15 @@ export function buildParts(T, carRoot, logoTex, rayTools) {
     box(1.30, .28, .035, 0, .60, -.81);
 
     // Bass tube rests on the carpet. Its cone faces out of the boot.
+    // Light ripples that pulse out from the cones on every beat.
+    const waveMat = () => new T.MeshBasicMaterial({ color: 0xff7a2a, transparent: true, opacity: 0, depthWrite: false, blending: T.AdditiveBlending, side: T.DoubleSide, toneMapped: false });
+    const waves = [];
+    speakers.forEach(cone => { const w = new T.Mesh(new T.RingGeometry(.088, .1, 48), waveMat()); w.position.copy(cone.position); w.position.z += .004; w.userData.grow = 1.6; cone.parent.add(w); waves.push(w); });
     const tube = new T.Mesh(new T.CylinderGeometry(.16, .16, .57, 40), carpet);
     tube.rotation.x = Math.PI / 2; tube.position.set(-.28, .64, -1.34); tube.name = 'audio-bass-tube'; g.add(tube);
     const subCone = new T.Mesh(new T.CircleGeometry(.135, 40), coneMat);
     subCone.rotation.y = Math.PI; subCone.position.set(-.28, .64, -1.627); g.add(subCone);
+    { const w = new T.Mesh(new T.RingGeometry(.137, .155, 48), waveMat()); w.rotation.y = Math.PI; w.position.set(-.28, .64, -1.632); w.userData.grow = 1.8; g.add(w); waves.push(w); }
     const subRing = new T.Mesh(new T.TorusGeometry(.139, .009, 10, 40), satin);
     subRing.rotation.y = Math.PI; subRing.position.set(-.28, .64, -1.63); g.add(subRing);
     [-1.49, -1.18].forEach(z => box(.34, .025, .045, -.28, .485, z, black));
@@ -259,10 +264,15 @@ export function buildParts(T, carRoot, logoTex, rayTools) {
       update(dt, now) {
         hatch.userData.open += (1 - hatch.userData.open) * Math.min(1, dt * 4);
         hatch.rotation.x = hatch.userData.open * 1.10;
-        // Cone excursion only, never scale the enclosure or its fitted position.
-        const excursion = Math.sin(now / 95) * .0015;
-        subCone.position.z = -1.627 + excursion;
-        speakers.forEach(cone => cone.position.z = .017 + excursion);
+        // Beat at 120 BPM: a sharp kick, then decay. Cones push out, a ring of
+        // light ripples off each speaker so you can see the bass hit.
+        const phase = ((now / 500) % 1 + 1) % 1, kick = Math.exp(-phase * 7) * (now ? 1 : 0);
+        subCone.position.z = -1.627 - kick * .014;
+        speakers.forEach(cone => cone.position.z = .017 + kick * .008);
+        waves.forEach(w => {
+          const t = phase; w.scale.setScalar(1 + t * w.userData.grow);
+          w.material.opacity = (1 - t) * .55 * (now ? 1 : 0);
+        });
       }
     };
   }

@@ -1008,7 +1008,7 @@
   </style>
   <link rel="preload" href="assets/fonts/rozha-one-devanagari-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/rozha-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="assets/web/showroom.css?v=space6" />
+  <link rel="stylesheet" href="assets/web/showroom.css?v=space7" />
   <link rel="stylesheet" href="assets/web/upgrade-2026.css" />
   <link rel="stylesheet" href="assets/web/sections-2026.css" />
   <link rel="stylesheet" href="assets/web/space-2026.css" />
@@ -1057,7 +1057,7 @@
 <!-- 3D SHOWROOM (hero + accessory chapters on one sticky stage) -->
 <section id="showroom" class="showroom" aria-label="Madhuban Motors 3D showroom">
   <div class="sr-sticky">
-    <div class="sr-stage" data-model="assets/3d/concept-car.glb">
+    <div class="sr-stage" data-model="assets/3d/concept-car.glb?v=opt7">
       <picture class="sr-poster" aria-hidden="true">
         <source media="(max-width:900px)" srcset="assets/web/showroom-first-mobile.webp?v=finish4">
         <img src="assets/web/showroom-first-desktop.webp?v=finish4" width="1280" height="800" alt="" fetchpriority="high" decoding="async">
@@ -1568,37 +1568,54 @@
     <div class="story3-head">
       <div class="t-caption reveal story3-eyebrow">OUR STORY</div>
       <h2 class="t-display reveal" data-delay="80">Three generations on GT Road.</h2>
-      <p class="t-body reveal story3-lede" data-delay="140">First a restaurant, then a car shop. Same spot on GT Road, same family.</p>
+      <p class="t-body reveal story3-lede" data-delay="140">First a restaurant, then a car shop. Same spot on GT Road, same Paruthi family.</p>
     </div>
     <ol class="story3-line">
       <li class="story3-step reveal" data-delay="80">
         <div class="story3-year">Before 1989</div>
         <div class="story3-gen">Where it started</div>
         <h3>Madhuban Restaurant</h3>
-        <p>Before the car shop, this spot was Madhuban Restaurant, run by my father near the GT Road tehsil. Lawyers from the kachehri came here to eat every day, and Madhuban became a name the whole road knew.</p>
+        <p>Jagdish Chandra Paruthi opened Madhuban Restaurant on this spot near the GT Road tehsil. Lawyers from the kachehri came here to eat every day, and Madhuban became a name the whole road knew.</p>
       </li>
       <li class="story3-step reveal" data-delay="160">
         <div class="story3-year">1989</div>
         <div class="story3-gen">Madhuban Motors opens</div>
         <h3>From lunch to car work</h3>
-        <p>In 1989, when I was young, my father and I turned the place into Madhuban Motors. Through the 90s the same lawyers and families who knew the restaurant started coming to us for work on their cars.</p>
+        <p>In 1989 Jagdish Chandra Paruthi and his son Vivek Paruthi turned the restaurant into Madhuban Motors. Through the 90s the same lawyers and families who knew the restaurant started coming here for work on their cars.</p>
       </li>
       <li class="story3-step reveal" data-delay="240">
         <div class="story3-year">Today</div>
-        <div class="story3-gen">Still family-run</div>
-        <h3>Same counter, new tools</h3>
-        <p>I still run the shop every day. Now you can also see our work, check prices and send your car on WhatsApp from your phone. The counter, the people and the standard are the same.</p>
+        <div class="story3-gen">The legacy continues</div>
+        <h3>Vivek Paruthi, Bitoo Bhaiya</h3>
+        <p>Vivek Paruthi still runs the counter every day. Across the GT Road car market he is simply Bitoo Bhaiya, the name people ask for when they want the job done right.</p>
       </li>
     </ol>
     <figure class="story3-quote reveal" data-delay="120">
-      <blockquote>&ldquo;Madhuban was already a name this city knew before the car accessories market on GT Road became what it is today. We were here first. We watched it all grow around us.&rdquo;</blockquote>
+      <blockquote>Madhuban was already a name this city knew before the car accessories market on GT Road became what it is today. We were here first. We watched it all grow around us.</blockquote>
       <figcaption>Vivek Paruthi, Bitoo Bhaiya to the market</figcaption>
     </figure>
-    <div class="story3-facts reveal" data-delay="160">
-      <div><b>1989</b><span>Madhuban Motors opens</span></div>
-      <div><b>3</b><span>Generations</span></div>
-      <div><b>2.5 lakh+</b><span>Customers served</span></div>
+    <div class="legacy-tracker reveal" data-delay="160">
+      <div class="lt-head"><span>Drag through the years</span><b id="ltYear">Today</b></div>
+      <div class="lt-rail">
+        <div class="lt-fill" id="ltFill"></div>
+        <span class="lt-mark" style="left:0%"><i></i>Restaurant</span>
+        <span class="lt-mark" style="left:9.8%"><i></i>1989</span>
+        <span class="lt-mark" style="left:36.6%"><i></i>2000</span>
+        <span class="lt-mark" style="left:61%"><i></i>2010</span>
+        <span class="lt-mark" style="left:100%"><i></i>Today</span>
+        <input type="range" id="ltRange" min="1985" max="2026" value="2026" step="1" aria-label="Move through the years of Madhuban">
+      </div>
+      <p class="lt-note" id="ltNote">Vivek Paruthi still at the counter, 2.5 lakh+ customers later.</p>
+    </div>
+    <div class="story3-facts reveal" data-delay="200">
+      <div><b data-count="37">0</b><span>Years of car work on GT Road</span></div>
+      <div><b data-count="250000" data-format="lakh">0</b><span>Customers served</span></div>
+      <div><b data-count="4.6" data-dec="1" data-suffix="&#9733;">0</b><span>402 Google reviews</span></div>
       <div><b>Delhi NCR</b><span>Ghaziabad, Noida, Delhi, Bulandshahr</span></div>
+    </div>
+    <div class="story3-cta reveal" data-delay="240">
+      <p>Your car could be the next one we fit.</p>
+      <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-wa">Get my price on WhatsApp</a>
     </div>
   </div>
 </section>
@@ -2743,6 +2760,33 @@ function checkMobile() {
 checkMobile();
 window.addEventListener('resize', checkMobile);
 
+// LEGACY TRACKER + COUNTERS (story section)
+(function () {
+  const range = document.getElementById('ltRange'); if (!range) return;
+  const yearEl = document.getElementById('ltYear'), note = document.getElementById('ltNote'), fill = document.getElementById('ltFill');
+  const notes = y => y < 1989 ? 'Madhuban Restaurant by Jagdish Chandra Paruthi. Lawyers from the kachehri come in for lunch.'
+    : y === 1989 ? 'Madhuban Motors opens. Father and son, Jagdish Chandra and Vivek Paruthi, start fitting cars.'
+    : y < 2000 ? 'The restaurant regulars start bringing their cars. Word spreads down GT Road.'
+    : y < 2026 ? (y - 1989) + ' years of fitting cars on the same spot.'
+    : 'Vivek Paruthi still at the counter, 2.5 lakh+ customers later.';
+  const show = () => { const y = +range.value; yearEl.textContent = y < 1989 ? 'Before 1989' : y === 2026 ? 'Today' : y;
+    note.textContent = notes(y); fill.style.width = ((y - 1985) / 41 * 100) + '%'; };
+  range.addEventListener('input', show); show();
+  const fmt = (el, v) => { const d = +(el.dataset.dec || 0);
+    el.textContent = el.dataset.format === 'lakh' ? (v / 100000).toFixed(1).replace(/\.0$/, '') + ' lakh+' : v.toFixed(d) + (el.dataset.suffix ? el.dataset.suffix : ''); };
+  const nums = [...document.querySelectorAll('.story3-facts b[data-count]')];
+  nums.forEach(el => { el.dataset.suffix = el.dataset.suffix ? '\u2605' : ''; fmt(el, +el.dataset.count); });
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const io = new IntersectionObserver(es => { if (!es.some(e => e.isIntersecting)) return; io.disconnect();
+    const t0 = performance.now();
+    (function step(now) { const k = Math.min(1, (now - t0) / 1600), e = 1 - Math.pow(1 - k, 3);
+      nums.forEach(el => fmt(el, +el.dataset.count * e)); if (k < 1) requestAnimationFrame(step); })(t0);
+    // sweep the tracker from the start once, so people see it moves
+    let y = 1985; const sweep = setInterval(() => { range.value = y; show(); if (++y > 2026) clearInterval(sweep); }, 45);
+  }, { threshold: .35 });
+  io.observe(document.querySelector('.story3-facts'));
+})();
+
 // FORM GRID RESPONSIVE
 function checkFormGrid() {
   const g = document.getElementById('formGrid');
@@ -2763,7 +2807,8 @@ window.addEventListener('resize', checkFormGrid);
   photos.forEach(el => observer.observe(el));
 })();
 </script>
-<script type="module" src="assets/web/showroom.js?v=space6"></script>
+<script type="module" src="assets/web/showroom.js?v=space7"></script>
+<script src="assets/web/space-stars.js" defer></script>
 <script type="module" src="assets/web/ambient-score.js"></script>
 </body>
 </html>
