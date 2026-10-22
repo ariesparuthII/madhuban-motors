@@ -8,7 +8,7 @@
 
 import { buildParts } from './studio3d-parts.js?v=fast8';
 
-import { buildShopBoard } from './showroom-board.js?v=fast8';
+import { buildShopBoard } from './showroom-board.js?v=wet9';
 
 const ROOT = document.getElementById('showroom');
 
@@ -247,19 +247,31 @@ async function boot(stage, ctx) {
     });
     reflector.rotation.x = -Math.PI / 2; reflector.position.y = -0.165; scene.add(reflector);
   }
-  const floor = new T.Mesh(new T.CircleGeometry(14, 64), new T.MeshStandardMaterial({
-    color: 0x0b0b0c, roughness: 0.68, metalness: 0.12, transparent: !!reflector, opacity: reflector ? 0.93 : 1
+  // Wet showroom floor: dark, semi-clear with puddles, over mirrored copies of
+  // the board (and the car on desktop). Cheap fake reflection, no extra render pass.
+  if (reflector) { scene.remove(reflector); reflector = null; }
+  const floor = new T.Mesh(new T.CircleGeometry(22, 72), new T.MeshStandardMaterial({
+    color: 0x030304, roughness: 0.3, metalness: 0.2, envMapIntensity: 0.2, transparent: true, depthWrite: false
   }));
-  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.16; floor.receiveShadow = true; scene.add(floor);
-  // Fade the floor into space: a soft pool of light under the car, no hard disc edge.
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.16; floor.receiveShadow = true; floor.renderOrder = -1; scene.add(floor);
   floor.material.alphaMap = (() => {
-    const c = document.createElement('canvas'); c.width = c.height = 256;
-    const g = c.getContext('2d'), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
-    gr.addColorStop(0, '#fff'); gr.addColorStop(.14, '#ddd'); gr.addColorStop(.3, '#444'); gr.addColorStop(.45, '#000'); gr.addColorStop(1, '#000');
-    g.fillStyle = gr; g.fillRect(0, 0, 256, 256); return new T.CanvasTexture(c);
+    const N = 512, c = document.createElement('canvas'); c.width = c.height = N;
+    const g = c.getContext('2d');
+    g.fillStyle = '#9a9a9a'; g.fillRect(0, 0, N, N);                  // base: reflection shows at ~40%
+    for (let i = 0; i < 70; i++) {                                    // puddles: clearer patches
+      const x = Math.random() * N, y = Math.random() * N, r = 10 + Math.random() * 46;
+      const p = g.createRadialGradient(x, y, 0, x, y, r); p.addColorStop(0, 'rgba(70,70,70,.9)'); p.addColorStop(1, 'rgba(70,70,70,0)');
+      g.fillStyle = p; g.beginPath(); g.ellipse(x, y, r * 1.6, r, Math.random() * 3, 0, 6.283); g.fill();
+    }
+    for (let i = 0; i < 40; i++) {                                    // dry streaks
+      g.strokeStyle = 'rgba(200,200,200,.25)'; g.lineWidth = 2 + Math.random() * 5;
+      const x = Math.random() * N, y = Math.random() * N; g.beginPath(); g.moveTo(x, y); g.lineTo(x + (Math.random() - .5) * 120, y + (Math.random() - .5) * 40); g.stroke();
+    }
+    const edge = g.createRadialGradient(N / 2, N / 2, N * .36, N / 2, N / 2, N / 2);  // fade to black at the far rim
+    edge.addColorStop(0, 'rgba(255,255,255,0)'); edge.addColorStop(1, 'rgba(255,255,255,1)');
+    g.fillStyle = edge; g.fillRect(0, 0, N, N);
+    return new T.CanvasTexture(c);
   })();
-  floor.material.transparent = true; floor.material.depthWrite = false;
-  if (reflector) reflector.visible = false;
   // turntable ring
   const ring = new T.Mesh(new T.RingGeometry(2.7, 2.72, 128), new T.MeshBasicMaterial({ color: new T.Color(1, .95, 0), toneMapped: false, transparent: true, opacity: 0 }));
   ring.rotation.x = -Math.PI / 2; ring.position.y = -0.155; scene.add(ring);
@@ -282,12 +294,18 @@ async function boot(stage, ctx) {
     board.group.rotation.y = Math.atan2(hc[0] - bx, hc[2] - bz);
   }
   board.setPower(0); scene.add(board.group);
+  { // the board's reflection in the wet floor (shares materials, so it lights up with the board)
+    const m = board.group.clone(); m.position.set(0, 0, 0); m.rotation.set(0, 0, 0); m.scale.set(1, -1, 1); m.traverse(o => { o.renderOrder = -2; o.raycast = () => {}; });
+    m.children.forEach(c => { if (c.isLight) m.remove(c); });
+    board.group.add(m); board.mirror = m;
+  }
   let boardAng = Math.atan2(SHOTS.hero.cam[0], SHOTS.hero.cam[2]);
   const sign = null;
 
   /* ---------- car ---------- */
   const gltf = await modelReady;
   const car = new T.Group(); car.add(gltf.scene); scene.add(car);
+  let carMirror = null;
   // Baked contact shadow: two soft dark ellipses under the body, turning with the car.
   {
     const bb = new T.Box3().setFromObject(gltf.scene), sz = bb.getSize(new T.Vector3()), ctr = bb.getCenter(new T.Vector3());
@@ -326,6 +344,11 @@ async function boot(stage, ctx) {
   if (tailMat) { tailMat.emissive = new T.Color(0xff1a0a); tailMat.emissiveIntensity = 0; }
   const rayTools = await rayToolsReady;
   const parts = buildParts(T, car, logoTex, rayTools);
+  // Reflection of the car in the wet floor (desktop). Built after the parts so they
+  // look up the real car's meshes by name, not the mirror's.
+  carMirror = null;
+  if (!small) { carMirror = new T.Group(); carMirror.add(gltf.scene.clone()); carMirror.scale.y = -1; carMirror.position.y = -0.32;
+    carMirror.traverse(o => { o.castShadow = false; o.renderOrder = -2; o.raycast = () => {}; }); car.add(carMirror); }
 
   /* ---------- post ---------- */
   const camera = new T.PerspectiveCamera(30, 1, 0.02, 60);
@@ -508,6 +531,7 @@ async function boot(stage, ctx) {
       const near = Math.round(f);
       const S = (ctx.keys[near] === 'car' && previewKey && SHOTS[previewKey]) || SHOTS[ctx.keys[near]] || SHOTS.hero;
       if (S.part) ring.material.opacity = 0;
+      if (carMirror) carMirror.visible = !S.part && !S.inside;
       dust.material.opacity += ((S.part ? 0 : 0.2 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
       dark += ((S.dark ? 1 : 0) - dark) * Math.min(1, dt * 3);
       inside += ((S.inside ? 1 : 0) - inside) * Math.min(1, dt * 3);
@@ -642,7 +666,7 @@ async function boot(stage, ctx) {
         parts.prepare(part);
         // Compile the part's GPU programs now, before its chapter is on screen.
         const g = parts.groupOf && parts.groupOf(part);
-        if (g && renderer.compileAsync) { const v = g.visible; g.visible = true; try { await renderer.compileAsync(g, camera, scene); } catch (e) {} g.visible = v; }
+        if (g && renderer.compileAsync) { g.visible = true; try { await renderer.compileAsync(g, camera, scene); } catch (e) {} g.visible = currentPart === part; }
       };
       if ('requestIdleCallback' in window) requestIdleCallback(run, {timeout:1500});
       else setTimeout(run, 120);

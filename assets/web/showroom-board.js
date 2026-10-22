@@ -17,23 +17,65 @@ export async function buildShopBoard(T, logoImg, base = 'assets/web/') {
     group.add(mesh); return mesh;
   }
 
-  // 1. Shop opening: warm interior with stocked shelves
-  const open = panel(5.2, 2.5, 1024, 492, (g, w, h) => {
-    const bg = g.createLinearGradient(0, 0, 0, h); bg.addColorStop(0, '#f6d9a6'); bg.addColorStop(1, '#8a5a2b');
+  // 1. Shop opening: a real accessories showroom seen through the glass
+  const open = panel(5.2, 2.5, 2048, 984, (g, w, h) => {
+    // back wall: dark charcoal with a warm wash from the ceiling spots
+    const bg = g.createLinearGradient(0, 0, 0, h); bg.addColorStop(0, '#1b1a1c'); bg.addColorStop(.7, '#121113'); bg.addColorStop(1, '#0a0a0b');
     g.fillStyle = bg; g.fillRect(0, 0, w, h);
-    for (let row = 0; row < 5; row++) {                       // shelves with boxes
-      const y = 30 + row * 86;
-      g.fillStyle = 'rgba(60,35,15,.55)'; g.fillRect(40, y + 70, w - 80, 6);
-      for (let x = 50; x < w - 60; x += 26 + ((x * 7 + row * 13) % 22)) {
-        const bw = 18 + ((x + row * 31) % 20), bh = 30 + ((x * 3 + row) % 34);
-        const hue = ['#1d1d1f', '#c4302b', '#2a2f3a', '#e9e2d0', '#f2c230', '#3a3a3a'][(x + row) % 6];
-        g.fillStyle = hue; g.fillRect(x, y + 70 - bh, bw, bh);
-      }
+    // ceiling: slim LED line + downlights with soft cones
+    g.fillStyle = '#f4f1ea'; g.fillRect(w * .08, 26, w * .84, 6);
+    for (let i = 0; i < 6; i++) {
+      const x = w * (.12 + i * .152);
+      const cone = g.createRadialGradient(x, 40, 6, x, 260, 330);
+      cone.addColorStop(0, 'rgba(255,226,170,.55)'); cone.addColorStop(1, 'rgba(255,226,170,0)');
+      g.fillStyle = cone; g.beginPath(); g.moveTo(x - 30, 40); g.lineTo(x + 30, 40); g.lineTo(x + 260, h * .8); g.lineTo(x - 260, h * .8); g.closePath(); g.fill();
+      g.fillStyle = '#fff6e0'; g.beginPath(); g.arc(x, 44, 14, 0, 6.283); g.fill();
     }
-    g.fillStyle = 'rgba(0,0,0,.55)'; g.fillRect(0, 0, 18, h); g.fillRect(w - 18, 0, 18, h); g.fillRect(w / 2 - 6, 0, 12, h); // glass door frames
-    const v = g.createRadialGradient(w / 2, h * .2, 40, w / 2, h * .4, w * .7); v.addColorStop(0, 'rgba(255,255,255,0)'); v.addColorStop(1, 'rgba(0,0,0,.45)');
-    g.fillStyle = v; g.fillRect(0, 0, w, h);
-  }, { gain: 0.7 });
+    // glass shelves with white LED edges, stocked with products
+    const shelfY = [300, 520, 740];
+    const seed = n => { const x = Math.sin(n * 91.7) * 43758.5453; return x - Math.floor(x); };
+    shelfY.forEach((y, row) => {
+      for (let x = 140; x < w - 160;) {
+        const k = seed(x * 0.37 + row * 7.1), kind = Math.floor(k * 5);
+        if (kind === 0) {            // speaker on a stand
+          const r = 46 + k * 22; g.fillStyle = '#0d0d0f'; g.fillRect(x, y - r * 2 - 10, r * 2, r * 2 + 10);
+          g.fillStyle = '#2b2b2f'; g.beginPath(); g.arc(x + r, y - r - 5, r * .82, 0, 6.283); g.fill();
+          g.fillStyle = '#c9302a'; g.beginPath(); g.arc(x + r, y - r - 5, r * .3, 0, 6.283); g.fill();
+          x += r * 2 + 34;
+        } else if (kind === 1) {     // android screen showing a map-blue UI
+          const sw = 150, sh = 92; g.fillStyle = '#050608'; g.fillRect(x, y - sh - 14, sw, sh);
+          const sc = g.createLinearGradient(x, y - sh, x + sw, y); sc.addColorStop(0, '#1f6fd1'); sc.addColorStop(1, '#0c2c55');
+          g.fillStyle = sc; g.fillRect(x + 7, y - sh - 7, sw - 14, sh - 14);
+          g.fillStyle = 'rgba(255,255,255,.8)'; g.fillRect(x + 18, y - sh + 4, 40, 8); g.fillRect(x + 18, y - sh + 20, 70, 6);
+          x += sw + 34;
+        } else if (kind === 2) {     // dashcam boxes
+          for (let j = 0; j < 3; j++) { g.fillStyle = j % 2 ? '#1e1e22' : '#e8e4da'; g.fillRect(x + j * 46, y - 60, 40, 60); g.fillStyle = '#c9302a'; g.fillRect(x + j * 46, y - 18, 40, 6); }
+          x += 3 * 46 + 30;
+        } else if (kind === 3) {     // rolled seat-cover leather, black and tan
+          for (let j = 0; j < 3; j++) { g.fillStyle = ['#151517', '#8a5a33', '#2d2d31'][j]; g.beginPath(); g.ellipse(x + 34 + j * 70, y - 34, 32, 34, 0, 0, 6.283); g.fill();
+            g.strokeStyle = 'rgba(255,255,255,.15)'; g.lineWidth = 3; g.beginPath(); g.arc(x + 34 + j * 70, y - 34, 18, 0, 6.283); g.stroke(); }
+          x += 3 * 70 + 30;
+        } else {                     // amplifier with fins
+          g.fillStyle = '#1a1a1d'; g.fillRect(x, y - 54, 170, 54);
+          g.fillStyle = '#333338'; for (let f = 0; f < 10; f++) g.fillRect(x + 8 + f * 16, y - 50, 8, 46);
+          g.fillStyle = '#ff3b2f'; g.fillRect(x + 150, y - 46, 8, 8);
+          x += 170 + 34;
+        }
+      }
+      g.fillStyle = 'rgba(210,230,240,.18)'; g.fillRect(90, y, w - 180, 10);         // glass
+      g.fillStyle = 'rgba(255,255,255,.9)'; g.fillRect(90, y + 10, w - 180, 3);      // LED edge
+      const glow = g.createLinearGradient(0, y + 13, 0, y + 70); glow.addColorStop(0, 'rgba(255,255,255,.18)'); glow.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = glow; g.fillRect(90, y + 13, w - 180, 57);
+    });
+    // floor tiles with a soft shine
+    const fl = g.createLinearGradient(0, h * .82, 0, h); fl.addColorStop(0, '#2a2725'); fl.addColorStop(1, '#141312');
+    g.fillStyle = fl; g.fillRect(0, h * .82, w, h * .18);
+    g.strokeStyle = 'rgba(255,255,255,.06)'; g.lineWidth = 2; for (let x = 0; x < w; x += 170) { g.beginPath(); g.moveTo(x, h * .82); g.lineTo(x - 60, h); g.stroke(); }
+    // glass doors: frames and a faint reflection streak
+    g.fillStyle = 'rgba(0,0,0,.85)'; g.fillRect(0, 0, 30, h); g.fillRect(w - 30, 0, 30, h); g.fillRect(w / 2 - 10, 0, 20, h);
+    const refl = g.createLinearGradient(0, 0, w, h); refl.addColorStop(.25, 'rgba(255,255,255,0)'); refl.addColorStop(.32, 'rgba(255,255,255,.07)'); refl.addColorStop(.4, 'rgba(255,255,255,0)');
+    g.fillStyle = refl; g.fillRect(0, 0, w, h);
+  }, { gain: 1.0 });
   open.position.set(0, 1.09, 0);
 
   // 2-4. The real board, cut out from the shop's own photos: day version as
