@@ -8,7 +8,7 @@
 
 import { buildParts } from './studio3d-parts.js?v=finish4';
 
-import { buildShopBoard } from './showroom-board.js?v=finish4';
+import { buildShopBoard } from './showroom-board.js?v=lights5';
 
 const ROOT = document.getElementById('showroom');
 
@@ -186,62 +186,98 @@ async function boot(stage, ctx) {
 
   const scene = new T.Scene();
   const BG = 0x060606;
-  scene.background = new T.Color(BG);
+  // Night sky backdrop: black at the edges, a soft lift in the middle.
+  scene.background = (() => {
+    const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+    const g = c.getContext('2d'), gr = g.createRadialGradient(256, 230, 10, 256, 256, 380);
+    gr.addColorStop(0, '#34343d'); gr.addColorStop(.5, '#15151b'); gr.addColorStop(1, '#050506');
+    g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
+    const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t;
+  })();
   scene.fog = new T.Fog(BG, 12, 30);
+  // Starlight headliner, Rolls-Royce style: two twinkling layers of tiny stars.
+  const starLayers = [];
+  for (const [n, size, tint] of [[small ? 520 : 900, small ? 2.2 : 1.8, 0xffffff], [small ? 160 : 260, small ? 3.4 : 3.0, 0xfff1d6]]) {
+    const pos = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const th = Math.random() * Math.PI * 2, y = 0.06 + Math.random() * 0.94, r = Math.sqrt(1 - y * y), R = 24;
+      pos[i * 3] = Math.cos(th) * r * R; pos[i * 3 + 1] = y * R; pos[i * 3 + 2] = Math.sin(th) * r * R;
+    }
+    const gStar = new T.BufferGeometry(); gStar.setAttribute('position', new T.BufferAttribute(pos, 3));
+    const pts = new T.Points(gStar, new T.PointsMaterial({ color: tint, size, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false, fog: false, toneMapped: false }));
+    scene.add(pts); starLayers.push(pts);
+  }
 
   /* ---------- studio environment: the reflections ARE the light rig ---------- */
   const envScene = new T.Scene();
   envScene.background = new T.Color(0x050505);
   const bright = c => new T.MeshBasicMaterial({ color: c, side: T.DoubleSide });
-  for (const x of [-1.25, 0, 1.25]) {                   // overhead LED tubes
-    const m = new T.Mesh(new T.PlaneGeometry(0.8, 7.5), bright(new T.Color(1, 1, 1).multiplyScalar(3.2)));
-    m.rotation.x = Math.PI / 2; m.position.set(x, 4.6, 0); envScene.add(m);
-  }
+  // (the honeycomb ceiling is added to envScene below, so the paint reflects its pattern)
   const sideL = new T.Mesh(new T.PlaneGeometry(6, 2.2), bright(new T.Color(1, 0.97, 0.93).multiplyScalar(2.0)));
   sideL.position.set(-6, 1.6, 0); sideL.rotation.y = Math.PI / 2; envScene.add(sideL);
   const sideR = sideL.clone(); sideR.material = bright(new T.Color(0.86, 0.93, 1).multiplyScalar(1.6)); sideR.position.x = 6; sideR.rotation.y = -Math.PI / 2; envScene.add(sideR);
   const redStrip = new T.Mesh(new T.PlaneGeometry(10, 0.5), bright(new T.Color(0.5, 0.075, 0.045).multiplyScalar(1.2)));
   redStrip.position.set(0, 1.0, -7); envScene.add(redStrip);
-  const pmrem = new T.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(envScene, 0.08).texture;
+
   scene.environmentIntensity = 0;   // ramps up in the intro
 
   /* ---------- visible light rig: thick designer LED tubes ---------- */
-  // Soft glow sprite texture shared by every tube (drawn once on a canvas).
-  const glowTex = (() => {
-    const c = document.createElement('canvas'); c.width = 256; c.height = 64;
-    const g = c.getContext('2d'), gr = g.createLinearGradient(0, 0, 0, 64);
-    gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
-    g.fillStyle = gr; g.fillRect(0, 0, 256, 64);
-    const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t;
-  })();
-  const capMat = new T.MeshStandardMaterial({ color: 0x1a1a1c, roughness: .35, metalness: .9 });
-  const wireMat = new T.MeshBasicMaterial({ color: 0x0c0c0c });
-  function ledTube(len, r) {
-    const g = new T.Group();
-    const tube = new T.Mesh(new T.CylinderGeometry(r, r, len, 20, 1, true), new T.MeshBasicMaterial({ color: 0x000000, toneMapped: false }));
-    tube.rotation.z = Math.PI / 2; g.add(tube);
-    for (const sx of [-1, 1]) {                       // machined end caps
-      const cap = new T.Mesh(new T.CylinderGeometry(r * 1.35, r * 1.35, 0.07, 20), capMat);
-      cap.rotation.z = Math.PI / 2; cap.position.x = sx * (len / 2 + 0.03); g.add(cap);
-      const wire = new T.Mesh(new T.CylinderGeometry(0.004, 0.004, 2.2, 4), wireMat);
-      wire.position.set(sx * (len / 2 - 0.25), 1.1, 0); g.add(wire);
+  // Designer fixture: many glowing tube segments drawn as ONE instanced mesh.
+  function ledGrid(segs, r) {
+    const geo = new T.CylinderGeometry(r, r, 1, 10, 1, true);
+    const mat = new T.MeshBasicMaterial({ color: 0x000000, toneMapped: false });
+    const mesh = new T.InstancedMesh(geo, mat, segs.length);
+    const up = new T.Vector3(0, 1, 0), a = new T.Vector3(), b = new T.Vector3(), d = new T.Vector3();
+    const m = new T.Matrix4(), q = new T.Quaternion(), sc = new T.Vector3();
+    segs.forEach(([p0, p1], i) => {
+      a.set(...p0); b.set(...p1); d.subVectors(b, a); const len = d.length();
+      q.setFromUnitVectors(up, d.normalize()); sc.set(1, len, 1);
+      m.compose(a.add(b).multiplyScalar(.5), q, sc); mesh.setMatrixAt(i, m);
+    });
+    const g = new T.Group(); g.add(mesh);
+    g.userData = { tube: mesh, halo: null }; return g;
+  }
+  // Honeycomb ceiling over the car, like a detailing studio, with a frame around it.
+  function hexCeiling(R, cols, rows) {
+    const segs = [], seen = new Set(), w = Math.sqrt(3) * R;
+    const key = (p, q) => [p, q].map(v => v.map(n => n.toFixed(2)).join(',')).sort().join('|');
+    let minX = 1e9, maxX = -1e9, minZ = 1e9, maxZ = -1e9;
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const cx = (c - (cols - 1) / 2) * w + (r % 2 ? w / 2 : 0) - w / 4, cz = (r - (rows - 1) / 2) * R * 1.5;
+      const pts = [...Array(6)].map((_, k) => { const t = Math.PI / 3 * k + Math.PI / 6; return [cx + R * Math.cos(t), 0, cz + R * Math.sin(t)]; });
+      pts.forEach(([x, , z]) => { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z); });
+      for (let k = 0; k < 6; k++) { const p0 = pts[k], p1 = pts[(k + 1) % 6], id = key(p0, p1); if (!seen.has(id)) { seen.add(id); segs.push([p0, p1]); } }
     }
-    const halo = new T.Mesh(new T.PlaneGeometry(len * 1.06, r * 9), new T.MeshBasicMaterial({ map: glowTex, color: 0x000000, transparent: true, depthWrite: false, blending: T.AdditiveBlending, toneMapped: false }));
-    halo.rotation.x = Math.PI / 2; halo.position.y = -r * 1.2; // flat glow under the tube
-    g.add(halo); g.userData = { tube, halo }; return g;
+    const m = 0.28, x0 = minX - m, x1 = maxX + m, z0 = minZ - m, z1 = maxZ + m;
+    segs.push([[x0, 0, z0], [x1, 0, z0]], [[x1, 0, z0], [x1, 0, z1]], [[x1, 0, z1], [x0, 0, z1]], [[x0, 0, z1], [x0, 0, z0]]);
+    return segs;
+  }
+  // Triangle truss for the shop sign: two rails with a zig-zag of triangles between.
+  function triangleTruss(len, h, n) {
+    const segs = [[[-len / 2, h, 0], [len / 2, h, 0]], [[-len / 2, 0, 0], [len / 2, 0, 0]]], step = len / n;
+    for (let i = 0; i < n; i++) {
+      const xa = -len / 2 + i * step, xb = xa + step;
+      segs.push(i % 2 ? [[xa, h, 0], [xb, 0, 0]] : [[xa, 0, 0], [xb, h, 0]]);
+    }
+    segs.push([[-len / 2, 0, 0], [-len / 2, h, 0]], [[len / 2, 0, 0], [len / 2, h, 0]]);
+    return segs;
   }
   const setTube = (g, v, warm) => {
     const c = warm ? [1, .93, .82] : [1, 1, 1];
     g.userData.tube.material.color.setRGB(c[0] * 4 * v, c[1] * 4 * v, c[2] * 4 * v);
-    g.userData.halo.material.color.setRGB(c[0] * .55 * v, c[1] * .55 * v, c[2] * .55 * v);
+    if (g.userData.halo) g.userData.halo.material.color.setRGB(c[0] * .55 * v, c[1] * .55 * v, c[2] * .55 * v);
   };
   // Over the car: three long tubes running nose to tail, like a detailing bay.
   const bars = [];
-  for (const x of [-1.25, 0, 1.25]) {
-    const g = ledTube(4.4, 0.045);
-    g.rotation.y = Math.PI / 2; g.position.set(x, 4.6, 0); scene.add(g); bars.push(g);
+  {
+    const segs = hexCeiling(0.62, 4, 5);
+    const g = ledGrid(segs, 0.028);
+    g.position.set(0, 4.6, 0); scene.add(g); bars.push(g);
+    const e = ledGrid(segs, 0.07);                       // same pattern, fatter, in the reflections
+    e.userData.tube.material.color.setScalar(3.4); e.position.set(0, 4.6, 0); envScene.add(e);
   }
+  const pmrem = new T.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(envScene, 0.04).texture;
   const key = new T.DirectionalLight(0xfff4e6, 0);
   key.position.set(-3, 7, 4); key.castShadow = true;
   key.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048);
@@ -287,8 +323,8 @@ async function boot(stage, ctx) {
   }
   board.setPower(0); scene.add(board.group);
   // Over the shop board: one long warm tube, the sign light.
-  const signTube = ledTube(8.4, 0.075);
-  signTube.position.set(0, 5.95, 0.55); board.group.add(signTube);
+  const signTube = ledGrid(triangleTruss(8.4, 0.42, 14), 0.03);
+  signTube.position.set(0, 5.85, 0.45); board.group.add(signTube);
   // Light wash falling from the tube onto the board face.
   const washTex = (() => {
     const c = document.createElement('canvas'); c.width = 256; c.height = 128;
@@ -487,6 +523,7 @@ async function boot(stage, ctx) {
       setTube(signTube, signV, true);
       wash.material.color.setRGB(.2 * signV, .17 * signV, .13 * signV);
       const lightsOn = smooth(clamp(it * 1.2 - 0.15));
+      starLayers.forEach((st, i) => { st.material.opacity = lightsOn * (1 - inside) * (reduced ? .9 : .7 + .3 * Math.sin(now / (1400 + i * 900) + i * 2)); });
       scene.environmentIntensity = 1.12 * lightsOn * (1 - dark * 0.8);
       key.intensity = 2.5 * lightsOn * (1 - dark * 0.9) * (0.8 + 0.3 * onCar);
       fill.intensity = 0.55 * lightsOn;
