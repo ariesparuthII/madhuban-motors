@@ -39,7 +39,7 @@ export async function buildShopBoard(T, logoImg, base = 'assets/web/') {
   // 2-4. The real board, cut out from the shop's own photos: day version as
   // the base, the lit night version fades in when the studio powers on.
   const loader = new T.TextureLoader();
-  const load = url => new Promise(res => loader.load(url, t => { t.colorSpace = T.SRGBColorSpace; t.anisotropy = 8; res(t); }, undefined, () => res(null)));
+  const load = url => new Promise(res => loader.load(url, t => { t.colorSpace = T.SRGBColorSpace; t.anisotropy = 16; t.generateMipmaps = true; t.minFilter = T.LinearMipmapLinearFilter || t.minFilter; res(t); }, undefined, () => res(null)));
   const [dayTex, nightTex] = await Promise.all([load(base + 'board-day.webp'), load(base + 'board-night.webp')]);
   const BW = 8.6, BH = BW * 620 / 1600;
   const dayMat = new T.MeshBasicMaterial({ map: dayTex, transparent: true, toneMapped: false, fog: false, depthWrite: false });

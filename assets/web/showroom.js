@@ -6,9 +6,9 @@
    - Each accessory chapter shows the real part in place; dashcam, seats and
      mats can "go inside" to a short explainer. */
 
-import { buildParts } from './studio3d-parts.js?v=space7';
+import { buildParts } from './studio3d-parts.js?v=fast8';
 
-import { buildShopBoard } from './showroom-board.js?v=space7';
+import { buildShopBoard } from './showroom-board.js?v=fast8';
 
 const ROOT = document.getElementById('showroom');
 
@@ -177,7 +177,7 @@ async function boot(stage, ctx) {
   const bar = stage.querySelector('.sr-loader i');
 
   const renderer = new T.WebGLRenderer({ canvas, context:gl, antialias:true, powerPreference:'default' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, small ? 1.25 : 1.5));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, small ? 1.75 : 1.5));
   renderer.outputColorSpace = T.SRGBColorSpace;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.06;
@@ -237,7 +237,7 @@ async function boot(stage, ctx) {
   scene.add(key);
   const rim = new T.DirectionalLight(0xc9deff, 0); rim.position.set(4, 4, -4); scene.add(rim);
   const fill = new T.HemisphereLight(0xb4bfce, 0x18130f, 0); scene.add(fill);
-  const cabin = new T.PointLight(0xfff1dc, 0, 2.2, 1.5); cabin.position.set(0, 1.0, 0.5); // Added only when the visitor enters a cabin or fitment view.
+  const cabin = new T.PointLight(0xfff1dc, 0, 2.2, 1.5); cabin.position.set(0, 1.0, 0.5); scene.add(cabin); // fixed light count all session: only intensity changes
 
   /* ---------- floor ---------- */
   let reflector = null;
@@ -277,7 +277,7 @@ async function boot(stage, ctx) {
   if (logoTex) logoTex.colorSpace = T.SRGBColorSpace;
   {
     const hc = SHOTS.hero.cam, dx = -hc[0], dz = -hc[2], len = Math.hypot(dx, dz);
-    const bx = dx / len * 13, bz = dz / len * 13;
+    const BD = small ? 10 : 13, bx = dx / len * BD, bz = dz / len * BD;
     board.group.position.set(bx, -0.16, bz);
     board.group.rotation.y = Math.atan2(hc[0] - bx, hc[2] - bz);
   }
@@ -511,7 +511,6 @@ async function boot(stage, ctx) {
       dust.material.opacity += ((S.part ? 0 : 0.2 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
       dark += ((S.dark ? 1 : 0) - dark) * Math.min(1, dt * 3);
       inside += ((S.inside ? 1 : 0) - inside) * Math.min(1, dt * 3);
-      if ((S.inside || ['audio','seats','mats'].includes(S.part)) && !cabin.parent) scene.add(cabin);
       if (S.part === 'audio') { cabin.position.set(0, 1.08, -1.4); cabin.intensity = 1.8; }
       else { cabin.position.set(0, 1.0, 0.5); cabin.intensity = 1.1 * inside + (S.part === 'seats' || S.part === 'mats' ? .45 : 0); }
 
@@ -551,7 +550,7 @@ async function boot(stage, ctx) {
           let d = Math.atan2(cdx, cdz) - boardAng; d = Math.atan2(Math.sin(d), Math.cos(d));
           boardAng += d * Math.min(1, dt * 1.8);
         }
-        board.group.position.set(-Math.sin(boardAng) * 13, -0.16, -Math.cos(boardAng) * 13);
+        board.group.position.set(-Math.sin(boardAng) * (small ? 10 : 13), -0.16, -Math.cos(boardAng) * (small ? 10 : 13));
         board.group.rotation.y = boardAng; }
       const W = stage.clientWidth, H = stage.clientHeight;
       // where the car should sit on screen: right half on desktop (text left),
@@ -583,9 +582,9 @@ async function boot(stage, ctx) {
             bottom: Math.max(...points.map(p => (1 - p.y) * H / 2)) };
         };
         const safe = { left: W > 900 ? W * .49 : 18, right: W - 18,
-          top: W > 900 ? 174 : 118, bottom: W > 900 ? H * .59 : visualBottom - 12 };
+          top: W > 900 ? 174 : 84, bottom: W > 900 ? H * .59 : visualBottom - 12 };
         let b = bounds();
-        camera.zoom = Math.min(1, (safe.right - safe.left) / (b.right - b.left),
+        camera.zoom = Math.min(W > 900 ? 1 : 1.45, (safe.right - safe.left) / (b.right - b.left),
           (safe.bottom - safe.top) / (b.bottom - b.top));
         camera.updateProjectionMatrix();
         b = bounds();
@@ -639,7 +638,12 @@ async function boot(stage, ctx) {
       const part = SHOTS[key] && SHOTS[key].part;
       if (!part || prepared.has(part)) return;
       prepared.add(part);
-      const run = () => parts.prepare(part);
+      const run = async () => {
+        parts.prepare(part);
+        // Compile the part's GPU programs now, before its chapter is on screen.
+        const g = parts.groupOf && parts.groupOf(part);
+        if (g && renderer.compileAsync) { const v = g.visible; g.visible = true; try { await renderer.compileAsync(g, camera, scene); } catch (e) {} g.visible = v; }
+      };
       if ('requestIdleCallback' in window) requestIdleCallback(run, {timeout:1500});
       else setTimeout(run, 120);
     },

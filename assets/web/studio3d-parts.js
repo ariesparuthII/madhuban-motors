@@ -102,7 +102,7 @@ export function buildParts(T, carRoot, logoTex, rayTools) {
     mount.position.set(0.36, 0.76, 1.03); g.add(mount);
     const base = new T.Mesh(new T.BoxGeometry(0.12, 0.012, 0.08), black);
     base.position.set(0.36, 0.72, 1.05); g.add(base);
-    const glow = new T.PointLight(0x6fb3ff, 0.35, 0.9, 2); glow.position.set(0.36, 0.86, 0.85); g.add(glow);
+    // No light inside parts: adding a light recompiles every material in the scene.
     let acc = 0;
     parts.screen = {
       group: g,
@@ -548,6 +548,7 @@ export function buildParts(T, carRoot, logoTex, rayTools) {
   }
   return {
     prepare,
+    groupOf: key => parts[key] && parts[key].group,
     show(key) {
       if (current && parts[current]) { const p = parts[current]; p.group.visible = false; p.hide && p.hide(); }
       prepare(key);
