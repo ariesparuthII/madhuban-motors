@@ -1,0 +1,41 @@
+{
+  "instagram": "https://www.instagram.com/accessories_madhuban/",
+  "items": [
+    {
+      "type": "photo",
+      "src": "assets/web/seat-cover-black-red.webp",
+      "title": "Black and red seat covers",
+      "text": "Bucket-fit seat covers with contrast piping",
+      "service": "Seat covers",
+      "car": "",
+      "fit": "cover"
+    },
+    {
+      "type": "photo",
+      "src": "assets/web/seat-cover-cream-blue.webp",
+      "title": "Cream and blue seat covers",
+      "text": "Clean interior finish with premium fitment",
+      "service": "Seat covers",
+      "car": "",
+      "fit": "cover"
+    },
+    {
+      "type": "photo",
+      "src": "assets/web/steering-cover-dashboard.webp",
+      "title": "Steering cover and interior",
+      "text": "Steering grip, seat work and dashboard finish",
+      "service": "Interior",
+      "car": "",
+      "fit": "cover"
+    },
+    {
+      "type": "photo",
+      "src": "assets/web/door-panel-modification.webp",
+      "title": "Door panel modification",
+      "text": "Custom door panel insert with stitched detailing",
+      "service": "Interior",
+      "car": "",
+      "fit": "contain"
+    }
+  ]
+}

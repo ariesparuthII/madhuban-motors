@@ -6,9 +6,9 @@
    - Each accessory chapter shows the real part in place; dashcam, seats and
      mats can "go inside" to a short explainer. */
 
-import { buildParts } from './studio3d-parts.js?v=finish4';
+import { buildParts } from './studio3d-parts.js?v=fast8';
 
-import { buildShopBoard } from './showroom-board.js?v=finish4';
+import { buildShopBoard } from './showroom-board.js?v=wet9';
 
 const ROOT = document.getElementById('showroom');
 
@@ -177,7 +177,7 @@ async function boot(stage, ctx) {
   const bar = stage.querySelector('.sr-loader i');
 
   const renderer = new T.WebGLRenderer({ canvas, context:gl, antialias:true, powerPreference:'default' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, small ? 1.25 : 1.5));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, small ? 1.75 : 1.5));
   renderer.outputColorSpace = T.SRGBColorSpace;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.06;
@@ -185,9 +185,21 @@ async function boot(stage, ctx) {
   stage.prepend(renderer.domElement);
 
   const scene = new T.Scene();
-  const BG = 0x060606;
+  const BG = 0x000000;
   scene.background = new T.Color(BG);
   scene.fog = new T.Fog(BG, 12, 30);
+  // Space backdrop: faint stars all around, matching the page's starfield.
+  const starLayers = [];
+  for (const [n, size, op] of [[small ? 500 : 900, small ? 1.4 : 1.2, .55], [small ? 90 : 160, small ? 2.2 : 2.0, .85]]) {
+    const pos = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const th = Math.random() * Math.PI * 2, y = 0.03 + Math.random() * 0.97, r = Math.sqrt(1 - y * y), R = 26;
+      pos[i * 3] = Math.cos(th) * r * R; pos[i * 3 + 1] = y * R; pos[i * 3 + 2] = Math.sin(th) * r * R;
+    }
+    const gStar = new T.BufferGeometry(); gStar.setAttribute('position', new T.BufferAttribute(pos, 3));
+    const pts = new T.Points(gStar, new T.PointsMaterial({ color: 0xffffff, size, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false, fog: false }));
+    pts.userData.op = op; scene.add(pts); starLayers.push(pts);
+  }
 
   /* ---------- studio environment: the reflections ARE the light rig ---------- */
   const envScene = new T.Scene();
@@ -195,7 +207,7 @@ async function boot(stage, ctx) {
   const bright = c => new T.MeshBasicMaterial({ color: c, side: T.DoubleSide });
   for (let i = -2; i <= 2; i++) {                       // overhead bars
     const m = new T.Mesh(new T.PlaneGeometry(0.65, 7.5), bright(new T.Color(1, 1, 1).multiplyScalar(2.7)));
-    m.rotation.x = Math.PI / 2; m.position.set(i * 1.1, 4.5, 0); envScene.add(m);
+    m.rotation.x = Math.PI / 2; m.position.set(i * 1.1, 3.75, 0); envScene.add(m);
   }
   const sideL = new T.Mesh(new T.PlaneGeometry(6, 2.2), bright(new T.Color(1, 0.97, 0.93).multiplyScalar(2.0)));
   sideL.position.set(-6, 1.6, 0); sideL.rotation.y = Math.PI / 2; envScene.add(sideL);
@@ -214,7 +226,7 @@ async function boot(stage, ctx) {
     const housing = new T.Mesh(new T.BoxGeometry(0.16, 0.06, 3.6), new T.MeshStandardMaterial({ color: 0x111111, roughness: .4, metalness: .8 }));
     const tube = new T.Mesh(new T.BoxGeometry(0.1, 0.012, 3.4), barMat.clone());
     tube.position.y = -0.035; g.add(housing, tube);
-    g.position.set(i * 1.1, 4.5, 0); scene.add(g); bars.push(tube);
+    g.position.set(i * 1.1, small ? 4.5 : 3.75, 0); scene.add(g); bars.push(tube);
     tube.material.color.setScalar(0);
   }
   const key = new T.DirectionalLight(0xfff4e6, 0);
@@ -225,7 +237,7 @@ async function boot(stage, ctx) {
   scene.add(key);
   const rim = new T.DirectionalLight(0xc9deff, 0); rim.position.set(4, 4, -4); scene.add(rim);
   const fill = new T.HemisphereLight(0xb4bfce, 0x18130f, 0); scene.add(fill);
-  const cabin = new T.PointLight(0xfff1dc, 0, 2.2, 1.5); cabin.position.set(0, 1.0, 0.5); // Added only when the visitor enters a cabin or fitment view.
+  const cabin = new T.PointLight(0xfff1dc, 0, 2.2, 1.5); cabin.position.set(0, 1.0, 0.5); scene.add(cabin); // fixed light count all session: only intensity changes
 
   /* ---------- floor ---------- */
   let reflector = null;
@@ -235,12 +247,33 @@ async function boot(stage, ctx) {
     });
     reflector.rotation.x = -Math.PI / 2; reflector.position.y = -0.165; scene.add(reflector);
   }
-  const floor = new T.Mesh(new T.CircleGeometry(14, 64), new T.MeshStandardMaterial({
-    color: 0x0b0b0c, roughness: 0.68, metalness: 0.12, transparent: !!reflector, opacity: reflector ? 0.93 : 1
+  // Wet showroom floor: dark, semi-clear with puddles, over mirrored copies of
+  // the board (and the car on desktop). Cheap fake reflection, no extra render pass.
+  if (reflector) { scene.remove(reflector); reflector = null; }
+  const floor = new T.Mesh(new T.CircleGeometry(22, 72), new T.MeshStandardMaterial({
+    color: 0x030304, roughness: 0.3, metalness: 0.2, envMapIntensity: 0.2, transparent: true, depthWrite: false
   }));
-  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.16; floor.receiveShadow = true; scene.add(floor);
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.16; floor.receiveShadow = true; floor.renderOrder = -1; scene.add(floor);
+  floor.material.alphaMap = (() => {
+    const N = 512, c = document.createElement('canvas'); c.width = c.height = N;
+    const g = c.getContext('2d');
+    g.fillStyle = '#9a9a9a'; g.fillRect(0, 0, N, N);                  // base: reflection shows at ~40%
+    for (let i = 0; i < 70; i++) {                                    // puddles: clearer patches
+      const x = Math.random() * N, y = Math.random() * N, r = 10 + Math.random() * 46;
+      const p = g.createRadialGradient(x, y, 0, x, y, r); p.addColorStop(0, 'rgba(70,70,70,.9)'); p.addColorStop(1, 'rgba(70,70,70,0)');
+      g.fillStyle = p; g.beginPath(); g.ellipse(x, y, r * 1.6, r, Math.random() * 3, 0, 6.283); g.fill();
+    }
+    for (let i = 0; i < 40; i++) {                                    // dry streaks
+      g.strokeStyle = 'rgba(200,200,200,.25)'; g.lineWidth = 2 + Math.random() * 5;
+      const x = Math.random() * N, y = Math.random() * N; g.beginPath(); g.moveTo(x, y); g.lineTo(x + (Math.random() - .5) * 120, y + (Math.random() - .5) * 40); g.stroke();
+    }
+    const edge = g.createRadialGradient(N / 2, N / 2, N * .36, N / 2, N / 2, N / 2);  // fade to black at the far rim
+    edge.addColorStop(0, 'rgba(255,255,255,0)'); edge.addColorStop(1, 'rgba(255,255,255,1)');
+    g.fillStyle = edge; g.fillRect(0, 0, N, N);
+    return new T.CanvasTexture(c);
+  })();
   // turntable ring
-  const ring = new T.Mesh(new T.RingGeometry(3.05, 3.08, 128), new T.MeshBasicMaterial({ color: new T.Color(1, .95, 0), toneMapped: false, transparent: true, opacity: 0 }));
+  const ring = new T.Mesh(new T.RingGeometry(2.7, 2.72, 128), new T.MeshBasicMaterial({ color: new T.Color(1, .95, 0), toneMapped: false, transparent: true, opacity: 0 }));
   ring.rotation.x = -Math.PI / 2; ring.position.y = -0.155; scene.add(ring);
 
   /* ---------- dust in the light: slow ambient motion ---------- */
@@ -256,16 +289,37 @@ async function boot(stage, ctx) {
   if (logoTex) logoTex.colorSpace = T.SRGBColorSpace;
   {
     const hc = SHOTS.hero.cam, dx = -hc[0], dz = -hc[2], len = Math.hypot(dx, dz);
-    const bx = dx / len * 13, bz = dz / len * 13;
+    const BD = small ? 10 : 13, bx = dx / len * BD, bz = dz / len * BD;
     board.group.position.set(bx, -0.16, bz);
     board.group.rotation.y = Math.atan2(hc[0] - bx, hc[2] - bz);
   }
   board.setPower(0); scene.add(board.group);
+  { // the board's reflection in the wet floor (shares materials, so it lights up with the board)
+    const m = board.group.clone(); m.position.set(0, 0, 0); m.rotation.set(0, 0, 0); m.scale.set(1, -1, 1); m.traverse(o => { o.renderOrder = -2; o.raycast = () => {}; });
+    m.children.forEach(c => { if (c.isLight) m.remove(c); });
+    board.group.add(m); board.mirror = m;
+  }
+  let boardAng = Math.atan2(SHOTS.hero.cam[0], SHOTS.hero.cam[2]);
   const sign = null;
 
   /* ---------- car ---------- */
   const gltf = await modelReady;
   const car = new T.Group(); car.add(gltf.scene); scene.add(car);
+  let carMirror = null;
+  // Baked contact shadow: two soft dark ellipses under the body, turning with the car.
+  {
+    const bb = new T.Box3().setFromObject(gltf.scene), sz = bb.getSize(new T.Vector3()), ctr = bb.getCenter(new T.Vector3());
+    const shadowTex = (soft) => {
+      const c = document.createElement('canvas'); c.width = c.height = 256;
+      const g = c.getContext('2d'), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+      gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(soft ? .35 : .55, 'rgba(0,0,0,' + (soft ? .55 : .9) + ')'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 256, 256); const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t;
+    };
+    for (const [scale, soft, op, y] of [[1.0, false, .85, -0.152], [1.55, true, .6, -0.154]]) {
+      const sh = new T.Mesh(new T.PlaneGeometry(sz.x * scale, sz.z * scale * 1.04), new T.MeshBasicMaterial({ map: shadowTex(soft), transparent: true, opacity: op, depthWrite: false, toneMapped: false }));
+      sh.rotation.x = -Math.PI / 2; sh.position.set(ctr.x, y, ctr.z); sh.renderOrder = -1; car.add(sh);
+    }
+  }
   const paintMats = []; let headMat = null, tailMat = null;
   gltf.scene.traverse(o => {
     if (!o.isMesh) return;
@@ -290,6 +344,11 @@ async function boot(stage, ctx) {
   if (tailMat) { tailMat.emissive = new T.Color(0xff1a0a); tailMat.emissiveIntensity = 0; }
   const rayTools = await rayToolsReady;
   const parts = buildParts(T, car, logoTex, rayTools);
+  // Reflection of the car in the wet floor (desktop). Built after the parts so they
+  // look up the real car's meshes by name, not the mirror's.
+  carMirror = null;
+  if (!small) { carMirror = new T.Group(); carMirror.add(gltf.scene.clone()); carMirror.scale.y = -1; carMirror.position.y = -0.32;
+    carMirror.traverse(o => { o.castShadow = false; o.renderOrder = -2; o.raycast = () => {}; }); car.add(carMirror); }
 
   /* ---------- post ---------- */
   const camera = new T.PerspectiveCamera(30, 1, 0.02, 60);
@@ -368,6 +427,17 @@ async function boot(stage, ctx) {
       lp.connect(out); out.connect(hornCtx.destination);
     } catch (e) {}
   }
+  // Bass "boom" in the Sound chapter, only when the visitor has turned sound on.
+  let nextBoom = 0;
+  function boom(at) {
+    try {
+      hornCtx = hornCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const t = hornCtx.currentTime + Math.max(0, at), o = hornCtx.createOscillator(), g = hornCtx.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.18);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.5, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.42);
+      o.connect(g); g.connect(hornCtx.destination); o.start(t); o.stop(t + 0.45);
+    } catch (e) {}
+  }
   function act(a) {
     track('showroom_click', { action: a.key });
     if (a.key === 'door') parts.toggleDoor();
@@ -407,7 +477,7 @@ async function boot(stage, ctx) {
     if (ctx.keys[Math.round(f)] === 'car' && previewKey && SHOTS[previewKey]) return { A: SHOTS[previewKey], B: SHOTS[previewKey], k: 0, frac: 0 };
     const i = Math.floor(f), frac = f - i;
     const A = SHOTS[ctx.keys[i]] || SHOTS.hero, B = SHOTS[ctx.keys[Math.min(i + 1, ctx.keys.length - 1)]] || A;
-    return { A, B, k: smooth(clamp((frac - 0.15) / 0.7)), frac };
+    const t = clamp((frac - 0.1) / 0.8); return { A, B, k: t * t * t * (t * (t * 6 - 15) + 10), frac };
   }
 
   let lastInteraction = performance.now();
@@ -442,11 +512,12 @@ async function boot(stage, ctx) {
         b.material.color.setScalar(2.4 * flick * (1 - dark * 0.85));
       });
       const lightsOn = smooth(clamp(it * 1.2 - 0.15));
+      starLayers.forEach((st, i) => { st.material.opacity = st.userData.op * Math.min(1, it * 1.5) * (1 - inside * .8) * (reduced ? 1 : .8 + .2 * Math.sin(now / (1700 + i * 1100) + i)); });
       scene.environmentIntensity = 1.12 * lightsOn * (1 - dark * 0.8);
       key.intensity = 2.5 * lightsOn * (1 - dark * 0.9);
       fill.intensity = 0.55 * lightsOn;
       rim.intensity = 0.85 * smooth(clamp(it * 1.5 - 0.6)) * (1 - inside * 0.85) * (1 - dark * 0.8);
-      ring.material.opacity = 0.16 * smooth(clamp(it * 2 - 1)) * (1 - inside);
+      ring.material.opacity = 0.07 * smooth(clamp(it * 2 - 1)) * (1 - inside);
       if (!reduced) { const a = dGeo.attributes.position.array; for (let i = 0; i < DUST; i++) { a[i * 3 + 1] += dt * 0.05 * (0.5 + (dSeed[i] % 1)); a[i * 3] += Math.sin(now / 3000 + dSeed[i]) * dt * 0.03; if (a[i * 3 + 1] > 3) a[i * 3 + 1] = 0; } dGeo.attributes.position.needsUpdate = true; }
       board.setPower(smooth(clamp(it * 1.6 - 0.7)) * (1 - inside * 0.7));
 
@@ -459,17 +530,23 @@ async function boot(stage, ctx) {
       const targetFov = lerp(A.fov, B.fov, k);
       const near = Math.round(f);
       const S = (ctx.keys[near] === 'car' && previewKey && SHOTS[previewKey]) || SHOTS[ctx.keys[near]] || SHOTS.hero;
+      if (S.part) ring.material.opacity = 0;
+      if (carMirror) carMirror.visible = !S.part && !S.inside;
+      if (board.mirror) board.mirror.visible = camera.position.y < 3.2;   // a floor reflection only reads from a low camera
       dust.material.opacity += ((S.part ? 0 : 0.2 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
       dark += ((S.dark ? 1 : 0) - dark) * Math.min(1, dt * 3);
       inside += ((S.inside ? 1 : 0) - inside) * Math.min(1, dt * 3);
-      if ((S.inside || ['audio','seats','mats'].includes(S.part)) && !cabin.parent) scene.add(cabin);
       if (S.part === 'audio') { cabin.position.set(0, 1.08, -1.4); cabin.intensity = 1.8; }
       else { cabin.position.set(0, 1.0, 0.5); cabin.intensity = 1.1 * inside + (S.part === 'seats' || S.part === 'mats' ? .45 : 0); }
 
       // portrait screens: pull exterior shots back so the car fits
       const asp = camera.aspect;
-      const pull = S.part === 'audio' ? (asp < 1.4 ? 2.1 : 1.75) : S.inside || S.part === 'seats' || S.part === 'mats' ? 1 : (asp >= 1.4 ? 1 : Math.min(ctx.keys[Math.round(f)] === 'car' && !previewKey ? 3.2 : 2.35, 1.7 / asp));
+      const pull = S.part === 'audio' ? (asp < 1.4 ? 2.1 : 1.75) : S.inside ? 1 : S.part === 'seats' || S.part === 'mats' ? (asp < 1 ? 1.9 : 1) : (asp >= 1.4 ? 1 : Math.min(ctx.keys[Math.round(f)] === 'car' && !previewKey ? 3.4 : ctx.keys[near] === 'hero' ? 2.35 : 4.0, (ctx.keys[near] === 'hero' ? 1.7 : 1.9) / asp));
       tA.sub(lA).multiplyScalar(pull).add(lA);
+      // keep fog behind the car however far the camera pulls back
+      { const dist = tA.distanceTo(lA); scene.fog.near = Math.max(12, dist + 2); scene.fog.far = Math.max(30, dist + 20); }
+      // portrait exterior shots: aim a little higher so the shop board shows above the car
+      if (asp < 1 && !S.part && !S.inside && ctx.keys[near] !== 'hero') { lA.y += 1.1; tA.y += 0.8; }
 
       // the intro also dollies in
       const introPull = 1 + (1 - smooth(it)) * 0.6;
@@ -486,7 +563,7 @@ async function boot(stage, ctx) {
         if (diveState.out && diveState.t >= 1) diveState = null;
       }
 
-      const ease = reduced ? 1 : 1 - Math.pow(0.004, dt);
+      const ease = reduced ? 1 : 1 - Math.pow(0.02, dt);   // softer glide between chapters
       camPos.lerp(tA, ease); camLook.lerp(lA, ease);
       curRot += (targetRot - curRot) * ease;
       curFov += (targetFov - curFov) * ease;
@@ -496,6 +573,16 @@ async function boot(stage, ctx) {
       const ry = S.part ? car.rotation.y : 0;
       camera.position.copy(camPos).applyAxisAngle(T.Object3D.DEFAULT_UP, ry);
       camera.lookAt(tB.copy(camLook).applyAxisAngle(T.Object3D.DEFAULT_UP, ry));
+      // The shop board glides around to stay behind the car from every angle.
+      { const cdx = camera.position.x - tB.x, cdz = camera.position.z - tB.z;
+        if (Math.hypot(cdx, cdz) > 0.8) {
+          let d = Math.atan2(cdx, cdz) - boardAng; d = Math.atan2(Math.sin(d), Math.cos(d));
+          boardAng += d * Math.min(1, dt * 3);
+        }
+        // stand the board straight behind whatever the camera is looking at
+        const BDn = small ? 10 : 13;
+        board.group.position.set(tB.x - Math.sin(boardAng) * BDn, -0.16, tB.z - Math.cos(boardAng) * BDn);
+        board.group.rotation.y = boardAng; }
       const W = stage.clientWidth, H = stage.clientHeight;
       // where the car should sit on screen: right half on desktop (text left),
       // upper-middle on phones (text below). Signs are measured, not assumed.
@@ -526,9 +613,9 @@ async function boot(stage, ctx) {
             bottom: Math.max(...points.map(p => (1 - p.y) * H / 2)) };
         };
         const safe = { left: W > 900 ? W * .49 : 18, right: W - 18,
-          top: W > 900 ? 174 : 118, bottom: W > 900 ? H * .59 : visualBottom - 12 };
+          top: W > 900 ? 174 : 84, bottom: W > 900 ? H * .59 : visualBottom - 12 };
         let b = bounds();
-        camera.zoom = Math.min(1, (safe.right - safe.left) / (b.right - b.left),
+        camera.zoom = Math.min(W > 900 ? 1 : 1.45, (safe.right - safe.left) / (b.right - b.left),
           (safe.bottom - safe.top) / (b.bottom - b.top));
         camera.updateProjectionMatrix();
         b = bounds();
@@ -542,6 +629,10 @@ async function boot(stage, ctx) {
       const want = S.part || null;
       if (want !== currentPart) { parts.show(want); currentPart = want; }
       parts.update(dt, reduced ? 0 : now);
+      if (S.part === 'audio' && !reduced && document.getElementById('mmSound')?.getAttribute('aria-pressed') === 'true') {
+        const beatAt = Math.ceil(now / 500) * 500;           // same 120 BPM grid as the cones
+        if (beatAt !== nextBoom && beatAt - now < 120) { nextBoom = beatAt; boom((beatAt - now) / 1000); }
+      }
 
       // lights chapter: headlights blaze, tail lights glow
       const lt = S.part === 'lights' ? 1 : 0;
@@ -578,7 +669,12 @@ async function boot(stage, ctx) {
       const part = SHOTS[key] && SHOTS[key].part;
       if (!part || prepared.has(part)) return;
       prepared.add(part);
-      const run = () => parts.prepare(part);
+      const run = async () => {
+        parts.prepare(part);
+        // Compile the part's GPU programs now, before its chapter is on screen.
+        const g = parts.groupOf && parts.groupOf(part);
+        if (g && renderer.compileAsync) { g.visible = true; try { await renderer.compileAsync(g, camera, scene); } catch (e) {} g.visible = currentPart === part; }
+      };
       if ('requestIdleCallback' in window) requestIdleCallback(run, {timeout:1500});
       else setTimeout(run, 120);
     },

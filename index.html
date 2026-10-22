@@ -1008,8 +1008,10 @@
   </style>
   <link rel="preload" href="assets/fonts/rozha-one-devanagari-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/rozha-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="assets/web/showroom.css?v=finish4" />
+  <link rel="stylesheet" href="assets/web/showroom.css?v=space7" />
   <link rel="stylesheet" href="assets/web/upgrade-2026.css" />
+  <link rel="stylesheet" href="assets/web/sections-2026.css" />
+  <link rel="stylesheet" href="assets/web/space-2026.css" />
   <link rel="stylesheet" href="assets/web/ambient-score.css" />
 </head>
 <body id="pageBody">
@@ -1055,18 +1057,12 @@
 <!-- 3D SHOWROOM (hero + accessory chapters on one sticky stage) -->
 <section id="showroom" class="showroom" aria-label="Madhuban Motors 3D showroom">
   <div class="sr-sticky">
-    <div class="sr-stage" data-model="assets/3d/concept-car.glb">
+    <div class="sr-stage" data-model="assets/3d/concept-car.glb?v=opt7">
       <picture class="sr-poster" aria-hidden="true">
         <source media="(max-width:900px)" srcset="assets/web/showroom-first-mobile.webp?v=finish4">
         <img src="assets/web/showroom-first-desktop.webp?v=finish4" width="1280" height="800" alt="" fetchpriority="high" decoding="async">
       </picture>
       <div class="sr-loader" aria-hidden="true"><i></i></div>
-    </div>
-    <div class="sr-ceiling" aria-hidden="true">
-      <svg viewBox="0 0 1000 150" preserveAspectRatio="none" focusable="false">
-        <g class="sr-ceiling-frame"><path d="M-40 8H1040M-40 122H1040M90 0L180 150M350 0L390 150M650 0L610 150M910 0L820 150"/></g>
-        <g class="sr-ceiling-led"><path d="M-35 17L115 58L245 17L375 58L505 17L635 58L765 17L895 58L1035 17M-35 82L115 123L245 82L375 123L505 82L635 123L765 82L895 123L1035 82M115 58V123M375 58V123M635 58V123M895 58V123"/></g>
-      </svg>
     </div>
     <div class="sr-scrim" aria-hidden="true"></div>
     <div class="sr-grain" aria-hidden="true"></div>
@@ -1076,7 +1072,7 @@
   <div class="sr-chapters">
     <article class="sr-ch sr-ch--hero" data-ch="hero" data-label="Madhuban">
       <div class="sr-panel sr-panel--hero">
-        <h1 class="sr-h1"><span class="sr-h1__hi" lang="hi">मधुबन</span><span class="sr-h1__en">Madhu<span class="sr-brand-b">b</span>an Motors</span></h1>
+        <h1 class="sr-h1"><span class="sr-h1__hi" lang="hi">मधुबन<small class="sr-h1__motors">मोटर्स</small></span><span class="sr-h1__en">Madhu<span class="sr-brand-b">b</span>an Motors</span></h1>
         <p class="sr-lede">Car accessories and clean installation on GT Road, Ghaziabad. Same shop, same standard, since 1989.</p>
         <div class="sr-ctas">
           <a href="https://wa.me/919718373751" target="_blank" rel="noopener" class="sr-btn" data-wa="Hi, I want to upgrade my car." data-item="hero">WhatsApp your car model</a>
@@ -1370,6 +1366,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Safety and Security for Every Drive</div>
           <div class="t-sm">Everyday protection for your family and your car, with dash cameras, reverse cameras, parking sensors, security systems and GPS tracking installed cleanly.</div>
+          <div class="svc-price">From &#8377;2,000 <small>dashcam with hidden wiring</small> <small>fitting included</small></div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
@@ -1378,6 +1375,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">An Interior That Feels Made for You</div>
           <div class="t-sm">Premium and bucket-fit seat covers, steering wraps and interior detailing shaped around your car for a snug fit, a refined finish and an unmistakably personal feel.</div>
+          <div class="svc-price">From &#8377;2,500 <small>seat covers</small> <small>fitting included</small></div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
@@ -1386,6 +1384,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Mats That Fit the Floor, Not Just Cover It</div>
           <div class="t-sm">Custom-fit premium mats follow your car's floor shape, protect the original carpet and make everyday cleaning easier without interfering with pedals or seat movement.</div>
+          <div class="svc-price">From &#8377;1,800 <small>fitting included</small></div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
@@ -1394,6 +1393,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Sound Tuned to the Way You Listen</div>
           <div class="t-sm">From a clean daily upgrade to ambitious ₹1–2 lakh custom builds with double, triple or four-woofer layouts, amplifiers, equalizers and DSP processing, we design and tune for the punch, clarity and musical character you actually want.</div>
+          <div class="svc-price">From &#8377;5,000 <small>custom builds up to &#8377;1 to 2 lakh</small> <small>fitting included</small></div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
@@ -1402,6 +1402,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Smarter Entertainment and Navigation</div>
           <div class="t-sm">Android and LED touchscreen systems with navigation, calling, music, cameras and connected features integrated neatly into your dashboard.</div>
+          <div class="svc-price">From &#8377;8,000 <small>fitting included</small></div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
@@ -1410,6 +1411,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Lighting That Helps You See with Confidence</div>
           <div class="t-sm">When factory lighting feels weak, we recommend properly matched LED, HID and fog-light upgrades for stronger road visibility without careless glare or messy wiring.</div>
+          <div class="svc-price">Price depends on your car</div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
@@ -1418,6 +1420,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">A Cooler Cabin in the Harsh Summer</div>
           <div class="t-sm">High-clarity solar-film options help reduce cabin heat and protect seats and interiors while keeping visibility the priority. We guide you toward options appropriate for current vehicle-glass rules.</div>
+          <div class="svc-price">From &#8377;4,000 <small>fitting included</small></div>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
       </div>
@@ -1432,21 +1435,33 @@
 <div class="divider"></div>
 
 <!-- WORK PHONE GALLERY -->
-<section class="section work-phone-section" style="text-align:center;">
-  <div class="container">
-    <div class="t-caption reveal" style="margin-bottom:16px;color:#DA291C;">FROM THE SHOP FLOOR</div>
-    <h2 class="t-h1 reveal" style="color:#181818;margin-bottom:10px;font-size:clamp(42px,6vw,68px);" data-delay="80">Fitted at our shop</h2>
-    <p class="t-body reveal" style="margin:0 auto 30px;max-width:620px;color:#444444;font-size:19px;" data-delay="160">Recent jobs done on GT Road. Seat covers, steering covers, mats and panel finish. Tap a photo to see it bigger.</p>
+<section id="work" class="section work-phone-section">
+  <div class="work-ambient" aria-hidden="true"><div id="workAmbient"></div></div>
+  <div class="container work-layout">
+    <div class="work-copy">
+      <div class="t-caption reveal work-eyebrow">FROM THE SHOP FLOOR</div>
+      <h2 class="t-h1 reveal" data-delay="80">Fitted at our shop</h2>
+      <p class="t-body reveal work-lede" data-delay="140">Real cars, real jobs, done on GT Road. Every photo here was taken in the shop, on a phone, the day the car went out.</p>
+      <div class="job-card reveal" data-delay="200" aria-live="polite">
+        <div class="job-top"><span id="jobService" class="job-tag">Seat covers</span><span id="jobCount" class="job-count">1 / 4</span></div>
+        <h3 id="jobTitle" class="job-title">Black and red seat covers</h3>
+        <p id="jobText" class="job-text">Bucket-fit seat covers with contrast piping</p>
+        <p id="jobCar" class="job-car" hidden></p>
+        <div class="job-actions">
+          <a id="jobCta" class="btn btn-wa job-cta" href="https://wa.me/919718373751" target="_blank" rel="noopener"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get this for my car</a>
+          <a id="jobInsta" class="job-insta" href="https://www.instagram.com/accessories_madhuban/" target="_blank" rel="noopener">More jobs on Instagram</a>
+        </div>
+      </div>
+    </div>
     <div class="work-showcase-wrap">
       <div class="phone-stage reveal" data-delay="120">
-        <div class="phone-wm l" aria-hidden="true"></div>
-        <div class="phone-wm r" aria-hidden="true"></div>
         <div class="iphone-frame">
           <div class="iphone-island"></div>
           <div class="iphone-screen">
             <div class="phone-showcase" aria-label="Madhuban Motors work showcase">
               <button class="phone-click-hint" onclick="openWorkModal()" type="button">View larger</button>
               <div id="phoneSlide" class="phone-slide active" onclick="openWorkModal()" role="button" tabindex="0" aria-label="Open current work photo"></div>
+              <video id="phoneVideo" class="phone-video" muted playsinline loop preload="none" hidden></video>
               <div id="phoneDots" class="phone-dots" aria-hidden="true"></div>
               <div class="phone-caption">
                 <div id="phoneCaptionTitle" class="phone-caption-title">Interior Work</div>
@@ -1455,10 +1470,13 @@
             </div>
           </div>
         </div>
-        <button class="phone-nav prev" onclick="prevWorkPhoto()" type="button" aria-label="Previous work photo">‹</button>
-        <button class="phone-nav next" onclick="nextWorkPhoto()" type="button" aria-label="Next work photo">›</button>
-        <div id="phoneThumbs" class="phone-thumb-rail" aria-label="Work photo thumbnails"></div>
+        <button class="phone-nav prev" onclick="prevWorkPhoto()" type="button" aria-label="Previous work photo">&lsaquo;</button>
+        <button class="phone-nav next" onclick="nextWorkPhoto()" type="button" aria-label="Next work photo">&rsaquo;</button>
       </div>
+    </div>
+    <div class="work-list-wrap reveal" data-delay="240">
+      <div class="work-list-head">Recent jobs</div>
+      <div id="phoneThumbs" class="work-list" aria-label="Recent jobs"></div>
     </div>
   </div>
 </section>
@@ -1466,40 +1484,52 @@
 <div class="divider"></div>
 
 <!-- ENQUIRY FORM -->
-<section id="enquiry" class="section" style="background:linear-gradient(140deg,#303030 0%,#B01E0A 50%,#181818 100%);">
-  <div class="container-sm">
-    <div style="text-align:center;margin-bottom:48px;">
-      <div class="t-caption reveal" style="margin-bottom:16px;">GET A QUOTE</div>
-      <h2 class="t-h1 reveal" style="color:#FFFFFF;margin-bottom:12px;" data-delay="80">Tell Us About Your Car</h2>
-      <p class="t-sub reveal" data-delay="160">Send your car details once. We will reply on WhatsApp with clear guidance.</p>
+<section id="enquiry" class="section enq">
+  <div class="enq-glow" aria-hidden="true"></div>
+  <div class="container enq-layout">
+    <div class="enq-copy">
+      <div class="t-caption reveal enq-eyebrow">GET YOUR PRICE</div>
+      <h2 class="t-h1 reveal" data-delay="80">Send your car.<br>Get the price on WhatsApp.</h2>
+      <p class="t-body reveal enq-lede" data-delay="140">No visit needed to find out the cost. Tell us the car and what you want, and we send options and prices on WhatsApp.</p>
+      <ol class="enq-steps reveal" data-delay="200">
+        <li><b>1</b><span><strong>Your car</strong>Brand, model and year</span></li>
+        <li><b>2</b><span><strong>What you want</strong>Tap one or more upgrades</span></li>
+        <li><b>3</b><span><strong>Price on WhatsApp</strong>Options, prices and a time to come in</span></li>
+      </ol>
+      <ul class="enq-proof reveal" data-delay="260">
+        <li>Fitting included in every price</li>
+        <li>Genuine brands with warranty</li>
+        <li>4.6&#9733; from 402+ Google reviews</li>
+        <li>Open 10 AM to 8 PM, Tuesday closed</li>
+      </ul>
     </div>
-    <form id="enquiryForm" onsubmit="submitForm(event)" style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,183,3,0.15);padding:40px 36px;backdrop-filter:blur(8px);">
-      <div id="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:28px 36px;">
+    <form id="enquiryForm" class="enq-form" onsubmit="submitForm(event)">
+      <div id="formGrid" class="enq-fields">
         <div>
           <label class="field-label" for="fName">Your Name <span style="opacity:0.4;">(optional)</span></label>
-          <input class="field-line" id="fName" type="text" autocomplete="name" placeholder="Your name" />
+          <input class="field-line enq-input" id="fName" type="text" autocomplete="name" placeholder="Your name" />
         </div>
         <div>
           <label class="field-label" for="fBrand">Car Brand</label>
-          <input class="field-line" id="fBrand" type="text" placeholder="Maruti, Hyundai, Honda..." />
+          <input class="field-line enq-input" id="fBrand" type="text" placeholder="Maruti, Hyundai, Honda..." />
         </div>
         <div>
           <label class="field-label" for="fModel">Car Model</label>
-          <input class="field-line" id="fModel" type="text" placeholder="Swift, Creta, City..." />
+          <input class="field-line enq-input" id="fModel" type="text" placeholder="Swift, Creta, City..." />
         </div>
         <div>
           <label class="field-label" for="fYear">Year</label>
-          <input class="field-line" id="fYear" type="text" inputmode="numeric" placeholder="e.g. 2022" />
+          <input class="field-line enq-input" id="fYear" type="text" inputmode="numeric" placeholder="e.g. 2022" />
         </div>
         <div>
           <label class="field-label" for="fPhone">Phone Number <span style="color:#DA291C;">*</span></label>
-          <input class="field-line" id="fPhone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="phoneErr" placeholder="+91 98765 43210" />
+          <input class="field-line enq-input" id="fPhone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="phoneErr" placeholder="+91 98765 43210" />
           <div id="phoneErr" class="t-sm" role="alert" aria-live="polite" style="color:#DA291C;margin-top:6px;display:none;">Enter a valid phone number</div>
         </div>
       </div>
-      <div style="margin-top:28px;">
-        <div class="field-label" id="serviceNeededLabel">Service Needed</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;" id="pillGroup" role="group" aria-labelledby="serviceNeededLabel">
+      <div class="enq-block">
+        <div class="field-label" id="serviceNeededLabel">What do you want fitted?</div>
+        <div class="enq-pills" id="pillGroup" role="group" aria-labelledby="serviceNeededLabel">
           <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Safety and Security</button>
           <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Seat Covers and Interiors</button>
           <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Custom-fit Mats</button>
@@ -1510,63 +1540,82 @@
           <button type="button" class="pill" onclick="togglePill(this)" aria-pressed="false">Not Sure Yet</button>
         </div>
       </div>
-      <div style="margin-top:28px;">
+      <div class="enq-block">
         <label class="field-label" for="fDetails">Additional Details <span style="opacity:0.4;">(optional)</span></label>
-        <textarea class="field-line" id="fDetails" rows="3" placeholder="Car issue, budget, brand preference, or anything you want to ask" style="resize:none;padding-top:12px;"></textarea>
+        <textarea class="field-line enq-input" id="fDetails" rows="3" placeholder="Car issue, budget, brand preference, or anything you want to ask" style="resize:none;padding-top:12px;"></textarea>
       </div>
       <label class="consent-row">
         <input id="fMarketingConsent" type="checkbox" />
         <span>I agree to receive service updates and occasional offers from Madhuban Motors by WhatsApp or SMS. I can opt out anytime.</span>
       </label>
       <p class="privacy-note">By sending, you ask Madhuban Motors to contact you on WhatsApp about this enquiry. Marketing is optional. See our <a href="privacy.html">Privacy Notice</a>.</p>
-      <button type="submit" class="btn btn-wa" style="width:100%;margin-top:28px;font-size:15px;font-weight:600;padding:16px;">
+      <div class="enq-preview" aria-live="polite">
+        <div class="enq-preview-head">Your WhatsApp message</div>
+        <div id="enqPreview" class="enq-bubble">Hi, I want a price for my car.</div>
+      </div>
+      <button type="submit" class="btn btn-wa enq-submit">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Send to WhatsApp &amp; Get Pricing
+        Send on WhatsApp, get my price
       </button>
-      <div class="t-caption" style="text-align:center;margin-top:14px;opacity:0.3;font-size:10px;">YOUR NUMBER IS USED ONLY TO REPLY TO THIS ENQUIRY.</div>
+      <div class="enq-fineprint">Your number is used only to reply to this enquiry.</div>
     </form>
   </div>
 </section>
 
 <!-- STORY -->
-<section id="story" class="section">
+<section id="story" class="section story3">
   <div class="container">
-    <div class="story-grid" style="display:grid;grid-template-columns:1fr 360px;gap:80px;align-items:start;position:relative;">
-      <!-- Watermark -->
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden;">
-        <div style="font-family:'Rozha One',serif;font-style:italic;font-size:clamp(60px,11vw,160px);color:#303030;opacity:0.07;white-space:nowrap;user-select:none;">THREE GENERATIONS.</div>
+    <div class="story3-head">
+      <div class="t-caption reveal story3-eyebrow">OUR STORY</div>
+      <h2 class="t-display reveal" data-delay="80">Three generations on GT Road.</h2>
+      <p class="t-body reveal story3-lede" data-delay="140">First a restaurant, then a car shop. Same spot on GT Road, same Paruthi family.</p>
+    </div>
+    <ol class="story3-line">
+      <li class="story3-step reveal" data-delay="80">
+        <div class="story3-year">Before 1989</div>
+        <div class="story3-gen">Where it started</div>
+        <h3>Madhuban Restaurant</h3>
+        <p>Jagdish Chandra Paruthi opened Madhuban Restaurant on this spot near the GT Road tehsil. Lawyers from the kachehri came here to eat every day, and Madhuban became a name the whole road knew.</p>
+      </li>
+      <li class="story3-step reveal" data-delay="160">
+        <div class="story3-year">1989</div>
+        <div class="story3-gen">Madhuban Motors opens</div>
+        <h3>From lunch to car work</h3>
+        <p>In 1989 Jagdish Chandra Paruthi and his son Vivek Paruthi turned the restaurant into Madhuban Motors. Through the 90s the same lawyers and families who knew the restaurant started coming here for work on their cars.</p>
+      </li>
+      <li class="story3-step reveal" data-delay="240">
+        <div class="story3-year">Today</div>
+        <div class="story3-gen">The legacy continues</div>
+        <h3>Vivek Paruthi, Bitoo Bhaiya</h3>
+        <p>Vivek Paruthi still runs the counter every day. Across the GT Road car market he is simply Bitoo Bhaiya, the name people ask for when they want the job done right.</p>
+      </li>
+    </ol>
+    <figure class="story3-quote reveal" data-delay="120">
+      <blockquote>Madhuban was already a name this city knew before the car accessories market on GT Road became what it is today. We were here first. We watched it all grow around us.</blockquote>
+      <figcaption>Vivek Paruthi, Bitoo Bhaiya to the market</figcaption>
+    </figure>
+    <div class="legacy-tracker reveal" data-delay="160">
+      <div class="lt-head"><span>Drag through the years</span><b id="ltYear">Today</b></div>
+      <div class="lt-rail">
+        <div class="lt-fill" id="ltFill"></div>
+        <span class="lt-mark" style="left:0%"><i></i>Restaurant</span>
+        <span class="lt-mark" style="left:9.8%"><i></i>1989</span>
+        <span class="lt-mark" style="left:36.6%"><i></i>2000</span>
+        <span class="lt-mark" style="left:61%"><i></i>2010</span>
+        <span class="lt-mark" style="left:100%"><i></i>Today</span>
+        <input type="range" id="ltRange" min="1985" max="2026" value="2026" step="1" aria-label="Move through the years of Madhuban">
       </div>
-      <div style="position:relative;z-index:1;">
-        <div class="t-caption reveal" style="color:#303030;margin-bottom:14px;opacity:0.8;">SINCE 1989 IN GT ROAD GHAZIABAD</div>
-        <h2 class="t-display reveal" style="color:#0B0B0B;margin-bottom:20px;" data-delay="80">GT Road. Ghaziabad.<br>Before the Car Market Existed.</h2>
-        <div class="gold-rule reveal" style="margin:0 0 32px;max-width:72px;" data-delay="120"></div>
-        <p class="reveal" style="font-family:'Rozha One',serif;font-style:italic;font-size:clamp(18px,2.2vw,24px);color:#303030;line-height:1.60;margin-bottom:28px;" data-delay="160">"Madhuban was already a name this city knew before the car accessories market on GT Road became what it is today. We were here first. We watched it all grow around us."</p>
-        <p style="font-family:'Mukta',sans-serif;font-size:16px;color:#181818;line-height:1.80;margin-bottom:16px;" class="reveal" data-delay="200">Vivek Paruthi, Bitoo Bhaiya to everyone in the market, has run this shop on one principle from day one: source it right, install it right, stand behind your work. The reputation came from 37 years of doing the job properly.</p>
-        <p style="font-family:'Mukta',sans-serif;font-size:16px;color:#181818;line-height:1.80;margin-bottom:40px;" class="reveal" data-delay="240">Today Madhuban Motors serves customers across Delhi NCR, Ghaziabad, Noida, Delhi, Bulandshahr and beyond. The shop is still where it always was. Same GT Road. Same standard.</p>
-        <div class="reveal" style="display:flex;gap:0;align-items:center;" data-delay="280">
-          <div style="text-align:center;padding:0 28px 0 0;border-right:1px solid #FFF200;">
-            <div style="font-family:'Rozha One',serif;font-size:30px;color:#303030;font-weight:400;">1989</div>
-            <div style="font-family:'Mukta',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#B01E0A;margin-top:4px;opacity:0.8;">Established</div>
-          </div>
-          <div style="text-align:center;padding:0 28px;border-right:1px solid #FFF200;">
-            <div style="font-family:'Rozha One',serif;font-size:30px;color:#303030;">37</div>
-            <div style="font-family:'Mukta',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#B01E0A;margin-top:4px;opacity:0.8;">Years in Market</div>
-          </div>
-          <div style="text-align:center;padding:0 0 0 28px;">
-            <div style="font-family:'Rozha One',serif;font-size:30px;color:#303030;">Delhi NCR</div>
-            <div style="font-family:'Mukta',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#B01E0A;margin-top:4px;opacity:0.8;">Area Served</div>
-          </div>
-        </div>
-      </div>
-      <!-- Photo -->
-      <div class="reveal" style="position:relative;z-index:1;" data-delay="80">
-        <div data-lazy-bg="assets/web/hero-mm-showroom.webp" data-parallax="0.10" style="background-image:linear-gradient(180deg,rgba(24,24,24,.05),rgba(24,24,24,.55)),var(--mm-lazy-bg,none);background-size:cover;background-position:center;aspect-ratio:3/4;border:1px solid rgba(218,41,28,0.2);position:relative;overflow:hidden;">
-          <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(24,24,24,0.65));">
-            <div style="font-family:'Mukta',sans-serif;font-weight:600;font-size:13px;color:white;">Madhuban Motors, GT Road</div>
-            <div style="font-family:'Mukta',sans-serif;font-size:11px;color:#FFF200;margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;">GT Road, Est. 1989</div>
-          </div>
-        </div>
-      </div>
+      <p class="lt-note" id="ltNote">Vivek Paruthi still at the counter, 2.5 lakh+ customers later.</p>
+    </div>
+    <div class="story3-facts reveal" data-delay="200">
+      <div><b data-count="37">0</b><span>Years of car work on GT Road</span></div>
+      <div><b data-count="250000" data-format="lakh">0</b><span>Customers served</span></div>
+      <div><b data-count="4.6" data-dec="1" data-suffix="&#9733;">0</b><span>402 Google reviews</span></div>
+      <div><b>Delhi NCR</b><span>Ghaziabad, Noida, Delhi, Bulandshahr</span></div>
+    </div>
+    <div class="story3-cta reveal" data-delay="240">
+      <p>Your car could be the next one we fit.</p>
+      <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-wa">Get my price on WhatsApp</a>
     </div>
   </div>
 </section>
@@ -1692,49 +1741,7 @@
   </div>
 </section>
 
-<div class="divider"></div>
 
-<!-- PRICING -->
-<section id="pricing" class="section" style="background:#181818;">
-  <div class="container">
-    <div class="t-caption reveal" style="margin-bottom:16px;">STARTING PRICES</div>
-    <h2 class="t-h1 reveal" style="color:#FFFFFF;margin-bottom:12px;" data-delay="80">Rough Guide to Costs</h2>
-    <p class="t-sub reveal" style="margin-bottom:48px;max-width:560px;" data-delay="120">Prices vary by car model and brand. WhatsApp us your car to get the exact quote before you visit.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
-      <div class="reveal reveal-l" style="background:#303030;border:1px solid rgba(255,242,0,0.12);border-radius:12px;padding:24px 28px;">
-        <div class="t-caption" style="margin-bottom:10px;opacity:0.6;">SEAT COVERS</div>
-        <div style="font-family:'Rozha One',serif;font-size:32px;color:#FFF200;margin-bottom:6px;">₹2,500<span style="font-size:16px;color:#8A8A8A;"> onwards</span></div>
-        <div class="t-sm">Leatherette, fabric, custom-fit for all car models</div>
-      </div>
-      <div class="reveal" data-delay="60" style="background:#303030;border:1px solid rgba(255,242,0,0.12);border-radius:12px;padding:24px 28px;">
-        <div class="t-caption" style="margin-bottom:10px;opacity:0.6;">CUSTOM-FIT MATS</div>
-        <div style="font-family:'Rozha One',serif;font-size:32px;color:#FFF200;margin-bottom:6px;">₹1,800<span style="font-size:16px;color:#8A8A8A;"> onwards</span></div>
-        <div class="t-sm">7D mats, coir, rubber - all options available</div>
-      </div>
-      <div class="reveal" data-delay="120" style="background:#303030;border:1px solid rgba(255,242,0,0.12);border-radius:12px;padding:24px 28px;">
-        <div class="t-caption" style="margin-bottom:10px;opacity:0.6;">DASHCAM FITTING</div>
-        <div style="font-family:'Rozha One',serif;font-size:32px;color:#FFF200;margin-bottom:6px;">₹2,000<span style="font-size:16px;color:#8A8A8A;"> onwards</span></div>
-        <div class="t-sm">Includes hidden wiring &amp; clean installation</div>
-      </div>
-      <div class="reveal reveal-r" data-delay="60" style="background:#303030;border:1px solid rgba(255,242,0,0.12);border-radius:12px;padding:24px 28px;">
-        <div class="t-caption" style="margin-bottom:10px;opacity:0.6;">ANDROID SCREEN</div>
-        <div style="font-family:'Rozha One',serif;font-size:32px;color:#FFF200;margin-bottom:6px;">₹8,000<span style="font-size:16px;color:#8A8A8A;"> onwards</span></div>
-        <div class="t-sm">Car-specific fit, genuine brands like Pioneer &amp; Sony</div>
-      </div>
-      <div class="reveal" data-delay="120" style="background:#303030;border:1px solid rgba(255,242,0,0.12);border-radius:12px;padding:24px 28px;">
-        <div class="t-caption" style="margin-bottom:10px;opacity:0.6;">CAR AUDIO</div>
-        <div style="font-family:'Rozha One',serif;font-size:32px;color:#FFF200;margin-bottom:6px;">₹5,000<span style="font-size:16px;color:#8A8A8A;"> onwards</span></div>
-        <div class="t-sm">Speakers, subwoofers, amplifiers - JBL, Alpine, Hertz</div>
-      </div>
-      <div class="reveal reveal-r" data-delay="180" style="background:#303030;border:1px solid rgba(255,242,0,0.12);border-radius:12px;padding:24px 28px;">
-        <div class="t-caption" style="margin-bottom:10px;opacity:0.6;">SOLAR FILM</div>
-        <div style="font-family:'Rozha One',serif;font-size:32px;color:#FFF200;margin-bottom:6px;">₹4,000<span style="font-size:16px;color:#8A8A8A;"> onwards</span></div>
-        <div class="t-sm">3M, Llumar &amp; other trusted brands with warranty</div>
-      </div>
-    </div>
-    <p class="t-sm reveal" style="margin-top:28px;color:#777777;text-align:center;" data-delay="200">All prices are starting points. Final cost depends on your car model, brand choice, and fitment complexity.</p>
-  </div>
-</section>
 
 <div class="divider"></div>
 
@@ -1934,7 +1941,7 @@
 
     <div class="jump-links">
       <button type="button" onclick="closeJumpMenu();openShopPreview()">Shop Online Preview</button>
-      <a href="#pricing" onclick="jumpTo(event,'pricing')">Pricing</a>
+      <a href="#services" onclick="jumpTo(event,'services')">Services and prices</a>
       <a href="#reviews" onclick="jumpTo(event,'reviews')">Reviews</a>
       <a href="#story" onclick="jumpTo(event,'story')">Our Story</a>
       <a href="#faq" onclick="jumpTo(event,'faq')">FAQ</a>
@@ -1952,6 +1959,10 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     WhatsApp
   </a>
+  <button type="button" class="mb-quote" onclick="openPanel()" aria-label="Quick quote">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/></svg>
+    Quote
+  </button>
   <a href="tel:+919911443751"
     style="flex:1;background:#DA291C;color:white;padding:16px;font-family:'Mukta',sans-serif;font-size:14px;font-weight:600;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
@@ -1961,19 +1972,17 @@
 
 <!-- STEERING WHEEL FLOATER -->
 <div id="floater">
-  <div style="position:relative;">
-    <div id="floaterTooltip" style="position:absolute;right:68px;top:50%;transform:translateY(-50%);background:#303030;border:1px solid rgba(255,183,3,0.4);color:#FFF200;padding:5px 12px;font-family:'Mukta',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity 0.2s;pointer-events:none;">QUICK QUOTE</div>
-    <button id="floaterBtn" onclick="openPanel()"
-      style="width:56px;height:56px;border-radius:50%;background:#303030;border:1.5px solid rgba(255,183,3,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;animation:goldGlow 3s ease-in-out infinite;transition:transform 0.2s;"
-      onmouseover="document.getElementById('floaterTooltip').style.opacity='1';this.style.transform='scale(1.1)'"
-      onmouseout="document.getElementById('floaterTooltip').style.opacity='0';this.style.transform='scale(1)'">
-      <svg class="animate-steer" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFF200" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <div id="floaterNudge" class="floater-nudge" aria-hidden="true">Need a price for your car?</div>
+  <button id="floaterBtn" class="floater-btn" onclick="openPanel()" type="button" aria-label="Quick quote on WhatsApp">
+    <span class="floater-ring">
+      <svg class="animate-steer" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFF200" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
         <line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/>
         <line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/>
       </svg>
-    </button>
-  </div>
+    </span>
+    <span class="floater-text"><b>Quick quote</b><small>Price on WhatsApp</small></span>
+  </button>
 </div>
 
 <!-- WORK PHOTO LIGHTBOX -->
@@ -2098,58 +2107,94 @@ const motionSectionObs = new IntersectionObserver((entries) => {
 motionSections.forEach(section => motionSectionObs.observe(section));
 
 // PHONE WORK GALLERY
-const workGallery = [
-  {
-    src: 'assets/web/seat-cover-black-red.webp',
-    title: 'Black and Red Seat Covers',
-    text: 'Bucket-fit seat covers with contrast piping',
-    fit: 'cover',
-    position: 'center'
-  },
-  {
-    src: 'assets/web/seat-cover-cream-blue.webp',
-    title: 'Cream and Blue Seat Covers',
-    text: 'Clean interior finish with premium fitment',
-    fit: 'cover',
-    position: 'center'
-  },
-  {
-    src: 'assets/web/steering-cover-dashboard.webp',
-    title: 'Steering Cover and Interior',
-    text: 'Steering grip, seat work and dashboard finish',
-    fit: 'cover',
-    position: 'center'
-  },
-  {
-    src: 'assets/web/door-panel-modification.webp',
-    title: 'Door Panel Modification',
-    text: 'Custom door panel insert with stitched detailing',
-    fit: 'contain',
-    position: 'center'
-  }
+let workGallery = [
+  { type:'photo', src:'assets/web/seat-cover-black-red.webp', title:'Black and red seat covers', text:'Bucket-fit seat covers with contrast piping', service:'Seat covers', car:'', fit:'cover' },
+  { type:'photo', src:'assets/web/seat-cover-cream-blue.webp', title:'Cream and blue seat covers', text:'Clean interior finish with premium fitment', service:'Seat covers', car:'', fit:'cover' },
+  { type:'photo', src:'assets/web/steering-cover-dashboard.webp', title:'Steering cover and interior', text:'Steering grip, seat work and dashboard finish', service:'Interior', car:'', fit:'cover' },
+  { type:'photo', src:'assets/web/door-panel-modification.webp', title:'Door panel modification', text:'Custom door panel insert with stitched detailing', service:'Interior', car:'', fit:'contain' }
 ];
+let workInstagram = 'https://www.instagram.com/accessories_madhuban/';
 let currentWorkIndex = 0;
 let workGalleryTimer = null;
 let workGalleryInView = false;
 
+/* Shop photos and videos live in assets/gallery/gallery.json.
+   The owner adds them from his phone with Pages CMS (see .pages.yml). */
+fetch('assets/gallery/gallery.json', { cache:'no-cache' })
+  .then(r => r.ok ? r.json() : null)
+  .then(data => {
+    if (!data || !Array.isArray(data.items)) return;
+    const items = data.items.filter(it => it && it.src);
+    if (!items.length) return;
+    workGallery = items;
+    if (data.instagram) workInstagram = data.instagram;
+    currentWorkIndex = 0;
+    renderPhoneGallery();
+  })
+  .catch(() => {});
+
+function workEsc(v) { return String(v || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function workThumb(item) { return item.type === 'video' ? (item.poster || '') : item.src; }
+
 function renderPhoneGallery() {
   const current = workGallery[currentWorkIndex];
   const slide = document.getElementById('phoneSlide');
+  const video = document.getElementById('phoneVideo');
   const title = document.getElementById('phoneCaptionTitle');
   const text = document.getElementById('phoneCaptionText');
   const dots = document.getElementById('phoneDots');
   const thumbs = document.getElementById('phoneThumbs');
   if (!slide || !current) return;
+  const isVideo = current.type === 'video';
+  const still = workThumb(current);
 
-  slide.style.backgroundImage = `url('${current.src}')`;
+  slide.style.backgroundImage = still ? `url('${still}')` : 'none';
   slide.style.backgroundSize = current.fit || 'cover';
   slide.style.backgroundPosition = current.position || 'center';
-  title.textContent = current.title;
-  text.textContent = current.text;
-  dots.innerHTML = workGallery.map((_, i) => `<span class="${i === currentWorkIndex ? 'active' : ''}"></span>`).join('');
-  thumbs.innerHTML = workGallery.map((item, i) => (
-    `<button type="button" class="phone-thumb ${i === currentWorkIndex ? 'active' : ''}" style="background-image:url('${item.src}')" onclick="setWorkPhoto(${i})" aria-label="Show ${item.title}"></button>`
-  )).join('');
+  if (video) {
+    if (isVideo) {
+      if (video.getAttribute('src') !== current.src) {
+        video.src = current.src;
+        if (current.poster) video.poster = current.poster;
+      }
+      video.hidden = false;
+      const play = video.play();
+      if (play && play.catch) play.catch(() => {});
+    } else {
+      video.pause();
+      video.hidden = true;
+      video.removeAttribute('src');
+      video.load();
+    }
+  }
+  const amb = document.getElementById('workAmbient');
+  if (amb && still) amb.style.backgroundImage = `url('${still}')`;
+  if (title) title.textContent = current.title || '';
+  if (text) text.textContent = current.text || '';
+  if (dots) dots.innerHTML = workGallery.map((_, i) => `<span class="${i === currentWorkIndex ? 'active' : ''}"></span>`).join('');
+
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('jobService', current.service || 'Shop work');
+  set('jobCount', `${currentWorkIndex + 1} / ${workGallery.length}`);
+  set('jobTitle', current.title || '');
+  set('jobText', current.text || '');
+  const car = document.getElementById('jobCar');
+  if (car) { car.hidden = !current.car; car.textContent = current.car ? `Car: ${current.car}` : ''; }
+  const cta = document.getElementById('jobCta');
+  if (cta && typeof getMMWhatsAppUrl === 'function') {
+    try { cta.href = getMMWhatsAppUrl(`Hi, I saw "${current.title}" on your website${current.car ? ' (' + current.car + ')' : ''}. I want the same for my car. Please share the price.`); }
+    catch (e) { setTimeout(renderPhoneGallery, 0); }
+  }
+  const insta = document.getElementById('jobInsta');
+  if (insta) insta.href = workInstagram;
+
+  if (thumbs) thumbs.innerHTML = workGallery.map((item, i) => {
+    const t = workThumb(item);
+    return `<button type="button" class="work-item ${i === currentWorkIndex ? 'active' : ''}" onclick="setWorkPhoto(${i})" aria-label="Show ${workEsc(item.title)}" aria-pressed="${i === currentWorkIndex}">
+      <span class="work-item-img" style="${t ? `background-image:url('${workEsc(t)}')` : ''}">${item.type === 'video' ? '<i class="work-play" aria-hidden="true"></i>' : ''}</span>
+      <span class="work-item-meta"><b>${workEsc(item.title)}</b><small>${workEsc(item.service || item.text || '')}</small></span>
+    </button>`;
+  }).join('');
 }
 
 function setWorkPhoto(index) {
@@ -2162,26 +2207,29 @@ function nextWorkPhoto() { setWorkPhoto(currentWorkIndex + 1); }
 function prevWorkPhoto() { setWorkPhoto(currentWorkIndex - 1); }
 
 function restartWorkGalleryTimer() {
-  if (workGalleryTimer) clearInterval(workGalleryTimer);
+  if (workGalleryTimer) clearTimeout(workGalleryTimer);
   workGalleryTimer = null;
   if (reducedMotionQuery.matches || document.hidden || !workGalleryInView) return;
-  workGalleryTimer = setInterval(() => {
+  const cur = workGallery[currentWorkIndex];
+  const delay = cur && cur.type === 'video' ? 9000 : 4200;
+  workGalleryTimer = setTimeout(() => {
     currentWorkIndex = (currentWorkIndex + 1) % workGallery.length;
     renderPhoneGallery();
-  }, 3600);
+    restartWorkGalleryTimer();
+  }, delay);
 }
 
 function openWorkModal(index = currentWorkIndex) {
   currentWorkIndex = (index + workGallery.length) % workGallery.length;
   const current = workGallery[currentWorkIndex];
-  document.getElementById('workLightboxImg').src = current.src;
+  document.getElementById('workLightboxImg').src = current.type === 'video' ? (current.poster || '') : current.src;
   document.getElementById('workLightboxImg').alt = current.title;
   document.getElementById('workLightboxTitle').textContent = current.title;
   document.getElementById('workLightboxText').textContent = current.text;
   const modal = document.getElementById('workLightbox');
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
-  if (workGalleryTimer) clearInterval(workGalleryTimer);
+  if (workGalleryTimer) clearTimeout(workGalleryTimer);
   modal.querySelector('.lightbox-close').focus({ preventScroll:true });
 }
 
@@ -2582,6 +2630,35 @@ function toggleQPill(btn) {
 }
 
 // FORM SUBMIT
+function updateEnquiryPreview() {
+  const box = document.getElementById('enqPreview');
+  if (!box) return;
+  const v = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const car = [v('fBrand'), v('fModel'), v('fYear') && '(' + v('fYear') + ')'].filter(Boolean).join(' ');
+  const services = [...document.querySelectorAll('#pillGroup .pill.active')].map(p => p.textContent);
+  const lines = [];
+  lines.push('Hi' + (v('fName') ? ', this is ' + v('fName') : '') + '.');
+  lines.push('I want a price for ' + (services.length ? services.join(', ') : 'accessories') + (car ? ' for my ' + car : ' for my car') + '.');
+  if (v('fDetails')) lines.push(v('fDetails'));
+  box.textContent = lines.join('\n');
+}
+document.addEventListener('input', e => { if (e.target && e.target.closest && e.target.closest('#enquiryForm')) updateEnquiryPreview(); });
+document.addEventListener('click', e => { if (e.target && e.target.closest && e.target.closest('#pillGroup')) setTimeout(updateEnquiryPreview, 0); });
+
+(function floaterNudge() {
+  let shown = false;
+  try { shown = sessionStorage.getItem('mmNudge') === '1'; } catch (e) {}
+  if (shown) return;
+  setTimeout(() => {
+    const f = document.getElementById('floater');
+    const panel = document.getElementById('quickPanel');
+    if (!f || f.classList.contains('hidden-floater') || (panel && panel.classList.contains('open'))) return;
+    f.classList.add('nudge');
+    try { sessionStorage.setItem('mmNudge', '1'); } catch (e) {}
+    setTimeout(() => f.classList.remove('nudge'), 6000);
+  }, 25000);
+})();
+
 function submitForm(event) {
   if (event) event.preventDefault();
   const phone = document.getElementById('fPhone').value.trim();
@@ -2683,10 +2760,37 @@ function checkMobile() {
 checkMobile();
 window.addEventListener('resize', checkMobile);
 
+// LEGACY TRACKER + COUNTERS (story section)
+(function () {
+  const range = document.getElementById('ltRange'); if (!range) return;
+  const yearEl = document.getElementById('ltYear'), note = document.getElementById('ltNote'), fill = document.getElementById('ltFill');
+  const notes = y => y < 1989 ? 'Madhuban Restaurant by Jagdish Chandra Paruthi. Lawyers from the kachehri come in for lunch.'
+    : y === 1989 ? 'Madhuban Motors opens. Father and son, Jagdish Chandra and Vivek Paruthi, start fitting cars.'
+    : y < 2000 ? 'The restaurant regulars start bringing their cars. Word spreads down GT Road.'
+    : y < 2026 ? (y - 1989) + ' years of fitting cars on the same spot.'
+    : 'Vivek Paruthi still at the counter, 2.5 lakh+ customers later.';
+  const show = () => { const y = +range.value; yearEl.textContent = y < 1989 ? 'Before 1989' : y === 2026 ? 'Today' : y;
+    note.textContent = notes(y); fill.style.width = ((y - 1985) / 41 * 100) + '%'; };
+  range.addEventListener('input', show); show();
+  const fmt = (el, v) => { const d = +(el.dataset.dec || 0);
+    el.textContent = el.dataset.format === 'lakh' ? (v / 100000).toFixed(1).replace(/\.0$/, '') + ' lakh+' : v.toFixed(d) + (el.dataset.suffix ? el.dataset.suffix : ''); };
+  const nums = [...document.querySelectorAll('.story3-facts b[data-count]')];
+  nums.forEach(el => { el.dataset.suffix = el.dataset.suffix ? '\u2605' : ''; fmt(el, +el.dataset.count); });
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const io = new IntersectionObserver(es => { if (!es.some(e => e.isIntersecting)) return; io.disconnect();
+    const t0 = performance.now();
+    (function step(now) { const k = Math.min(1, (now - t0) / 1600), e = 1 - Math.pow(1 - k, 3);
+      nums.forEach(el => fmt(el, +el.dataset.count * e)); if (k < 1) requestAnimationFrame(step); })(t0);
+    // sweep the tracker from the start once, so people see it moves
+    let y = 1985; const sweep = setInterval(() => { range.value = y; show(); if (++y > 2026) clearInterval(sweep); }, 45);
+  }, { threshold: .35 });
+  io.observe(document.querySelector('.story3-facts'));
+})();
+
 // FORM GRID RESPONSIVE
 function checkFormGrid() {
   const g = document.getElementById('formGrid');
-  if (g) g.style.gridTemplateColumns = window.innerWidth < 600 ? '1fr' : '1fr 1fr';
+  if (g && !g.classList.contains('enq-fields')) g.style.gridTemplateColumns = window.innerWidth < 600 ? '1fr' : '1fr 1fr';
 }
 checkFormGrid();
 window.addEventListener('resize', checkFormGrid);
@@ -2703,7 +2807,8 @@ window.addEventListener('resize', checkFormGrid);
   photos.forEach(el => observer.observe(el));
 })();
 </script>
-<script type="module" src="assets/web/showroom.js?v=finish4"></script>
+<script type="module" src="assets/web/showroom.js?v=mob10"></script>
+<script src="assets/web/space-stars.js" defer></script>
 <script type="module" src="assets/web/ambient-score.js"></script>
 </body>
 </html>

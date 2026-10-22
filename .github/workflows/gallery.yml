@@ -1,0 +1,24 @@
+name: Process shop photos and videos
+on:
+  push:
+    paths: ['assets/gallery/inbox/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: npm install --no-save sharp@0.33
+      - run: node scripts/process-gallery.mjs
+      - name: Commit processed media
+        run: |
+          git config user.name "gallery-bot"
+          git config user.email "gallery-bot@users.noreply.github.com"
+          git add -A assets/gallery
+          git diff --cached --quiet || git commit -m "Gallery: add new shop photos/videos"
+          git push

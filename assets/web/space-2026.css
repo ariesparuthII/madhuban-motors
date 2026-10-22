@@ -1,0 +1,19 @@
+/* Space theme: black page with a faint starfield behind every section */
+html{background:#000!important}body{background:transparent!important}
+#mmStars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+/* Let the stars show through the section backgrounds */
+main,.section,section,footer,.services-section,#services,#reviews,#gallery,#faq,#cta,#visit,#story,#story.story3,#enquiry.enq,.work-phone-section,.divider{background:transparent!important;background-color:transparent!important}
+.enq-glow{background:radial-gradient(ellipse 55% 60% at 12% 20%,rgba(218,41,28,.22),transparent 65%)!important}
+.work-ambient>div{opacity:.55}
+.work-ambient::after{background:radial-gradient(ellipse 60% 70% at 50% 50%,transparent 0%,rgba(0,0,0,.6) 70%,#000 100%)!important}
+/* Hero wordmark: small मोटर्स next to मधुबन, English name underlined */
+.sr-h1__hi{display:inline-flex;align-items:baseline;gap:.12em}
+.sr-h1__motors{font:400 .26em/1 var(--sr-hindi,'Rozha One',serif);color:#fff;letter-spacing:.02em;text-shadow:none;opacity:.92}
+.sr-h1__en{position:relative;align-self:flex-start;padding-bottom:.32em}
+.sr-h1__hi{align-self:flex-start}
+.sr-h1__en::after{content:'';position:absolute;left:0;right:0;bottom:0;height:4px;border-radius:2px;
+  background:linear-gradient(90deg,#DA291C 0%,#FF6A1A 45%,#FFF200 100%);box-shadow:0 0 18px rgba(255,120,30,.55);
+  transform-origin:left;animation:mmUnderline 1.1s cubic-bezier(.2,.8,.2,1) 1.2s both}
+@keyframes mmUnderline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.sr-h1__en::after{animation:none}}
+@media (max-width:900px){.sr-h1__en::after{height:3px}}

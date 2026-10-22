@@ -1,0 +1,53 @@
+# Pages CMS (https://pagescms.org): sign in with GitHub, open this repo,
+# and add shop photos or short videos from your phone. Each save commits to
+# the repo; GitHub Pages republishes the site a minute later.
+media:
+  input: assets/gallery/inbox
+  output: assets/gallery/inbox
+  categories: [image, video]
+
+content:
+  - name: shop-gallery
+    label: Shop gallery (Fitted at our shop)
+    type: file
+    path: assets/gallery/gallery.json
+    format: json
+    fields:
+      - name: instagram
+        label: Instagram link
+        type: string
+      - name: items
+        label: Jobs (first one shows first)
+        type: object
+        list: true
+        fields:
+          - name: type
+            label: Photo or video
+            type: select
+            options:
+              values: [photo, video]
+          - name: src
+            label: Photo or video file (portrait from the phone is best)
+            type: file
+          - name: poster
+            label: Cover photo for a video (optional)
+            type: image
+          - name: title
+            label: What was done (short)
+            type: string
+          - name: text
+            label: One line of detail
+            type: string
+          - name: service
+            label: Service
+            type: select
+            options:
+              values: [Seat covers, Interior, Mats, Android screen, Sound system, Dashcam, Lights, Sun film, PPF, Ceramic coating, Other]
+          - name: car
+            label: Car (for example Hyundai Creta 2023)
+            type: string
+          - name: fit
+            label: Photo fit
+            type: select
+            options:
+              values: [cover, contain]
