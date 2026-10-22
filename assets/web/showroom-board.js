@@ -51,8 +51,8 @@ export async function buildShopBoard(T, logoImg, base = 'assets/web/') {
   if (dayTex) group.add(dayMesh); if (nightTex) group.add(nightMesh);
 
   // 5. The building around it, so the board sits on a real facade
-  const wall = new T.Mesh(new T.PlaneGeometry(9.6, 6.6), new T.MeshStandardMaterial({ color: 0x141416, roughness: 0.9 }));
-  wall.position.set(0, 3.25, -0.06); group.add(wall);
+  const wall = new T.Mesh(new T.PlaneGeometry(10, 7.2), new T.MeshStandardMaterial({ color: 0x08080a, roughness: 0.9 }));
+  wall.position.set(0, 3.6, -0.06); group.add(wall);
   const sideL = new T.Mesh(new T.BoxGeometry(0.35, 2.5, 0.35), new T.MeshStandardMaterial({ color: 0x2a2626, roughness: 0.8 }));
   sideL.position.set(-2.78, 1.09, 0.1); group.add(sideL);
   const sideR = sideL.clone(); sideR.position.x = 2.78; group.add(sideR);

@@ -1,6 +1,6 @@
 /* Madhuban Motors cinematic showroom.
    One sticky WebGL stage; chapters scroll over it and drive the camera.
-   - Studio rig: overhead LED tubes (car) + a sign tube (board) that also live in the environment map,
+   - Studio rig: overhead light bars that also live in the environment map,
      so the reflections on the paint match the lights you see.
    - Wet floor (desktop), bloom, and the real shopfront board as the back wall.
    - Each accessory chapter shows the real part in place; dashcam, seats and
@@ -8,7 +8,7 @@
 
 import { buildParts } from './studio3d-parts.js?v=finish4';
 
-import { buildShopBoard } from './showroom-board.js?v=lights5';
+import { buildShopBoard } from './showroom-board.js?v=space6';
 
 const ROOT = document.getElementById('showroom');
 
@@ -185,99 +185,50 @@ async function boot(stage, ctx) {
   stage.prepend(renderer.domElement);
 
   const scene = new T.Scene();
-  const BG = 0x060606;
-  // Night sky backdrop: black at the edges, a soft lift in the middle.
-  scene.background = (() => {
-    const c = document.createElement('canvas'); c.width = 512; c.height = 512;
-    const g = c.getContext('2d'), gr = g.createRadialGradient(256, 230, 10, 256, 256, 380);
-    gr.addColorStop(0, '#34343d'); gr.addColorStop(.5, '#15151b'); gr.addColorStop(1, '#050506');
-    g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
-    const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t;
-  })();
+  const BG = 0x000000;
+  scene.background = new T.Color(BG);
   scene.fog = new T.Fog(BG, 12, 30);
-  // Starlight headliner, Rolls-Royce style: two twinkling layers of tiny stars.
+  // Space backdrop: faint stars all around, matching the page's starfield.
   const starLayers = [];
-  for (const [n, size, tint] of [[small ? 520 : 900, small ? 2.2 : 1.8, 0xffffff], [small ? 160 : 260, small ? 3.4 : 3.0, 0xfff1d6]]) {
+  for (const [n, size, op] of [[small ? 500 : 900, small ? 1.4 : 1.2, .55], [small ? 90 : 160, small ? 2.2 : 2.0, .85]]) {
     const pos = new Float32Array(n * 3);
     for (let i = 0; i < n; i++) {
-      const th = Math.random() * Math.PI * 2, y = 0.06 + Math.random() * 0.94, r = Math.sqrt(1 - y * y), R = 24;
+      const th = Math.random() * Math.PI * 2, y = 0.03 + Math.random() * 0.97, r = Math.sqrt(1 - y * y), R = 26;
       pos[i * 3] = Math.cos(th) * r * R; pos[i * 3 + 1] = y * R; pos[i * 3 + 2] = Math.sin(th) * r * R;
     }
     const gStar = new T.BufferGeometry(); gStar.setAttribute('position', new T.BufferAttribute(pos, 3));
-    const pts = new T.Points(gStar, new T.PointsMaterial({ color: tint, size, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false, fog: false, toneMapped: false }));
-    scene.add(pts); starLayers.push(pts);
+    const pts = new T.Points(gStar, new T.PointsMaterial({ color: 0xffffff, size, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false, fog: false }));
+    pts.userData.op = op; scene.add(pts); starLayers.push(pts);
   }
 
   /* ---------- studio environment: the reflections ARE the light rig ---------- */
   const envScene = new T.Scene();
   envScene.background = new T.Color(0x050505);
   const bright = c => new T.MeshBasicMaterial({ color: c, side: T.DoubleSide });
-  // (the honeycomb ceiling is added to envScene below, so the paint reflects its pattern)
+  for (let i = -2; i <= 2; i++) {                       // overhead bars
+    const m = new T.Mesh(new T.PlaneGeometry(0.65, 7.5), bright(new T.Color(1, 1, 1).multiplyScalar(2.7)));
+    m.rotation.x = Math.PI / 2; m.position.set(i * 1.1, 4.5, 0); envScene.add(m);
+  }
   const sideL = new T.Mesh(new T.PlaneGeometry(6, 2.2), bright(new T.Color(1, 0.97, 0.93).multiplyScalar(2.0)));
   sideL.position.set(-6, 1.6, 0); sideL.rotation.y = Math.PI / 2; envScene.add(sideL);
   const sideR = sideL.clone(); sideR.material = bright(new T.Color(0.86, 0.93, 1).multiplyScalar(1.6)); sideR.position.x = 6; sideR.rotation.y = -Math.PI / 2; envScene.add(sideR);
   const redStrip = new T.Mesh(new T.PlaneGeometry(10, 0.5), bright(new T.Color(0.5, 0.075, 0.045).multiplyScalar(1.2)));
   redStrip.position.set(0, 1.0, -7); envScene.add(redStrip);
-
+  const pmrem = new T.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(envScene, 0.08).texture;
   scene.environmentIntensity = 0;   // ramps up in the intro
 
-  /* ---------- visible light rig: thick designer LED tubes ---------- */
-  // Designer fixture: many glowing tube segments drawn as ONE instanced mesh.
-  function ledGrid(segs, r) {
-    const geo = new T.CylinderGeometry(r, r, 1, 10, 1, true);
-    const mat = new T.MeshBasicMaterial({ color: 0x000000, toneMapped: false });
-    const mesh = new T.InstancedMesh(geo, mat, segs.length);
-    const up = new T.Vector3(0, 1, 0), a = new T.Vector3(), b = new T.Vector3(), d = new T.Vector3();
-    const m = new T.Matrix4(), q = new T.Quaternion(), sc = new T.Vector3();
-    segs.forEach(([p0, p1], i) => {
-      a.set(...p0); b.set(...p1); d.subVectors(b, a); const len = d.length();
-      q.setFromUnitVectors(up, d.normalize()); sc.set(1, len, 1);
-      m.compose(a.add(b).multiplyScalar(.5), q, sc); mesh.setMatrixAt(i, m);
-    });
-    const g = new T.Group(); g.add(mesh);
-    g.userData = { tube: mesh, halo: null }; return g;
-  }
-  // Honeycomb ceiling over the car, like a detailing studio, with a frame around it.
-  function hexCeiling(R, cols, rows) {
-    const segs = [], seen = new Set(), w = Math.sqrt(3) * R;
-    const key = (p, q) => [p, q].map(v => v.map(n => n.toFixed(2)).join(',')).sort().join('|');
-    let minX = 1e9, maxX = -1e9, minZ = 1e9, maxZ = -1e9;
-    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-      const cx = (c - (cols - 1) / 2) * w + (r % 2 ? w / 2 : 0) - w / 4, cz = (r - (rows - 1) / 2) * R * 1.5;
-      const pts = [...Array(6)].map((_, k) => { const t = Math.PI / 3 * k + Math.PI / 6; return [cx + R * Math.cos(t), 0, cz + R * Math.sin(t)]; });
-      pts.forEach(([x, , z]) => { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z); });
-      for (let k = 0; k < 6; k++) { const p0 = pts[k], p1 = pts[(k + 1) % 6], id = key(p0, p1); if (!seen.has(id)) { seen.add(id); segs.push([p0, p1]); } }
-    }
-    const m = 0.28, x0 = minX - m, x1 = maxX + m, z0 = minZ - m, z1 = maxZ + m;
-    segs.push([[x0, 0, z0], [x1, 0, z0]], [[x1, 0, z0], [x1, 0, z1]], [[x1, 0, z1], [x0, 0, z1]], [[x0, 0, z1], [x0, 0, z0]]);
-    return segs;
-  }
-  // Triangle truss for the shop sign: two rails with a zig-zag of triangles between.
-  function triangleTruss(len, h, n) {
-    const segs = [[[-len / 2, h, 0], [len / 2, h, 0]], [[-len / 2, 0, 0], [len / 2, 0, 0]]], step = len / n;
-    for (let i = 0; i < n; i++) {
-      const xa = -len / 2 + i * step, xb = xa + step;
-      segs.push(i % 2 ? [[xa, h, 0], [xb, 0, 0]] : [[xa, 0, 0], [xb, h, 0]]);
-    }
-    segs.push([[-len / 2, 0, 0], [-len / 2, h, 0]], [[len / 2, 0, 0], [len / 2, h, 0]]);
-    return segs;
-  }
-  const setTube = (g, v, warm) => {
-    const c = warm ? [1, .93, .82] : [1, 1, 1];
-    g.userData.tube.material.color.setRGB(c[0] * 4 * v, c[1] * 4 * v, c[2] * 4 * v);
-    if (g.userData.halo) g.userData.halo.material.color.setRGB(c[0] * .55 * v, c[1] * .55 * v, c[2] * .55 * v);
-  };
-  // Over the car: three long tubes running nose to tail, like a detailing bay.
+  /* ---------- visible light rig (matches the env bars) ---------- */
+  const barMat = new T.MeshBasicMaterial({ color: new T.Color(1, 1, 1).multiplyScalar(3), toneMapped: false });
   const bars = [];
-  {
-    const segs = hexCeiling(0.62, 4, 5);
-    const g = ledGrid(segs, 0.028);
-    g.position.set(0, 4.6, 0); scene.add(g); bars.push(g);
-    const e = ledGrid(segs, 0.07);                       // same pattern, fatter, in the reflections
-    e.userData.tube.material.color.setScalar(3.4); e.position.set(0, 4.6, 0); envScene.add(e);
+  for (let i = -2; i <= 2; i++) {
+    const g = new T.Group();
+    const housing = new T.Mesh(new T.BoxGeometry(0.16, 0.06, 3.6), new T.MeshStandardMaterial({ color: 0x111111, roughness: .4, metalness: .8 }));
+    const tube = new T.Mesh(new T.BoxGeometry(0.1, 0.012, 3.4), barMat.clone());
+    tube.position.y = -0.035; g.add(housing, tube);
+    g.position.set(i * 1.1, 4.5, 0); scene.add(g); bars.push(tube);
+    tube.material.color.setScalar(0);
   }
-  const pmrem = new T.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(envScene, 0.04).texture;
   const key = new T.DirectionalLight(0xfff4e6, 0);
   key.position.set(-3, 7, 4); key.castShadow = true;
   key.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048);
@@ -322,20 +273,7 @@ async function boot(stage, ctx) {
     board.group.rotation.y = Math.atan2(hc[0] - bx, hc[2] - bz);
   }
   board.setPower(0); scene.add(board.group);
-  // Over the shop board: one long warm tube, the sign light.
-  const signTube = ledGrid(triangleTruss(8.4, 0.42, 14), 0.03);
-  signTube.position.set(0, 5.85, 0.45); board.group.add(signTube);
-  // Light wash falling from the tube onto the board face.
-  const washTex = (() => {
-    const c = document.createElement('canvas'); c.width = 256; c.height = 128;
-    const g = c.getContext('2d');
-    const gr = g.createRadialGradient(128, 0, 4, 128, 0, 150);
-    gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.45, 'rgba(255,255,255,.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
-    g.fillStyle = gr; g.fillRect(0, 0, 256, 128);
-    const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; return t;
-  })();
-  const wash = new T.Mesh(new T.PlaneGeometry(8.8, 3.2), new T.MeshBasicMaterial({ map: washTex, color: 0x000000, transparent: true, depthWrite: false, blending: T.AdditiveBlending, toneMapped: false }));
-  wash.position.set(0, 4.3, 0.12); board.group.add(wash);
+  let boardAng = Math.atan2(SHOTS.hero.cam[0], SHOTS.hero.cam[2]);
   const sign = null;
 
   /* ---------- car ---------- */
@@ -511,26 +449,20 @@ async function boot(stage, ctx) {
       const it = clamp((now - t0) / 1000 / INTRO);
 
       // Intro: soft sequential light ramp, without random flicker.
-      // Lights follow the story: the board is lit first, then the car as you scroll.
-      const fNow = ctx.getF();
-      const onCar = smooth(clamp(fNow * 1.4));
       bars.forEach((b, i) => {
-        const flick = smooth(clamp((it * 1.4 - 0.5 - i * 0.12) * 4));
-        const v = flick * onCar * (1 - dark * 0.85);
-        b.visible = v > 0.02; setTube(b, v, false);
+        const on = clamp((it * 1.4 - i * 0.12) * 4);
+        const flick = smooth(on);
+        b.material.color.setScalar(2.4 * flick * (1 - dark * 0.85));
       });
-      const signV = smooth(clamp(it * 1.6 - 0.4)) * (1 - onCar * 0.75) * (1 - inside);
-      setTube(signTube, signV, true);
-      wash.material.color.setRGB(.2 * signV, .17 * signV, .13 * signV);
       const lightsOn = smooth(clamp(it * 1.2 - 0.15));
-      starLayers.forEach((st, i) => { st.material.opacity = lightsOn * (1 - inside) * (reduced ? .9 : .7 + .3 * Math.sin(now / (1400 + i * 900) + i * 2)); });
+      starLayers.forEach((st, i) => { st.material.opacity = st.userData.op * Math.min(1, it * 1.5) * (1 - inside * .8) * (reduced ? 1 : .8 + .2 * Math.sin(now / (1700 + i * 1100) + i)); });
       scene.environmentIntensity = 1.12 * lightsOn * (1 - dark * 0.8);
-      key.intensity = 2.5 * lightsOn * (1 - dark * 0.9) * (0.8 + 0.3 * onCar);
+      key.intensity = 2.5 * lightsOn * (1 - dark * 0.9);
       fill.intensity = 0.55 * lightsOn;
       rim.intensity = 0.85 * smooth(clamp(it * 1.5 - 0.6)) * (1 - inside * 0.85) * (1 - dark * 0.8);
       ring.material.opacity = 0.16 * smooth(clamp(it * 2 - 1)) * (1 - inside);
       if (!reduced) { const a = dGeo.attributes.position.array; for (let i = 0; i < DUST; i++) { a[i * 3 + 1] += dt * 0.05 * (0.5 + (dSeed[i] % 1)); a[i * 3] += Math.sin(now / 3000 + dSeed[i]) * dt * 0.03; if (a[i * 3 + 1] > 3) a[i * 3 + 1] = 0; } dGeo.attributes.position.needsUpdate = true; }
-      board.setPower(smooth(clamp(it * 1.6 - 0.7)) * (1 - inside * 0.7) * (1 - onCar * 0.4));
+      board.setPower(smooth(clamp(it * 1.6 - 0.7)) * (1 - inside * 0.7));
 
       // scroll-driven shot
       const f = ctx.getF();
@@ -578,6 +510,14 @@ async function boot(stage, ctx) {
       const ry = S.part ? car.rotation.y : 0;
       camera.position.copy(camPos).applyAxisAngle(T.Object3D.DEFAULT_UP, ry);
       camera.lookAt(tB.copy(camLook).applyAxisAngle(T.Object3D.DEFAULT_UP, ry));
+      // The shop board glides around to stay behind the car from every angle.
+      { const cdx = camera.position.x - tB.x, cdz = camera.position.z - tB.z;
+        if (Math.hypot(cdx, cdz) > 0.8) {
+          let d = Math.atan2(cdx, cdz) - boardAng; d = Math.atan2(Math.sin(d), Math.cos(d));
+          boardAng += d * Math.min(1, dt * 1.8);
+        }
+        board.group.position.set(-Math.sin(boardAng) * 13, -0.16, -Math.cos(boardAng) * 13);
+        board.group.rotation.y = boardAng; }
       const W = stage.clientWidth, H = stage.clientHeight;
       // where the car should sit on screen: right half on desktop (text left),
       // upper-middle on phones (text below). Signs are measured, not assumed.
