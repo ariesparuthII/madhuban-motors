@@ -19,7 +19,7 @@ for(const [width,height] of [[390,844],[1280,800]]){
  await p.locator('.sr-pick[data-part="coating"]').click();result.remainingPreview=await p.evaluate(()=>window.__sceneCheck.previewKey);
  // Raycast the actual model over screen positions and click a genuine mesh for each action.
  await go('hero');await p.waitForTimeout(2500);
- result.hotspots=await p.evaluate(()=>{const d=window.__sceneCheck,canvas=document.querySelector('.sr-stage canvas'),r=canvas.getBoundingClientRect(),out={};for(let y=80;y<Math.min(innerHeight*.55,460);y+=5)for(let x=5;x<innerWidth-5;x+=5){const a=d.pick({clientX:x,clientY:y});if(a&&!out[a.key]&&document.elementFromPoint(x,y)===canvas)out[a.key]={x,y};}return out});
+ result.hotspots=await p.evaluate(()=>{const d=window.__sceneCheck,canvas=document.querySelector('.sr-stage canvas'),r=canvas.getBoundingClientRect(),out={};for(let y=80;y<innerHeight*.9;y+=5)for(let x=5;x<innerWidth-5;x+=5){const a=d.pick({clientX:x,clientY:y});if(a&&!out[a.key]&&document.elementFromPoint(x,y)===canvas)out[a.key]={x,y};}return out});
  for(const key of ['door','horn','wheels','paint','inside']){const point=result.hotspots[key];if(!point){console.log('MISSING HOTSPOT',width,key);continue;}await p.mouse.click(point.x,point.y);await p.waitForTimeout(350);result.hotspots[key].clicked=true;if(key==='inside')await p.waitForTimeout(1200);}
  report.viewports.push(result);await p.close();fs.writeFileSync('verification/results.json',JSON.stringify(report,null,2));
 }

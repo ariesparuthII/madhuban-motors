@@ -9,12 +9,12 @@
           "active": "hero",
           "width": 390,
           "panel": {
-            "top": 431.609375,
+            "top": 423.96875,
             "bottom": 760,
             "left": 20,
             "right": 370
           },
-          "canvasClip": "inset(70px 0px 430.391px)"
+          "canvasClip": "inset(70px 0px 438.031px)"
         },
         {
           "key": "legacy",
@@ -129,7 +129,7 @@
           "active": "film",
           "width": 390,
           "panel": {
-            "top": 573.984375,
+            "top": 539.3125,
             "bottom": 748,
             "left": 20,
             "right": 370
@@ -258,33 +258,35 @@
       ],
       "hotspots": {
         "paint": {
-          "x": 180,
-          "y": 225,
+          "x": 190,
+          "y": 290,
           "clicked": true
         },
         "inside": {
-          "x": 155,
-          "y": 230,
+          "x": 160,
+          "y": 295,
           "clicked": true
         },
         "door": {
           "x": 220,
-          "y": 230,
+          "y": 295,
           "clicked": true
         },
         "horn": {
-          "x": 80,
-          "y": 245,
+          "x": 295,
+          "y": 300,
           "clicked": true
         },
         "wheels": {
-          "x": 300,
-          "y": 250,
+          "x": 290,
+          "y": 315,
           "clicked": true
         }
       },
       "builderUrl": "https://wa.me/919718373751?text=Hi%2C%20I%20want%20these%20for%20my%20car%3A%20Android%20screen%2C%20Dashcam%2C%20Sound%20system%2C%20Seat%20covers%2C%207D%20mats%2C%20Sun%20film%2C%20LED%20lights%2C%20PPF%2C%20Ceramic%20coating.%20Starting%20total%20on%20the%20website%3A%20%E2%82%B923%2C300%20%2B.%20My%20car%3A%20Hyundai%20Creta%202023.%20(From%20the%203D%20showroom)%0A%0A%5BSource%3A%20ORG%5D",
-      "storage": {},
+      "storage": {
+        "mmNudge": "1"
+      },
       "remainingPreview": "ppf"
     },
     {
@@ -296,10 +298,10 @@
           "active": "hero",
           "width": 1280,
           "panel": {
-            "top": 166.90625,
+            "top": 170.75,
             "bottom": 736,
             "left": 76.796875,
-            "right": 539.625
+            "right": 591.078125
           },
           "canvasClip": ""
         },
@@ -416,8 +418,8 @@
           "active": "film",
           "width": 1280,
           "panel": {
-            "top": 270.3125,
-            "bottom": 559.6875,
+            "top": 240.28125,
+            "bottom": 589.703125,
             "left": 630.8125,
             "right": 1100.8125
           },
@@ -543,35 +545,11 @@
           "part": "coating"
         }
       ],
-      "hotspots": {
-        "paint": {
-          "x": 900,
-          "y": 355,
-          "clicked": true
-        },
-        "inside": {
-          "x": 850,
-          "y": 360,
-          "clicked": true
-        },
-        "door": {
-          "x": 990,
-          "y": 360,
-          "clicked": true
-        },
-        "horn": {
-          "x": 660,
-          "y": 395,
-          "clicked": true
-        },
-        "wheels": {
-          "x": 1130,
-          "y": 410,
-          "clicked": true
-        }
-      },
+      "hotspots": {},
       "builderUrl": "https://wa.me/919718373751?text=Hi%2C%20I%20want%20these%20for%20my%20car%3A%20Android%20screen%2C%20Dashcam%2C%20Sound%20system%2C%20Seat%20covers%2C%207D%20mats%2C%20Sun%20film%2C%20LED%20lights%2C%20PPF%2C%20Ceramic%20coating.%20Starting%20total%20on%20the%20website%3A%20%E2%82%B923%2C300%20%2B.%20My%20car%3A%20Hyundai%20Creta%202023.%20(From%20the%203D%20showroom)%0A%0A%5BSource%3A%20ORG%5D",
-      "storage": {},
+      "storage": {
+        "mmNudge": "1"
+      },
       "remainingPreview": "ppf"
     }
   ],
