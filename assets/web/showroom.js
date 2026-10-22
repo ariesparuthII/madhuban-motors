@@ -532,6 +532,7 @@ async function boot(stage, ctx) {
       const S = (ctx.keys[near] === 'car' && previewKey && SHOTS[previewKey]) || SHOTS[ctx.keys[near]] || SHOTS.hero;
       if (S.part) ring.material.opacity = 0;
       if (carMirror) carMirror.visible = !S.part && !S.inside;
+      if (board.mirror) board.mirror.visible = camera.position.y < 3.2;   // a floor reflection only reads from a low camera
       dust.material.opacity += ((S.part ? 0 : 0.2 * lightsOn * (1 - inside)) - dust.material.opacity) * Math.min(1, dt * 4);
       dark += ((S.dark ? 1 : 0) - dark) * Math.min(1, dt * 3);
       inside += ((S.inside ? 1 : 0) - inside) * Math.min(1, dt * 3);
@@ -540,8 +541,12 @@ async function boot(stage, ctx) {
 
       // portrait screens: pull exterior shots back so the car fits
       const asp = camera.aspect;
-      const pull = S.part === 'audio' ? (asp < 1.4 ? 2.1 : 1.75) : S.inside || S.part === 'seats' || S.part === 'mats' ? 1 : (asp >= 1.4 ? 1 : Math.min(ctx.keys[Math.round(f)] === 'car' && !previewKey ? 3.2 : 2.35, 1.7 / asp));
+      const pull = S.part === 'audio' ? (asp < 1.4 ? 2.1 : 1.75) : S.inside ? 1 : S.part === 'seats' || S.part === 'mats' ? (asp < 1 ? 1.9 : 1) : (asp >= 1.4 ? 1 : Math.min(ctx.keys[Math.round(f)] === 'car' && !previewKey ? 3.4 : ctx.keys[near] === 'hero' ? 2.35 : 4.0, (ctx.keys[near] === 'hero' ? 1.7 : 1.9) / asp));
       tA.sub(lA).multiplyScalar(pull).add(lA);
+      // keep fog behind the car however far the camera pulls back
+      { const dist = tA.distanceTo(lA); scene.fog.near = Math.max(12, dist + 2); scene.fog.far = Math.max(30, dist + 20); }
+      // portrait exterior shots: aim a little higher so the shop board shows above the car
+      if (asp < 1 && !S.part && !S.inside && ctx.keys[near] !== 'hero') { lA.y += 1.1; tA.y += 0.8; }
 
       // the intro also dollies in
       const introPull = 1 + (1 - smooth(it)) * 0.6;
@@ -572,9 +577,11 @@ async function boot(stage, ctx) {
       { const cdx = camera.position.x - tB.x, cdz = camera.position.z - tB.z;
         if (Math.hypot(cdx, cdz) > 0.8) {
           let d = Math.atan2(cdx, cdz) - boardAng; d = Math.atan2(Math.sin(d), Math.cos(d));
-          boardAng += d * Math.min(1, dt * 1.8);
+          boardAng += d * Math.min(1, dt * 3);
         }
-        board.group.position.set(-Math.sin(boardAng) * (small ? 10 : 13), -0.16, -Math.cos(boardAng) * (small ? 10 : 13));
+        // stand the board straight behind whatever the camera is looking at
+        const BDn = small ? 10 : 13;
+        board.group.position.set(tB.x - Math.sin(boardAng) * BDn, -0.16, tB.z - Math.cos(boardAng) * BDn);
         board.group.rotation.y = boardAng; }
       const W = stage.clientWidth, H = stage.clientHeight;
       // where the car should sit on screen: right half on desktop (text left),

@@ -198,3 +198,18 @@
 .story3-cta p{margin:0;font:400 22px/1.2 'Rozha One',serif;color:#fff!important}
 @media (max-width:640px){.lt-mark{font-size:10px}.lt-mark:nth-of-type(3),.lt-mark:nth-of-type(4){display:none}.story3-quote{padding-left:40px!important}.story3-quote::before{font-size:70px}}
 @media (max-width:640px){.lt-mark:first-of-type{font-size:0}}
+
+/* ---------- PHONE: nothing cut off while swiping ---------- */
+@media (max-width:640px){
+  /* services: stacked cards instead of a half-hidden sideways swipe */
+  #services .container>div:has(>.service-row){display:grid!important;grid-template-columns:1fr;overflow:visible!important;margin:0!important;padding:0!important;gap:14px!important}
+  #services .service-row{flex:none!important;width:auto!important}
+  /* recent jobs: a full list, no clipped cards */
+  .work-list{display:grid!important;grid-template-columns:1fr 1fr;overflow:visible!important;gap:10px}
+  .work-item{flex:none!important;flex-direction:column;align-items:stretch;text-align:left}
+  .work-item-img{width:100%;height:auto;aspect-ratio:4/5}
+  .work-item-meta b{white-space:normal}
+  /* install gallery: show the whole photo, any shape */
+  .gallery-cell{aspect-ratio:auto!important;min-height:220px;background-size:contain!important;background-repeat:no-repeat!important;background-color:#0b0b0c!important}
+}
+@media (max-width:640px){.gallery-cell{aspect-ratio:4/5!important;min-height:0}}
