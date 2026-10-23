@@ -666,8 +666,8 @@
     .gold-rule.visible { width:100%; }
 
     /* NAV */
-    nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(10,10,10,0.94); backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,242,0,0.16); transition:box-shadow 0.3s; }
-    nav.scrolled { box-shadow:0 1px 0 rgba(255,183,3,0.2); }
+    #mainNav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(10,10,10,0.94); backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,242,0,0.16); transition:box-shadow 0.3s; }
+    #mainNav.scrolled { box-shadow:0 1px 0 rgba(255,183,3,0.2); }
     .shop-entry { position:relative; overflow:hidden; isolation:isolate; letter-spacing:.04em; }
     .shop-entry::before {
       content:''; position:absolute; inset:-1px; z-index:-1;
@@ -1433,7 +1433,7 @@
       </div>
     </div>
 
-    <nav aria-label="More services and buying guides" style="display:flex;flex-wrap:wrap;gap:14px 24px;margin-top:28px;color:#FFF200"><a href="/car-ppf-ghaziabad.html">PPF in Ghaziabad</a><a href="/ceramic-coating-ghaziabad.html">Ceramic coating</a><a href="/services.html">All services and fitted prices</a><a href="/blog/dashcam-fitting-checklist.html">Dashcam buying checklist</a><a href="/blog/ppf-vs-ceramic-coating.html">PPF vs ceramic coating</a><a href="/blog/android-screen-buying-checklist.html">Android screen checklist</a></nav><div style="margin-top:56px;text-align:center;">
+    <div style="margin-top:56px;text-align:center;">
       <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-shimmer btn-lg">Send Car Details on WhatsApp</a>
     </div>
   </div>
@@ -1882,6 +1882,17 @@
       <a href="blog/" class="t-sm" style="color:#777777;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FFF200'" onmouseout="this.style.color='#777777'">Blog</a>
       <a href="privacy.html" class="t-sm privacy-link" style="text-decoration:none;transition:color 0.2s;">Privacy</a>
     </div>
+    <nav class="footer-guides" aria-label="Services and buying guides" style="border-top:1px solid rgba(255,242,0,.12);padding:24px 0;margin-bottom:24px;">
+      <p class="t-caption" style="margin:0 0 16px;">Services and buying guides</p>
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px 24px;">
+        <a class="t-sm" href="/car-ppf-ghaziabad.html">PPF in Ghaziabad</a>
+        <a class="t-sm" href="/ceramic-coating-ghaziabad.html">Ceramic coating</a>
+        <a class="t-sm" href="/services.html">All services and fitted prices</a>
+        <a class="t-sm" href="/blog/dashcam-fitting-checklist.html">Dashcam buying checklist</a>
+        <a class="t-sm" href="/blog/ppf-vs-ceramic-coating.html">PPF vs ceramic coating</a>
+        <a class="t-sm" href="/blog/android-screen-buying-checklist.html">Android screen checklist</a>
+      </div>
+    </nav>
     <div style="font-family:'Rozha One',serif;font-size:18px;letter-spacing:.18em;color:#FFF200;margin:4px 0 16px;">A.S.S.N.</div>
     <div class="t-sm" style="color:#777777;">© 2026 Madhuban Motors. All rights reserved.</div>
   </div>
@@ -1949,7 +1960,6 @@
     <div class="jump-links">
       <button type="button" onclick="closeJumpMenu();openShopPreview()">Shop Online Preview</button>
       <a href="/services.html">Services and prices</a>
-      <a href="/blog/">Buying and fitting guides</a>
       <a href="#reviews" onclick="jumpTo(event,'reviews')">Reviews</a>
       <a href="#story" onclick="jumpTo(event,'story')">Our Story</a>
       <a href="#faq" onclick="jumpTo(event,'faq')">FAQ</a>
