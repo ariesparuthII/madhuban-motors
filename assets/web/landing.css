@@ -1,12 +1,15 @@
+@font-face{font-family:'Rozha One';src:url('/assets/fonts/rozha-one-latin-400-normal.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Mukta';src:url('/assets/fonts/mukta-latin-400-normal.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Mukta';src:url('/assets/fonts/mukta-latin-700-normal.woff2') format('woff2');font-weight:600 800;font-display:swap}
 :root{
   --ink:#181818;--ink-2:#0B0B0B;--char:#303030;
   --paper:#FFFFFF;--paper-2:#F7F7F7;--paper-3:#EDEDED;
   --red:#DA291C;--yellow:#FFF200;
   --rule:rgba(16,37,31,.10);--rule-2:rgba(16,37,31,.18);
   --hair:rgba(255,255,255,.10);
-  --serif:'DM Serif Display',Georgia,serif;
-  --stat:'Fraunces','DM Serif Display',Georgia,serif;
-  --sans:'Manrope',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+  --serif:'Rozha One',Georgia,serif;
+  --stat:'Rozha One',Georgia,serif;
+  --sans:'Mukta',sans-serif;
   --ease:cubic-bezier(.2,.8,.2,1);
 }
 *{box-sizing:border-box}
@@ -112,3 +115,6 @@ footer b{color:var(--paper);font-weight:700}
   .nav img{height:44px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+html,body{overflow-x:clip}body{padding-bottom:0}.reading{max-width:860px}.reading h2{margin-top:38px;max-inline-size:none}.reading p{max-width:72ch}.paper{background:var(--paper)}.visit-note{font-size:15px!important}.hero-from{flex-wrap:wrap;border-radius:16px}.hero-from span{white-space:normal}.nav-r>a:not(.btn){color:#fff}.search-contact-bar{display:none}.search-consent{position:fixed;z-index:100;bottom:12px;left:12px;right:12px;background:#181818;color:#fff;padding:18px;border:1px solid #555;display:flex;flex-wrap:wrap;gap:12px;align-items:center;max-width:900px;margin:auto}.search-consent p{flex:1 1 300px;margin:0}.search-consent a{color:#fff200}[hidden]{display:none!important}
+@media(max-width:767px){body{padding-bottom:82px}.container{padding:0 20px}.nav-in{gap:6px}.nav-r{gap:8px}.nav-r .btn{padding:10px 12px}.nav-r>a:not(.btn){display:none}.hero{padding:42px 0}.hero-from{padding:12px 16px}.search-contact-bar{display:flex;gap:8px;position:fixed;bottom:0;left:0;right:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:80;background:#111}.search-contact-bar a{flex:1;padding:13px 10px}.search-consent{bottom:82px}.also a{min-width:0}h1{overflow-wrap:break-word}}
