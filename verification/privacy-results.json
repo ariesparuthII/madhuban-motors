@@ -131,8 +131,8 @@
     {
       "mode": "no-webgl",
       "works": true,
-      "progressA": "width: 1.1%;",
-      "progressB": "width: 3.8%;"
+      "progressA": "width: 1.2%;",
+      "progressB": "width: 4.1%;"
     },
     {
       "mode": "reduced",

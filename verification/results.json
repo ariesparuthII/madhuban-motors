@@ -545,7 +545,33 @@
           "part": "coating"
         }
       ],
-      "hotspots": {},
+      "hotspots": {
+        "inside": {
+          "x": 855,
+          "y": 445,
+          "clicked": true
+        },
+        "paint": {
+          "x": 925,
+          "y": 445,
+          "clicked": true
+        },
+        "door": {
+          "x": 955,
+          "y": 450,
+          "clicked": true
+        },
+        "horn": {
+          "x": 660,
+          "y": 480,
+          "clicked": true
+        },
+        "wheels": {
+          "x": 1130,
+          "y": 495,
+          "clicked": true
+        }
+      },
       "builderUrl": "https://wa.me/919718373751?text=Hi%2C%20I%20want%20these%20for%20my%20car%3A%20Android%20screen%2C%20Dashcam%2C%20Sound%20system%2C%20Seat%20covers%2C%207D%20mats%2C%20Sun%20film%2C%20LED%20lights%2C%20PPF%2C%20Ceramic%20coating.%20Starting%20total%20on%20the%20website%3A%20%E2%82%B923%2C300%20%2B.%20My%20car%3A%20Hyundai%20Creta%202023.%20(From%20the%203D%20showroom)%0A%0A%5BSource%3A%20ORG%5D",
       "storage": {
         "mmNudge": "1"
