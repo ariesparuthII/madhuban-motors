@@ -28,7 +28,7 @@
     tiers: [
       { min: 2000, gift: 'Premium microfiber cloth' },
       { min: 3000, gift: 'Car perfume' },
-      { min: 5000, gift: 'Dashboard Ganesh ji' }
+      { min: 5000, gift: 'Dashboard murti' }
     ]
   };
   var T = OFFER.tiers;
@@ -147,18 +147,18 @@
   function nudgeHTML(total) {
     if (total <= 0) {
       return 'Free gifts from <b>' + rupees(T[0].min) + '</b>: premium microfiber cloth. <b>' + rupees(T[1].min) +
-        '+</b> adds a car perfume, <b>' + rupees(T[2].min) + '+</b> adds a dashboard Ganesh ji.';
+        '+</b> adds a car perfume, <b>' + rupees(T[2].min) + '+</b> adds a dashboard murti (Ganesh ji, Ram ji, Krishna ji, your choice).';
     }
     if (total < T[0].min) return 'Add <b>' + rupees(T[0].min - total) + '</b> more for a free premium microfiber cloth.';
     if (total < T[1].min) return 'Premium microfiber cloth free. Add <b>' + rupees(T[1].min - total) + '</b> more for a car perfume too.';
-    if (total < T[2].min) return 'Microfiber cloth and car perfume free. Add <b>' + rupees(T[2].min - total) + '</b> more for a dashboard Ganesh ji too.';
-    return 'This list gets <b>all 3 gifts</b>: premium microfiber cloth, car perfume and dashboard Ganesh ji.';
+    if (total < T[2].min) return 'Microfiber cloth and car perfume free. Add <b>' + rupees(T[2].min - total) + '</b> more for a dashboard murti of your choice too.';
+    return 'This list gets <b>all 3 gifts</b>: premium microfiber cloth, car perfume and a dashboard murti of your choice.';
   }
 
   function ladderHTML(tag) {
     var out = '';
     for (var i = 0; i < T.length; i++) {
-      var what = ['Premium microfiber cloth', 'Microfiber + car perfume', 'All 3, with dashboard Ganesh ji'][i] || T[i].gift;
+      var what = ['Premium microfiber cloth', 'Microfiber + car perfume', 'Microfiber + perfume + dashboard murti (Ganesh ji, Ram ji, Krishna ji, your choice)'][i] || T[i].gift;
       out += '<' + tag + ' class="mm-tier"><small>Bill ' + rupees(T[i].min) + '+</small><span>' + what + '</span></' + tag + '>';
     }
     return out;
