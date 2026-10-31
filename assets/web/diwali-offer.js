@@ -24,8 +24,14 @@
     fitBy: '30 Nov',
     slots: 50,
     booked: 0,                                 // <- UPDATE: confirmed Diwali bookings so far
-    bigBill: 15000                             // bill size that also gets the dashboard Ganesh ji
+    // Gift ladder by bill size (fitting included). Each step adds a gift.
+    tiers: [
+      { min: 2000, gift: 'Premium microfiber cloth' },
+      { min: 3000, gift: 'Car perfume' },
+      { min: 5000, gift: 'Dashboard Ganesh ji' }
+    ]
   };
+  var T = OFFER.tiers;
 
   function slotsLeft() { return Math.max(0, OFFER.slots - OFFER.booked); }
   function isLive() {
@@ -73,6 +79,10 @@
     '.mm-offer__sub b,.mm-offer__nudge b{color:#FFD24A;font-weight:700}',
     '.mm-offer__meta{font-size:15.5px;line-height:1.45;color:#E9DCC6;border-top:1px solid rgba(232,180,74,.28);padding-top:9px;margin-top:2px}',
     '.sr-panel--build .mm-offer{margin:-2px 0 18px}',
+    '.mm-ladder{display:grid;gap:6px}',
+    '.mm-tier{display:flex;align-items:baseline;gap:10px;font-size:18px;line-height:1.35;color:#fff}',
+    '.mm-tier small{flex:none;min-width:92px;font-size:16px;font-weight:700;color:#FFD24A;font-variant-numeric:tabular-nums}',
+    '.mm-tier span{font-weight:600}',
     '.hero .mm-offer{margin:24px 0 0;max-width:54ch}',
     /* Hero ribbon: one line so the car stays clear */
     '.mm-ribbon{display:inline-flex;align-items:center;gap:10px;margin:2px 0 18px;padding:9px 16px 9px 10px;',
@@ -107,7 +117,7 @@
     'radial-gradient(circle,#FF5A3C 0 2.6px,transparent 3.2px) 9px 50%/18px 7px repeat-x;animation:mmTwinkle 1.6s steps(2,jump-none) infinite}',
     '.mm-sheet h2{font:400 clamp(30px,7vw,38px)/1.05 "Rozha One",Georgia,serif;color:#fff;margin:4px 0 0;text-wrap:balance}',
     '.mm-sheet ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}',
-    '.mm-sheet li{display:grid;gap:2px;padding:12px 14px;border-radius:12px;background:rgba(255,210,74,.08);border:1px solid rgba(232,180,74,.3)}',
+    '.mm-sheet li.mm-tier{display:grid;gap:2px;padding:12px 14px;border-radius:12px;background:rgba(255,210,74,.08);border:1px solid rgba(232,180,74,.3)}',
     '.mm-sheet li small{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#FFD24A}',
     '.mm-sheet li span{font-size:19px;font-weight:700;line-height:1.35;color:#fff}',
     '.mm-sheet__meta{font-size:16px;line-height:1.5;color:#E9DCC6;margin:0}',
@@ -135,15 +145,23 @@
   }
 
   function nudgeHTML(total) {
-    if (total >= OFFER.bigBill) {
-      return 'This list gets a free car perfume, microfiber cloth <b>and a dashboard Ganesh ji</b>.';
+    if (total <= 0) {
+      return 'Free gifts from <b>' + rupees(T[0].min) + '</b>: premium microfiber cloth. <b>' + rupees(T[1].min) +
+        '+</b> adds a car perfume, <b>' + rupees(T[2].min) + '+</b> adds a dashboard Ganesh ji.';
     }
-    if (total > 0) {
-      return 'Car perfume and microfiber cloth free. Add <b>' + rupees(OFFER.bigBill - total) +
-        '</b> more for a free dashboard Ganesh ji too.';
+    if (total < T[0].min) return 'Add <b>' + rupees(T[0].min - total) + '</b> more for a free premium microfiber cloth.';
+    if (total < T[1].min) return 'Premium microfiber cloth free. Add <b>' + rupees(T[1].min - total) + '</b> more for a car perfume too.';
+    if (total < T[2].min) return 'Microfiber cloth and car perfume free. Add <b>' + rupees(T[2].min - total) + '</b> more for a dashboard Ganesh ji too.';
+    return 'This list gets <b>all 3 gifts</b>: premium microfiber cloth, car perfume and dashboard Ganesh ji.';
+  }
+
+  function ladderHTML(tag) {
+    var out = '';
+    for (var i = 0; i < T.length; i++) {
+      var what = ['Premium microfiber cloth', 'Microfiber + car perfume', 'All 3, with dashboard Ganesh ji'][i] || T[i].gift;
+      out += '<' + tag + ' class="mm-tier"><small>Bill ' + rupees(T[i].min) + '+</small><span>' + what + '</span></' + tag + '>';
     }
-    return 'Free car perfume and microfiber cloth with every booking. <b>' +
-      rupees(OFFER.bigBill) + '+</b> also gets a dashboard Ganesh ji.';
+    return out;
   }
 
   function readTotal(el) {
@@ -173,8 +191,7 @@
       '<span class="mm-offer__eyebrow">' + DIYA_SVG + 'Diwali offer &middot; Book by ' + OFFER.bookBy + '</span>' +
       '<h2 id="mmSheetTitle">Free gifts with your booking</h2>' +
       '<ul>' +
-      '<li><small>Every booking</small><span>Car perfume + microfiber cloth</span></li>' +
-      '<li><small>Bill of ' + rupees(OFFER.bigBill) + ' or more</small><span>Dashboard Ganesh ji too</span></li>' +
+      ladderHTML('li') +
       '</ul>' +
       '<p class="mm-sheet__meta">' + slotsText() + ' Fitting any day till ' + OFFER.fitBy +
       '. Gift on fitting day, one per car. Fitting is included in every price.</p>' +
@@ -380,8 +397,8 @@
       el.classList.add('mm-offer');
       el.innerHTML = el.getAttribute('data-mm-offer') === 'build'
         ? eyebrow + '<span class="mm-offer__nudge" data-mm-offer-nudge aria-live="polite"></span>' + meta
-        : eyebrow + '<strong class="mm-offer__main">Free car perfume and microfiber cloth with every booking.</strong>' +
-          '<span class="mm-offer__sub">Bill of <b>' + rupees(OFFER.bigBill) + '</b> or more? A dashboard Ganesh ji too.</span>' + meta;
+        : eyebrow + '<strong class="mm-offer__main">Free gifts on your Diwali booking</strong>' +
+          '<span class="mm-ladder">' + ladderHTML('span') + '</span>' + meta;
     });
     // Homepage hero: one slim ribbon, so the car stays clear.
     var heroCtas = document.querySelector('.sr-panel--hero .sr-ctas');
@@ -390,11 +407,11 @@
       rb.type = 'button';
       rb.className = 'mm-ribbon';
       rb.setAttribute('data-mm-offer-open', '');
-      rb.innerHTML = DIYA_SVG + '<span>Diwali offer: free gifts with every booking <b>See offer &rsaquo;</b></span>';
+      rb.innerHTML = DIYA_SVG + '<span>Diwali offer: free gifts from ' + rupees(T[0].min) + ' <b>See offer &rsaquo;</b></span>';
       heroCtas.parentNode.insertBefore(rb, heroCtas);
     }
 
-    var fills = { bookBy: OFFER.bookBy, fitBy: OFFER.fitBy, bigBill: rupees(OFFER.bigBill), slots: slotsText() };
+    var fills = { bookBy: OFFER.bookBy, fitBy: OFFER.fitBy, slots: slotsText() };
     document.querySelectorAll('[data-mm-offer-fill]').forEach(function (el) {
       var key = el.getAttribute('data-mm-offer-fill');
       if (fills[key]) el.textContent = fills[key];
