@@ -139,9 +139,11 @@ function getMMLeadRoute() {
 
 function getMMWhatsAppUrl(message) {
   const route = getMMLeadRoute();
-  const neutralMessage = (message || 'Hi, I want to enquire about Madhuban Motors services.')
+  let neutralMessage = (message || 'Hi, I want to enquire about Madhuban Motors services.')
     .replace('Hi, I found you on Google and want to enquire about your services.', 'Hi, I want to enquire about your services.')
     .trim();
+  const offerTag = typeof window.mmOfferTag === 'function' ? window.mmOfferTag() : '';
+  if (offerTag && !neutralMessage.startsWith(offerTag)) neutralMessage = `${offerTag} ${neutralMessage}`;
   const sourceParts = [route.code];
   if (route.campaign) sourceParts.push(`cmp:${route.campaign}`);
   if (route.creative) sourceParts.push(`cr:${route.creative}`);

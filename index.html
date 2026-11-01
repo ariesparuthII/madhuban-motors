@@ -1195,7 +1195,7 @@
       </div>
     </article>
 
-    <article class="sr-ch" data-ch="car" data-label="Build yours">
+    <article class="sr-ch" id="build" data-ch="car" data-label="Build yours">
       <div class="sr-panel sr-panel--left sr-panel--build">
         <h2>Build your upgrade.</h2>
         <p>Tap what you want. The car shows it, and you get a starting total before you visit.</p>
@@ -1211,6 +1211,7 @@
           <button type="button" class="sr-pick" data-part="coating" data-price="0">Ceramic coating <em>ask</em></button>
         </div>
         <p class="sr-total" aria-live="polite"><span>Starting total</span> <b>&#8377;0</b> <small>fitting included</small></p>
+        <div data-mm-offer="build" hidden></div>
         <div class="sr-picker">
           <label for="srBrand">Brand</label>
           <select id="srBrand">
@@ -2093,6 +2094,7 @@
   </div>
 </div>
 
+<script src="assets/web/diwali-offer.js?v=diwali4"></script>
 <script>
 // HERO NAME IS STATIC HTML NOW SO THE MIRRORED B NEVER DISAPPEARS
 
@@ -2480,9 +2482,11 @@ function getMMLeadRoute() {
 
 function getMMWhatsAppUrl(message) {
   const route = getMMLeadRoute();
-  const neutralMessage = (message || 'Hi, I want to enquire about Madhuban Motors services.')
+  let neutralMessage = (message || 'Hi, I want to enquire about Madhuban Motors services.')
     .replace('Hi, I found you on Google and want to enquire about your services.', 'Hi, I want to enquire about your services.')
     .trim();
+  const offerTag = typeof window.mmOfferTag === 'function' ? window.mmOfferTag() : '';
+  if (offerTag && !neutralMessage.startsWith(offerTag)) neutralMessage = `${offerTag} ${neutralMessage}`;
   const sourceParts = [route.code];
   if (route.campaign) sourceParts.push(`cmp:${route.campaign}`);
   if (route.creative) sourceParts.push(`cr:${route.creative}`);
