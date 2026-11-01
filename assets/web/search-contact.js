@@ -1,7 +1,14 @@
 // Search landing pages use the existing homepage consent and routing implementation.
 window.MM_ANALYTICS = {
       ga4: 'G-674BE5JN8Q',
-      metaPixel: ''
+      metaPixel: '',
+      /* Google Ads conversion tracking. Fill both from Google Ads > Goals >
+         Conversions > (action) > Tag setup. Until filled, nothing is sent. */
+      googleAds: '',            // e.g. 'AW-123456789'
+      adsConversions: {         // event name on this site -> conversion label
+        whatsapp_click: '',
+        call_click: ''
+      }
     };
     window.MM_LEAD_CONFIG = {
       /* Optional HTTPS endpoint that accepts POSTed JSON. Keep blank until an
@@ -26,6 +33,18 @@ window.MM_ANALYTICS = {
           window.gtag('js', new Date());
           window.gtag('config', cfg.ga4);
         }
+        if (cfg.googleAds) {
+          if (!window.gtag) {
+            var ga = document.createElement('script');
+            ga.async = true;
+            ga.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.googleAds);
+            document.head.appendChild(ga);
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { window.dataLayer.push(arguments); };
+            window.gtag('js', new Date());
+          }
+          window.gtag('config', cfg.googleAds);
+        }
 
         if (cfg.metaPixel) {
           !function (f, b, e, v, n, t, s) {
@@ -45,6 +64,13 @@ window.MM_ANALYTICS = {
         params = params || {};
         if (window.gtag) window.gtag('event', name, params);
         if (window.fbq) window.fbq('trackCustom', name, params);
+        var label = cfg.adsConversions && cfg.adsConversions[name];
+        if (window.gtag && cfg.googleAds && label) {
+          window.gtag('event', 'conversion', {
+            send_to: cfg.googleAds + '/' + label,
+            transport_type: 'beacon'
+          });
+        }
       };
 
       function readPreference() {
