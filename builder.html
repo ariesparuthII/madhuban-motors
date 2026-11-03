@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Build Your Car Music System | Madhuban Motors, Ghaziabad</title>
-<meta name="description" content="Pick your car and budget, and see what a music system costs fitted. Speakers, screen, amplifier, bass and damping. Fitting included, no extra labour.">
+<meta name="description" content="Pick your car and what you want, and send the list for a fitted price. Speakers, screen, amplifier, bass and damping. Fitting included, no extra labour.">
 <link rel="canonical" href="https://madhubanmotors.com/builder.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Build Your Car Music System | Madhuban Motors">
-<meta property="og:description" content="Pick your car and budget, and see what it costs fitted. On GT Road since 1989.">
+<meta property="og:description" content="Pick your car and what you want, and get the fitted price on WhatsApp. On GT Road since 1989.">
 <meta property="og:url" content="https://madhubanmotors.com/builder.html">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/web/icon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/web/icon-180.png">
@@ -302,7 +302,7 @@ body.guided .brandask{display:none}
       <div class="hero-copy">
         <span class="hero-eyebrow">Build Your System</span>
         <h1 class="hero-h1">The system we would fit in our own car.</h1>
-        <p class="hero-sub">Tell us your car and your budget. We will build it honestly, show you what it costs fitted, and tell you what you can skip.</p>
+        <p class="hero-sub">Tell us your car and your budget. We will build it honestly, send the fitted price on WhatsApp, and tell you what you can skip.</p>
       </div>
     </div>
 
@@ -380,9 +380,9 @@ body.guided .brandask{display:none}
             <div class="reco-list" id="recoList"></div>
           </div>
           <div class="price-box">
-            <div class="price-lab">Roughly, fitted</div>
+            <div class="price-lab">Your fitted price</div>
             <div class="price-num" id="price" aria-live="polite"></div>
-            <p class="price-note">Includes fitting and wiring. Final price confirmed on WhatsApp once we check what fits your car.</p>
+            <p class="price-note">Includes fitting and wiring. Send this list and we reply with the price for your car.</p>
             <a class="btn btn-primary" id="waBtn" href="#" target="_blank" rel="noopener"></a>
             <a class="btn btn-ghost" href="tel:+919911443751">Or call the shop</a>
             <button class="btn btn-ghost" id="shareBtn" type="button" data-label="Send this build to someone">Send this build to someone</button>
@@ -548,7 +548,7 @@ var S={make:null,car:null,body:null,prem:false,year:"",other:"",oem:false,guide:
 var prev=[0,0];
 function $(i){return document.getElementById(i)}
 function inr(v){return "₹"+Math.round(v).toLocaleString("en-IN")}
-function rng(r){return inr(r[0])+" to "+inr(r[1])}
+function rng(r){return "On WhatsApp"}  // prices are shared on WhatsApp, not shown on the site
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function bump(t,n){var i=ORDER.indexOf(t);if(i<0)return t;return ORDER[Math.max(0,Math.min(2,i+n))]}
 function tierName(v){for(var i=0;i<TIER.length;i++)if(TIER[i][0]===v)return TIER[i][1];return v}
@@ -700,7 +700,7 @@ function waMsg(){
   if(ask)o.push("","Brand I had in mind: "+ask);
   var c=conditionals();
   if(c.length){o.push("","To confirm: "+c.map(function(x){return x[0]}).join(", "));}
-  o.push("","Rough total (fitted): "+rng(t),"","Please confirm what fits my car and the final price.");
+  o.push("","Please confirm what fits my car and send the fitted price.");
   return o.join("\n");
 }
 function renderSheet(){
@@ -718,7 +718,7 @@ function renderSheet(){
       '<div class="line-main"><div class="line-name" id="lb-'+l.k+'">'+l.n+'</div>'+
       '<div class="line-why">'+l.w+'</div>'+bl+'</div>'+
       '<div class="tiers" role="radiogroup" aria-labelledby="lb-'+l.k+'">'+tiers+'</div>'+
-      '<div class="line-price">'+(off?"None":rng(price(l.k,v)))+'</div></div>';
+      '<div class="line-price">'+(off?"None":"Added")+'</div></div>';
   }).join("");
 }
 function optLabel(l,v){
