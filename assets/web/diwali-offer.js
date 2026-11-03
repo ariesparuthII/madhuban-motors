@@ -1,4 +1,4 @@
-/* Diwali offer 2026: one file runs the whole offer.
+/* Diwali offer 2026 (3 to 10 Nov): one file runs the whole offer.
 
    TO UPDATE THE "LEFT" COUNT: change `booked` below to the number of
    confirmed Diwali bookings so far, commit, and deploy to gh-pages.
@@ -18,7 +18,7 @@
 (function () {
   var OFFER = {
     tag: 'DIWALI OFFER:',
-    startsAt: '2026-10-30T00:00:00+05:30',
+    startsAt: '2026-11-03T00:00:00+05:30',
     endsAt: '2026-11-10T23:59:59+05:30',       // last day to book (Bhai Dooj), India time
     bookBy: '10 Nov',
     fitBy: '30 Nov',
@@ -26,10 +26,11 @@
     booked: 0,                                 // <- UPDATE: confirmed Diwali bookings so far
     // Gift ladder by bill size (fitting included). Each step adds a gift.
     tiers: [
-      { min: 2000, gift: 'Premium microfiber cloth' },
-      { min: 3000, gift: 'Car perfume' },
-      { min: 5000, gift: 'Dashboard murti' }
-    ]
+      { min: 6999, gift: 'Premium microfiber cloth + car perfume' },
+      { min: 12999, gift: 'Microfiber cloth + car perfume + dashboard murti' }
+    ],
+    // Shown with the offer: shop numbers to call or WhatsApp
+    phones: ['+91 99114 43751', '+91 97183 73751', '+91 93116 22345']
   };
   var T = OFFER.tiers;
 
@@ -77,6 +78,7 @@
     '.mm-offer__main{font-size:20px;font-weight:700;line-height:1.35;color:#fff}',
     '.mm-offer__sub,.mm-offer__nudge{font-size:18px;font-weight:500;line-height:1.45;color:#FFF3DC}',
     '.mm-offer__sub b,.mm-offer__nudge b{color:#FFD24A;font-weight:700}',
+    '.mm-phones a{color:#FFD24A;font-weight:700;text-decoration:none;white-space:nowrap}',
     '.mm-offer__meta{font-size:15.5px;line-height:1.45;color:#E9DCC6;border-top:1px solid rgba(232,180,74,.28);padding-top:9px;margin-top:2px}',
     '.sr-panel--build .mm-offer{margin:-2px 0 18px}',
     '.mm-ladder{display:grid;gap:6px}',
@@ -144,29 +146,24 @@
       : 'Only ' + slotsLeft() + ' of ' + OFFER.slots + ' left.';
   }
 
-  function nudgeHTML(total) {
-    if (total <= 0) {
-      return 'Free gifts from <b>' + rupees(T[0].min) + '</b>: premium microfiber cloth. <b>' + rupees(T[1].min) +
-        '+</b> adds a car perfume, <b>' + rupees(T[2].min) + '+</b> adds a dashboard murti (Ganesh ji, Ram ji, Krishna ji, your choice).';
-    }
-    if (total < T[0].min) return 'Add <b>' + rupees(T[0].min - total) + '</b> more for a free premium microfiber cloth.';
-    if (total < T[1].min) return 'Premium microfiber cloth free. Add <b>' + rupees(T[1].min - total) + '</b> more for a car perfume too.';
-    if (total < T[2].min) return 'Microfiber cloth and car perfume free. Add <b>' + rupees(T[2].min - total) + '</b> more for a dashboard murti of your choice too.';
-    return 'This list gets <b>all 3 gifts</b>: premium microfiber cloth, car perfume and a dashboard murti of your choice.';
+  function nudgeHTML() {
+    return 'Work of <b>' + rupees(T[0].min) + '+</b>: free premium microfiber cloth and car perfume. <b>' + rupees(T[1].min) +
+      '+</b>: both of those plus a dashboard murti (Ganesh ji, Ram ji, Krishna ji, your choice).';
+  }
+
+  function phonesHTML() {
+    return 'Call or WhatsApp: ' + OFFER.phones.map(function (n) {
+      return '<a href="tel:' + n.replace(/[^\d+]/g, '') + '">' + n.replace('+91 ', '') + '</a>';
+    }).join(' &middot; ');
   }
 
   function ladderHTML(tag) {
     var out = '';
+    var what = ['Premium microfiber cloth + car perfume', 'Microfiber cloth + car perfume + dashboard murti (Ganesh ji, Ram ji, Krishna ji, your choice)'];
     for (var i = 0; i < T.length; i++) {
-      var what = ['Premium microfiber cloth', 'Microfiber + car perfume', 'Microfiber + perfume + dashboard murti (Ganesh ji, Ram ji, Krishna ji, your choice)'][i] || T[i].gift;
-      out += '<' + tag + ' class="mm-tier"><small>Bill ' + rupees(T[i].min) + '+</small><span>' + what + '</span></' + tag + '>';
+      out += '<' + tag + ' class="mm-tier"><small>Work of ' + rupees(T[i].min) + '+</small><span>' + (what[i] || T[i].gift) + '</span></' + tag + '>';
     }
     return out;
-  }
-
-  function readTotal(el) {
-    var digits = ((el && el.textContent) || '').split('+')[0].replace(/[^\d]/g, '');
-    return digits ? parseInt(digits, 10) : 0;
   }
 
   function waUrl(msg) {
@@ -188,13 +185,15 @@
     sheet.innerHTML =
       '<div class="mm-sheet__card">' +
       '<button type="button" class="mm-sheet__x" aria-label="Close">&times;</button>' +
-      '<span class="mm-offer__eyebrow">' + DIYA_SVG + 'Diwali offer &middot; Book by ' + OFFER.bookBy + '</span>' +
+      '<span class="mm-offer__eyebrow">' + DIYA_SVG + 'Diwali offer &middot; 3 to ' + OFFER.bookBy + '</span>' +
       '<h2 id="mmSheetTitle">Free gifts with your booking</h2>' +
+      '<p class="mm-sheet__meta">Book between 3 Nov and ' + OFFER.bookBy + '.</p>' +
       '<ul>' +
       ladderHTML('li') +
       '</ul>' +
       '<p class="mm-sheet__meta">' + slotsText() + ' Fitting any day till ' + OFFER.fitBy +
       '. Gift on fitting day, one per car. Fitting is included in every price.</p>' +
+      '<p class="mm-sheet__meta mm-phones">' + phonesHTML() + '</p>' +
       '<div class="mm-sheet__cta">' +
       '<a class="mm-sheet__wa" target="_blank" rel="noopener" href="#">Book on WhatsApp</a>' +
       (onHome
@@ -390,8 +389,9 @@
     if (document.querySelector('.search-contact-bar')) document.body.classList.add('mm-has-search-bar');
 
     // Fill the placeholders: <div data-mm-offer="page|build" hidden></div>
-    var eyebrow = '<span class="mm-offer__eyebrow">' + DIYA_SVG + '<span>Diwali offer &middot; Book by ' + OFFER.bookBy + '</span></span>';
-    var meta = '<span class="mm-offer__meta">' + slotsText() + ' Fitting any day till ' + OFFER.fitBy + '. Gift on fitting day, one per car.</span>';
+    var eyebrow = '<span class="mm-offer__eyebrow">' + DIYA_SVG + '<span>Diwali offer &middot; 3 to ' + OFFER.bookBy + '</span></span>';
+    var meta = '<span class="mm-offer__meta">' + slotsText() + ' Fitting any day till ' + OFFER.fitBy + '. Gift on fitting day, one per car.</span>' +
+      '<span class="mm-offer__meta mm-phones">' + phonesHTML() + '</span>';
     document.querySelectorAll('[data-mm-offer]').forEach(function (el) {
       if (el.children.length) return;
       el.classList.add('mm-offer');
@@ -407,7 +407,7 @@
       rb.type = 'button';
       rb.className = 'mm-ribbon';
       rb.setAttribute('data-mm-offer-open', '');
-      rb.innerHTML = DIYA_SVG + '<span>Diwali offer: free gifts from ' + rupees(T[0].min) + ' <b>See offer &rsaquo;</b></span>';
+      rb.innerHTML = DIYA_SVG + '<span>Diwali offer: free gifts on ' + rupees(T[0].min) + '+ work <b>See offer &rsaquo;</b></span>';
       heroCtas.parentNode.insertBefore(rb, heroCtas);
     }
 
@@ -435,14 +435,9 @@
     diya.addEventListener('click', openSheet);
     document.body.appendChild(diya);
 
-    // Builder: tell people how far they are from the bigger gift.
+    // Builder: show the two gift segments (no running total, prices are shared on WhatsApp).
     var nudge = document.querySelector('[data-mm-offer-nudge]');
-    var totalEl = document.querySelector('.sr-total b');
-    if (nudge && totalEl) {
-      var update = function () { nudge.innerHTML = nudgeHTML(readTotal(totalEl)); };
-      update();
-      new MutationObserver(update).observe(totalEl, { childList: true, characterData: true, subtree: true });
-    }
+    if (nudge) nudge.innerHTML = nudgeHTML();
 
     startFx(!!document.getElementById('showroom'));
   }

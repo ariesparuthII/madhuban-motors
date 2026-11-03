@@ -118,7 +118,7 @@ function init() {
     totalEl.textContent = '\u20b9' + sum.toLocaleString('en-IN') + (on.some(p => !+p.dataset.price) ? ' +' : '');
     const names = on.map(p => p.firstChild.textContent.trim());
     if (send) send.dataset.wa = names.length
-      ? 'Hi, I want these for my car: ' + names.join(', ') + '. Starting total on the website: ' + totalEl.textContent + '.'
+      ? 'Hi, I want these for my car: ' + names.join(', ') + '. Please send the price.'
       : 'Hi, please suggest accessories and prices for my car.';
     engine && engine.preview(lastKey || (on.length ? on[on.length - 1].dataset.part : null));
   }
