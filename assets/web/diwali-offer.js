@@ -133,7 +133,9 @@
     '@media (max-width:560px){.mm-sheet{align-items:flex-end;padding:0}.mm-sheet__card{width:100%;border-radius:20px 20px 0 0;',
     'padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));border-bottom:0}}',
     /* Effects canvas */
-    '#mmDiwaliFx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:95}',
+    '.mm-fx{pointer-events:none}',
+    '.mm-fx--page{position:fixed;inset:0;width:100%;height:100%;z-index:-1}',
+    '.mm-fx--hero{position:absolute;inset:0;width:100%;height:100%;z-index:0}',
     '@keyframes mmTwinkle{0%{opacity:1;filter:brightness(1.15)}50%{opacity:.55;filter:brightness(.8)}100%{opacity:1}}',
     '@keyframes mmFlicker{from{transform:scale(1,1) rotate(-2deg)}to{transform:scale(.9,1.08) rotate(2deg)}}',
     '@keyframes mmGlow{0%{box-shadow:0 0 0 0 rgba(255,210,74,.5),0 8px 24px rgba(0,0,0,.5)}70%,100%{box-shadow:0 0 0 14px rgba(255,210,74,0),0 8px 24px rgba(0,0,0,.5)}}',
@@ -240,137 +242,157 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
-  /* ---------- Lights and fireworks ---------- */
-  function startFx(withFireworks) {
+  /* ---------- Lights and fireworks (behind the content) ----------
+     Hand-written canvas effects, no library. Two layers:
+     - page layer: a fixed canvas BEHIND every section (z-index -1, over the stars),
+     - hero layer: inside the 3D showroom, above the car scene but under the text.
+     Fireworks: a rocket climbs with a spark trail, then bursts as a peony, a gold
+     willow, a ring or crackling glitter. Lights: warm ladi strands with soft glow. */
+  function makeFx(host, opts) {
     var c = document.createElement('canvas');
-    c.id = 'mmDiwaliFx';
     c.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(c);
-    var g = c.getContext('2d');
-    if (!g) return;
-    var W = 0, H = 0, dpr = 1, bulbs = [], parts = [], nextBurst = 0, navBottom = 0, diyaBox = null;
-    var COLORS = ['#FFD24A', '#FF5A3C', '#FFF3C4', '#FF8A1A', '#7CFF9B', '#FF6FB5', '#8FD8FF'];
-    var BULB = ['#FFD24A', '#FF5A3C', '#FFB347', '#FFF3C4', '#FF7A1A'];
+    c.className = 'mm-fx ' + (opts.cls || '');
+    if (opts.before) host.insertBefore(c, opts.before); else host.appendChild(c);
+    var g = c.getContext('2d'); if (!g) return null;
+    var W = 0, H = 0, dpr = 1, rockets = [], parts = [], strands = [], nextBurst = 0;
+    var PAL = [['#FFD27A', '#FFF1C9'], ['#FF5A3C', '#FFC2A8'], ['#FF9A2E', '#FFE2A8'], ['#FFFFFF', '#FFE9B8'], ['#E8B84A', '#FFF6D8']];
 
     function measure() {
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      W = innerWidth; H = innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      var r = opts.box ? opts.box() : { width: innerWidth, height: innerHeight };
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
       c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
-      var nav = document.getElementById('mainNav') || document.querySelector('nav.nav');
-      navBottom = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
-      var d = document.querySelector('.mm-diya');
-      diyaBox = d ? d.getBoundingClientRect() : null;
-      // Jhalar: two sagging strings across the top, a bulb every ~22px
-      bulbs = [];
-      var span = W < 700 ? 2 : 4, seg = W / span;
-      for (var s = 0; s < span; s++) {
-        var n = Math.max(6, Math.round(seg / 22));
-        for (var i = 0; i <= n; i++) {
-          var t = i / n, x = s * seg + t * seg;
-          bulbs.push({ x: x, y: 3 + Math.sin(t * Math.PI) * (W < 700 ? 9 : 13), c: BULB[(i + s) % BULB.length], ph: (i * 0.9 + s) % 6.28, sp: 2 + (i % 3) });
+      // Ladi: a few strands hanging from the top, longer at the edges, like a shop front
+      strands = [];
+      var n = W < 700 ? 5 : 9;
+      for (var i = 0; i < n; i++) {
+        var u = n === 1 ? .5 : i / (n - 1), edge = Math.abs(u - .5) * 2;
+        var x = 10 + u * (W - 20), len = (opts.short ? .12 : .2) * H * (0.35 + edge * edge);
+        var bulbs = [], step = W < 700 ? 13 : 16;
+        for (var y = 6; y < len; y += step) bulbs.push({ y: y, ph: Math.random() * 6.28 });
+        strands.push({ x: x, sway: Math.random() * 6.28, bulbs: bulbs });
+      }
+    }
+
+    function zone() { return opts.zone ? opts.zone(W, H) : { x0: .1, x1: .9, y0: .12, y1: .45 }; }
+    function launch() {
+      var z = zone(), tx = W * (z.x0 + Math.random() * (z.x1 - z.x0)), ty = H * (z.y0 + Math.random() * (z.y1 - z.y0));
+      var x0 = tx + (Math.random() - .5) * W * .06, y0 = Math.min(H + 10, ty + H * (opts.rise || .45)), T = 34 + Math.random() * 10;
+      rockets.push({ x: x0, y: y0, vx: (tx - x0) / T, vy: (ty - y0) / T, t: 0, T: T, tx: tx, ty: ty });
+    }
+    function explode(x, y) {
+      var kind = Math.random(), pal = PAL[(Math.random() * PAL.length) | 0];
+      var big = Math.min(W, H) < 500 ? .8 : 1.35;
+      if (kind < .35) {          // peony: round, colour fading to warm white
+        for (var i = 0; i < 90; i++) { var a = Math.random() * 6.283, v = (1.2 + Math.random() * 2.6) * big;
+          parts.push(P(x, y, Math.cos(a) * v, Math.sin(a) * v, pal[0], pal[1], 1.7, .012, .04, false)); }
+      } else if (kind < .6) {    // gold willow: long drooping golden trails
+        for (var j = 0; j < 70; j++) { var b = Math.random() * 6.283, w = (.8 + Math.random() * 1.9) * big;
+          parts.push(P(x, y, Math.cos(b) * w, Math.sin(b) * w, '#E8B84A', '#FFE7A6', 1.3, .006, .06, false)); }
+      } else if (kind < .8) {    // ring
+        var rot = Math.random() * 6.283;
+        for (var k = 0; k < 64; k++) { var d = rot + k / 64 * 6.283, s = 2.9 * big;
+          parts.push(P(x, y, Math.cos(d) * s, Math.sin(d) * s * .62, pal[0], pal[1], 1.6, .014, .03, false)); }
+      } else {                   // glitter that crackles as it falls
+        for (var m = 0; m < 80; m++) { var e = Math.random() * 6.283, q = (1 + Math.random() * 2.4) * big;
+          parts.push(P(x, y, Math.cos(e) * q, Math.sin(e) * q, '#FFF6D8', '#FFD27A', 1.2, .011, .045, true)); }
+      }
+    }
+    function P(x, y, vx, vy, c1, c2, r, decay, grav, glitter) {
+      return { x: x, y: y, vx: vx, vy: vy, c1: c1, c2: c2, r: r, life: 1, decay: decay * (0.8 + Math.random() * .4), grav: grav, glitter: glitter };
+    }
+
+    function drawLadi(t) {
+      for (var i = 0; i < strands.length; i++) {
+        var s = strands[i], sx = s.x + Math.sin(t * .6 + s.sway) * 1.5, last = s.bulbs.length ? s.bulbs[s.bulbs.length - 1].y : 0;
+        g.globalCompositeOperation = 'source-over';
+        g.globalAlpha = .35; g.strokeStyle = '#3a2a14'; g.lineWidth = 1;
+        g.beginPath(); g.moveTo(s.x, 0); g.lineTo(sx, last); g.stroke();
+        g.globalCompositeOperation = 'lighter';
+        for (var j = 0; j < s.bulbs.length; j++) {
+          var b = s.bulbs[j], k = j / Math.max(1, s.bulbs.length), x = s.x + (sx - s.x) * k;
+          var on = reduced ? .8 : .45 + .55 * Math.pow(Math.max(0, Math.sin(t * 1.6 - j * .55 + b.ph * .2)), 2);
+          var glow = g.createRadialGradient(x, b.y, 0, x, b.y, 9);
+          glow.addColorStop(0, 'rgba(255,214,140,' + (.55 * on) + ')'); glow.addColorStop(1, 'rgba(255,170,60,0)');
+          g.globalAlpha = 1; g.fillStyle = glow; g.beginPath(); g.arc(x, b.y, 9, 0, 6.283); g.fill();
+          g.fillStyle = 'rgba(255,244,214,' + (.5 + .5 * on) + ')'; g.beginPath(); g.arc(x, b.y, 1.6, 0, 6.283); g.fill();
         }
       }
-    }
-
-    function drawLights(t) {
-      var y0 = navBottom;
-      g.lineWidth = 1;
-      g.strokeStyle = 'rgba(60,40,20,.9)';
-      g.beginPath();
-      for (var i = 0; i < bulbs.length; i++) {
-        var b = bulbs[i];
-        if (i === 0 || bulbs[i - 1].x > b.x) g.moveTo(b.x, y0 + b.y); else g.lineTo(b.x, y0 + b.y);
-      }
-      g.stroke();
-      for (var j = 0; j < bulbs.length; j++) {
-        var bb = bulbs[j];
-        var on = reduced ? 1 : 0.35 + 0.65 * Math.max(0, Math.sin(t * bb.sp + bb.ph));
-        var yy = y0 + bb.y + 4;
-        g.globalAlpha = 0.35 * on;
-        g.fillStyle = bb.c;
-        g.beginPath(); g.arc(bb.x, yy, 6, 0, 6.283); g.fill();
-        g.globalAlpha = 0.6 + 0.4 * on;
-        g.beginPath(); g.arc(bb.x, yy, 2.4, 0, 6.283); g.fill();
-      }
-      g.globalAlpha = 1;
-    }
-
-    // Fireworks burst only in "sky" zones: the top band on desktop, the side
-    // edges on phones, so they never land on the car or the main text.
-    function burst() {
-      var phone = W < 768, x, y;
-      if (phone) {
-        x = Math.random() < 0.5 ? W * (0.06 + Math.random() * 0.12) : W * (0.82 + Math.random() * 0.12);
-        y = navBottom + 40 + Math.random() * H * 0.28;
-      } else {
-        // Above the shop board, right of the headline.
-        x = W * (0.44 + Math.random() * 0.5);
-        y = navBottom + 36 + Math.random() * H * 0.11;
-      }
-      var col = COLORS[(Math.random() * COLORS.length) | 0], col2 = COLORS[(Math.random() * COLORS.length) | 0];
-      var n = phone ? 34 : 54, sp = phone ? 1.6 : 2.3;
-      for (var i = 0; i < n; i++) {
-        var a = (i / n) * 6.283 + Math.random() * 0.2, v = sp * (0.55 + Math.random() * 0.6);
-        parts.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, decay: 0.012 + Math.random() * 0.01, c: i % 3 ? col : col2, r: 1.6, trail: true });
-      }
-    }
-
-    // Phuljhadi: a small spray of sparks from the floating diya.
-    function sparkle() {
-      if (!diyaBox || document.body.classList.contains('mm-sheet-open')) return;
-      var x = diyaBox.left + 30, y = diyaBox.top + 6;
-      for (var i = 0; i < 2; i++) {
-        var a = -Math.PI / 2 + (Math.random() - 0.5) * 1.6, v = 0.8 + Math.random() * 1.6;
-        parts.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, decay: 0.035 + Math.random() * 0.03, c: Math.random() < 0.6 ? '#FFF3C4' : '#FFD24A', r: 1.1, trail: false });
-      }
+      g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1;
     }
 
     function step(now) {
       var t = now / 1000;
       g.setTransform(dpr, 0, 0, dpr, 0, 0);
-      g.clearRect(0, 0, W, H);
-      drawLights(t);
-      if (!reduced) {
-        if (withFireworks && now > nextBurst && parts.length < 420) {
-          burst();
-          nextBurst = now + 1800 + Math.random() * 2200;
-        }
-        if (Math.random() < 0.6) sparkle();
-        g.globalCompositeOperation = 'lighter';
-        for (var i = parts.length - 1; i >= 0; i--) {
-          var p = parts[i];
-          p.vx *= 0.985; p.vy = p.vy * 0.985 + 0.028;
-          var px = p.x, py = p.y;
-          p.x += p.vx; p.y += p.vy; p.life -= p.decay;
-          if (p.life <= 0) { parts.splice(i, 1); continue; }
-          g.globalAlpha = Math.min(1, p.life * 1.2) * 0.85;
-          g.strokeStyle = g.fillStyle = p.c;
-          if (p.trail) {
-            g.lineWidth = p.r; g.beginPath(); g.moveTo(px - p.vx * 3, py - p.vy * 3); g.lineTo(p.x, p.y); g.stroke();
-          }
-          g.beginPath(); g.arc(p.x, p.y, p.r * (p.trail && p.life < 0.3 ? 0.6 : 1), 0, 6.283); g.fill();
-        }
-        g.globalAlpha = 1;
-        g.globalCompositeOperation = 'source-over';
+      // fade the last frame instead of wiping it: gives every spark a soft trail
+      g.clearRect(0, 0, W, H);   // full clear every frame: no ghost smudges
+      if (!reduced && opts.fireworks && now > nextBurst && rockets.length < 3 && parts.length < 700 && (!opts.active || opts.active())) {
+        launch(); nextBurst = now + 1400 + Math.random() * 2200;
       }
+      g.globalCompositeOperation = 'lighter';
+      for (var i = rockets.length - 1; i >= 0; i--) {
+        var r = rockets[i]; r.t++; r.x += r.vx; r.y += r.vy;
+        g.globalAlpha = .9; g.fillStyle = '#FFE2A8'; g.beginPath(); g.arc(r.x, r.y, 1.6, 0, 6.283); g.fill();
+        g.globalAlpha = .35; g.strokeStyle = '#FFB347'; g.lineWidth = 1.2; g.beginPath(); g.moveTo(r.x - r.vx * 6, r.y - r.vy * 6); g.lineTo(r.x, r.y); g.stroke();
+        if (Math.random() < .7) parts.push(P(r.x, r.y, (Math.random() - .5) * .4, .3 + Math.random() * .5, '#FFB347', '#FFE2A8', .9, .05, .02, false));
+        if (r.t >= r.T) { explode(r.x, r.y); rockets.splice(i, 1); }
+      }
+      for (var j = parts.length - 1; j >= 0; j--) {
+        var p = parts[j];
+        p.vx *= .975; p.vy = p.vy * .975 + p.grav; p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+        if (p.life <= 0 || p.y > H + 20) { parts.splice(j, 1); continue; }
+        var a = p.life > .3 ? 1 : p.life / .3;
+        if (p.glitter && p.life < .55 && Math.random() < .5) a *= .15;   // crackle
+        var col = p.life > .55 ? p.c1 : p.c2, tl = p.grav > .05 ? 9 : 5;
+        g.globalAlpha = a * .55; g.strokeStyle = col; g.lineWidth = p.r * .9;
+        g.beginPath(); g.moveTo(p.x - p.vx * tl, p.y - p.vy * tl); g.lineTo(p.x, p.y); g.stroke();
+        g.globalAlpha = a; g.fillStyle = col;
+        g.beginPath(); g.arc(p.x, p.y, p.r * (.6 + p.life * .5), 0, 6.283); g.fill();
+      }
+      g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
+      if (opts.ladi) drawLadi(t);
     }
+
+    measure();
+    addEventListener('resize', measure);
+    return { step: step, el: c };
+  }
+
+  function startFx() {
+    var layers = [];
+    var stage = document.querySelector('.sr-sticky');
+    var heroCh = document.querySelector('.sr-ch[data-ch="hero"]') || document.querySelector('.sr-ch');
+    var heroVisible = function () {
+      if (!heroCh) return false;
+      var r = heroCh.getBoundingClientRect(); return r.bottom > innerHeight * .25 && r.top < innerHeight * .75;
+    };
+    var phone = function () { return innerWidth < 768; };
+    if (stage) {
+      // Hero: inside the 3D scene, under the scrim and text, sky above the board
+      var hero = makeFx(stage, {
+        cls: 'mm-fx--hero', before: stage.querySelector('.sr-scrim'), fireworks: true, ladi: false, rise: .14,
+        box: function () { return stage.getBoundingClientRect(); },
+        active: heroVisible,
+        zone: function (W, H) { return phone() ? { x0: .08, x1: .92, y0: .1, y1: .17 } : { x0: .5, x1: .95, y0: .1, y1: .26 }; }
+      });
+      if (hero) layers.push(hero);
+    }
+    // Page: behind every section, over the starfield, for the rest of the scroll
+    var page = makeFx(document.body, {
+      cls: 'mm-fx--page', fireworks: true, ladi: true, short: true,
+      active: function () { return !stage || !heroVisible(); },
+      zone: function () { return { x0: .06, x1: .94, y0: .1, y1: .5 }; }
+    });
+    if (page) layers.push(page);
 
     var raf = 0, lastFrame = 0;
     function loop(now) {
       raf = requestAnimationFrame(loop);
-      if (now - lastFrame < 30) return; // about 30 fps is plenty for lights
+      if (now - lastFrame < 30) return;
       lastFrame = now;
-      step(now);
+      for (var i = 0; i < layers.length; i++) layers[i].step(now);
     }
-    measure();
-    addEventListener('resize', measure);
-    addEventListener('scroll', function () {
-      var nav = document.getElementById('mainNav') || document.querySelector('nav.nav');
-      navBottom = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
-      if (reduced) step(performance.now());
-    }, { passive: true });
-    if (reduced) { step(performance.now()); return; }
-    nextBurst = performance.now() + 900;
+    if (reduced) { layers.forEach(function (l) { l.step(performance.now()); }); return; }
     raf = requestAnimationFrame(loop);
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) { cancelAnimationFrame(raf); raf = 0; }
@@ -439,7 +461,7 @@
     var nudge = document.querySelector('[data-mm-offer-nudge]');
     if (nudge) nudge.innerHTML = nudgeHTML();
 
-    startFx(!!document.getElementById('showroom'));
+    startFx();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
