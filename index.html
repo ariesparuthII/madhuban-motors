@@ -21,11 +21,14 @@
   <script>
     window.MM_ANALYTICS = {
       ga4: 'G-674BE5JN8Q',
-      metaPixel: ''
+      metaPixel: '',
+      /* Microsoft Clarity project ID. Loads only after analytics consent. */
+      clarity: ''
     };
     window.MM_LEAD_CONFIG = {
-      /* Optional HTTPS endpoint that accepts POSTed JSON. Keep blank until an
-         authorised lead endpoint with CORS enabled has been configured. */
+      /* Optional HTTPS endpoint that receives each enquiry as a JSON string
+         before WhatsApp opens. Paste the Google Apps Script web app URL here
+         (setup in docs/LEAD-SHEET.md). Blank means WhatsApp only. */
       endpoint: ''
     };
     (function () {
@@ -58,6 +61,14 @@
           }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
           window.fbq('init', cfg.metaPixel);
           window.fbq('track', 'PageView');
+        }
+
+        if (cfg.clarity) {
+          (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+            t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + encodeURIComponent(i);
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+          })(window, document, 'clarity', 'script', cfg.clarity);
         }
       }
 
@@ -113,6 +124,9 @@
     "url": "https://madhubanmotors.com/",
     "telephone": "+91-99114-43751",
     "foundingDate": "1989",
+    "image": "https://madhubanmotors.com/assets/web/og-image.jpg",
+    "logo": "https://madhubanmotors.com/assets/web/logo-nav.webp",
+    "priceRange": "\u20b9999 to \u20b91,00,000",
     "description": "Family-run car accessories and custom installation showroom on GT Road, Ghaziabad, serving Delhi NCR since 1989.",
     "address": {
       "@type": "PostalAddress",
@@ -1022,7 +1036,7 @@
 <nav id="mainNav">
   <div class="container nav-inner" style="height:78px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
     <div class="nav-brand">
-      <a href="#" aria-label="Madhuban Motors home" style="display:block;line-height:0;">
+      <a href="/" aria-label="Madhuban Motors home" style="display:block;line-height:0;">
         <picture>
           <source srcset="assets/web/logo-nav.webp" type="image/webp">
           <img src="assets/web/logo-nav.webp" alt="Madhuban Motors" width="400" height="192"
@@ -1079,7 +1093,7 @@
           <a href="tel:+919911443751" class="sr-btn sr-btn--ghost">Call +91 99114 43751</a>
         </div>
         <dl class="sr-facts">
-          <div><dt>4.6&#9733;</dt><dd>402 Google reviews</dd></div>
+          <div><dt>4.6&#9733;</dt><dd>410 Google reviews</dd></div>
           <div><dt>2.5 lakh+</dt><dd>customers served</dd></div>
           <div><dt>3</dt><dd>generations on GT Road</dd></div>
         </dl>
@@ -1103,7 +1117,7 @@
       <div class="sr-panel sr-panel--left">
         <h2>Android screen that looks factory fitted.</h2>
         <p>Car-specific frame and harness, so it sits flush. Maps, calls, music and a reverse camera if you want one.</p>
-        <p class="sr-price">Price on WhatsApp <small>fitting included</small></p>
+        <p class="sr-price">From &#8377;5,999 <small>fitting included</small></p>
         <a href="https://wa.me/919718373751" target="_blank" rel="noopener" class="sr-btn" data-wa="Hi, I want a price for an Android screen." data-item="screen">Get the price for my car</a>
       </div>
     </article>
@@ -1124,7 +1138,7 @@
       <div class="sr-panel sr-panel--left">
         <h2>Sound you feel in the seat.</h2>
         <p>Speakers fitted in the doors. A bass tube and amplifier mounted in the boot. We wire it, damp it and tune it in the shop before you drive out.</p>
-        <p class="sr-price">Price on WhatsApp <small>fitting included</small></p>
+        <p class="sr-price">Speakers from &#8377;1,999 a pair <small>fitting included</small></p>
         <a href="https://wa.me/919718373751" target="_blank" rel="noopener" class="sr-btn" data-wa="Hi, I want to upgrade my car audio." data-item="audio">Plan my sound system</a>
       </div>
     </article>
@@ -1133,7 +1147,7 @@
       <div class="sr-panel sr-panel--left">
         <h2>Seat covers cut for your model.</h2>
         <p>Leatherette, fabric and bucket-fit designs. Pick the colour and stitching in the shop.</p>
-        <p class="sr-price">Price on WhatsApp <small>fitting included</small></p>
+        <p class="sr-price">From &#8377;4,999 <small>fitting included</small></p>
         <div class="sr-ctas">
           <button type="button" class="sr-btn sr-btn--dive" data-dive="seats">Go inside: why covers</button>
           <a href="https://wa.me/919718373751" target="_blank" rel="noopener" class="sr-btn sr-btn--ghost" data-wa="Hi, I want seat covers." data-item="seats">See designs on WhatsApp</a>
@@ -1377,7 +1391,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">An Interior That Feels Made for You</div>
           <div class="t-sm">Premium and bucket-fit seat covers, steering wraps and interior detailing shaped around your car for a snug fit, a refined finish and an unmistakably personal feel.</div>
-          <div class="svc-price">Price on WhatsApp <small>fitting included</small></div>
+          <div class="svc-price">From &#8377;4,999 <small>fitting included</small></div>
           <p style="margin-top:8px"><a style="color:#FFF200" href="/car-seat-covers-ghaziabad.html">Seat covers and fitting</a></p>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
@@ -1397,7 +1411,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Sound Tuned to the Way You Listen</div>
           <div class="t-sm">From a clean daily upgrade to full custom builds with double, triple or four-woofer layouts, amplifiers, equalizers and DSP processing, we design and tune for the punch, clarity and musical character you actually want.</div>
-          <div class="svc-price">Price on WhatsApp <small>fitting included</small></div>
+          <div class="svc-price">Speakers from &#8377;1,999 a pair <small>fitting included</small></div>
           <p style="margin-top:8px"><a style="color:#FFF200" href="/car-audio-system-ghaziabad.html">Car audio systems and fitting</a></p>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
@@ -1407,7 +1421,7 @@
         <div>
           <div class="s-name t-h3" style="color:#FFFFFF;transition:color 0.2s;margin-bottom:6px;">Smarter Entertainment and Navigation</div>
           <div class="t-sm">Android and LED touchscreen systems with navigation, calling, music, cameras and connected features integrated neatly into your dashboard.</div>
-          <div class="svc-price">Price on WhatsApp <small>fitting included</small></div>
+          <div class="svc-price">From &#8377;5,999 <small>fitting included</small></div>
           <p style="margin-top:8px"><a style="color:#FFF200" href="/android-screen-fitting-ghaziabad.html">Android screen fitting</a></p>
         </div>
         <a href="#enquiry" onclick="scrollToEnquiry(event)" class="btn btn-secondary btn-sm">GET QUOTE</a>
@@ -1507,7 +1521,7 @@
       <ul class="enq-proof reveal" data-delay="260">
         <li>Fitting included in every price</li>
         <li>Genuine brands with warranty</li>
-        <li>4.6&#9733; from 402+ Google reviews</li>
+        <li>4.6&#9733; from 410+ Google reviews</li>
         <li>Open 10 AM to 8 PM, Tuesday closed</li>
       </ul>
     </div>
@@ -1618,7 +1632,7 @@
     <div class="story3-facts reveal" data-delay="200">
       <div><b data-count="37">0</b><span>Years of car work on GT Road</span></div>
       <div><b data-count="250000" data-format="lakh">0</b><span>Customers served</span></div>
-      <div><b data-count="4.6" data-dec="1" data-suffix="&#9733;">0</b><span>402 Google reviews</span></div>
+      <div><b data-count="4.6" data-dec="1" data-suffix="&#9733;">0</b><span>410 Google reviews</span></div>
       <div><b>Delhi NCR</b><span>Ghaziabad, Noida, Delhi, Bulandshahr</span></div>
     </div>
     <div class="story3-cta reveal" data-delay="240">
@@ -1638,7 +1652,7 @@
     <div class="reveal" style="display:flex;align-items:center;gap:10px;margin-bottom:48px;" data-delay="140">
       <span style="font-family:'Rozha One',serif;font-size:20px;color:#FFF200;">4.6 ★</span>
       <span class="t-sm" style="color:#777777;">·</span>
-      <span class="t-body"><span id="reviewCount">402</span>+ reviews on Google</span>
+      <span class="t-body"><span id="reviewCount">410</span>+ reviews on Google</span>
       <span style="width:7px;height:7px;border-radius:50%;background:#FFF200;animation:pulse-dot 2s infinite;display:inline-block;flex-shrink:0;"></span>
     </div>
     <div class="reviews-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
@@ -1675,7 +1689,7 @@
       <div class="review-card review-card--cta reveal-r" style="margin-top:0;">
         <div>
           <b>4.6 &#9733;</b>
-          <p class="t-body" style="color:#fff;margin-top:12px;line-height:1.6;">Rated by <span>402</span>+ customers on Google. Read them all, or leave yours after your fitting.</p>
+          <p class="t-body" style="color:#fff;margin-top:12px;line-height:1.6;">Rated by <span>410</span>+ customers on Google. Read them all, or leave yours after your fitting.</p>
         </div>
         <a href="https://www.google.com/maps?cid=13467297807459514373" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">See reviews on Google</a>
       </div>
@@ -1891,6 +1905,12 @@
         <a class="t-sm" href="/car-modification-ghaziabad.html">Car modification in Ghaziabad</a>
         <a class="t-sm" href="/mytvs-car-accessories-ghaziabad.html">myTVS accessories</a>
         <a class="t-sm" href="/services.html">All services and fitted prices</a>
+        <a class="t-sm" href="/car-horns-ghaziabad.html">Car horns</a>
+        <a class="t-sm" href="/builder.html">Build your music system</a>
+        <a class="t-sm" href="/car-accessories-raj-nagar-extension.html">From Raj Nagar Extension</a>
+        <a class="t-sm" href="/blog/how-to-pick-a-car-audio-upgrade.html">Car audio upgrade guide</a>
+        <a class="t-sm" href="/blog/seat-covers-buying-guide.html">Seat covers buying guide</a>
+        <a class="t-sm" href="/blog/before-summer-hits-car-care.html">Summer car care</a>
         <a class="t-sm" href="/blog/dashcam-fitting-checklist.html">Dashcam buying checklist</a>
         <a class="t-sm" href="/blog/ppf-vs-ceramic-coating.html">PPF vs ceramic coating</a>
         <a class="t-sm" href="/blog/android-screen-buying-checklist.html">Android screen checklist</a>
@@ -1963,6 +1983,12 @@
     <div class="jump-links">
       <button type="button" onclick="closeJumpMenu();openShopPreview()">Shop Online Preview</button>
       <a href="/services.html">Services and prices</a>
+      <a href="/car-seat-covers-ghaziabad.html">Seat covers</a>
+      <a href="/android-screen-fitting-ghaziabad.html">Android screens</a>
+      <a href="/car-audio-system-ghaziabad.html">Car audio</a>
+      <a href="/dashcam-installation-ghaziabad.html">Dashcams</a>
+      <a href="/car-led-lights-ghaziabad.html">LED lights</a>
+      <a href="/car-ppf-ghaziabad.html">PPF and coating</a>
       <a href="#reviews" onclick="jumpTo(event,'reviews')">Reviews</a>
       <a href="#story" onclick="jumpTo(event,'story')">Our Story</a>
       <a href="#faq" onclick="jumpTo(event,'faq')">FAQ</a>
@@ -2096,7 +2122,6 @@
   </div>
 </div>
 
-<script src="assets/web/diwali-offer.js?v=fx7"></script>
 <script>
 // HERO NAME IS STATIC HTML NOW SO THE MIRRORED B NEVER DISAPPEARS
 
@@ -2620,9 +2645,9 @@ updatePageMotion();
 const reviewObs = new IntersectionObserver((entries) => {
   if (entries[0].isIntersecting) {
     let c = 0; const t = setInterval(() => {
-      c = Math.min(c + 7, 402);
+      c = Math.min(c + 7, 410);
       document.getElementById('reviewCount').textContent = c;
-      if (c >= 402) clearInterval(t);
+      if (c >= 410) clearInterval(t);
     }, 20);
     reviewObs.unobserve(entries[0].target);
   }
@@ -2751,10 +2776,12 @@ function sendLead(data) {
 
   fetch(endpoint, {
     method: 'POST',
-    mode: 'cors',
+    /* text/plain + no-cors avoids a CORS preflight, so a Google Apps Script
+       web app (see docs/LEAD-SHEET.md) can receive the lead. */
+    mode: 'no-cors',
     credentials: 'omit',
     keepalive: true,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   }).catch(function () {
     /* WhatsApp remains the visible fallback. Do not persist personal data in

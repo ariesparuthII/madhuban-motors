@@ -1,7 +1,9 @@
 // Search landing pages use the existing homepage consent and routing implementation.
 window.MM_ANALYTICS = {
       ga4: 'G-674BE5JN8Q',
-      metaPixel: ''
+      metaPixel: '',
+      /* Microsoft Clarity project ID. Loads only after analytics consent. */
+      clarity: ''
     };
     window.MM_LEAD_CONFIG = {
       /* Optional HTTPS endpoint that accepts POSTed JSON. Keep blank until an
@@ -38,6 +40,14 @@ window.MM_ANALYTICS = {
           }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
           window.fbq('init', cfg.metaPixel);
           window.fbq('track', 'PageView');
+        }
+
+        if (cfg.clarity) {
+          (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+            t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + encodeURIComponent(i);
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+          })(window, document, 'clarity', 'script', cfg.clarity);
         }
       }
 
